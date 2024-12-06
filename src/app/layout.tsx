@@ -1,10 +1,9 @@
-import { auth } from "@/auth";
-import { Header } from "@/components/Header";
 import { MainFrame } from "@/components/MainFrame";
+import { Header } from "@/components/server/Header";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Ubuntu } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 
 // If loading a variable font, you don't need to specify the font weight
@@ -19,22 +18,20 @@ export const metadata: Metadata = {
   description: "Keep track of physical objects.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
   return (
-    <SessionProvider session={session}>
-      <html lang="en" className="dark">
-        <body className={`${ubuntu.className} antialiased`}>
+    <html lang="en" className="dark">
+      <body className={`${ubuntu.className} antialiased`}>
+        <Suspense>
           <Header />
-          <MainFrame>{children}</MainFrame>
-          <Toaster />
-        </body>
-      </html>
-    </SessionProvider>
+        </Suspense>
+        <MainFrame>{children}</MainFrame>
+        <Toaster />
+      </body>
+    </html>
   );
 }

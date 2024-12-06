@@ -1,8 +1,8 @@
 "use client";
 
-import { RenameObjectDialogButton } from "@/components/RenameObjectDialogButton";
 import { H2, H3 } from "@/components/Typography";
-import { UpdateObjectLocationDialogButton } from "@/components/UpdateObjectLocationDialogButton";
+import { RenameObjectDialogButton } from "@/components/client/RenameObjectDialogButton";
+import { UpdateObjectLocationDialogButton } from "@/components/client/UpdateObjectLocationDialogButton";
 import { object_code_prefix } from "@/constants";
 import type PrismaTypes from "@prisma/client";
 import { useRouter } from "next/navigation";

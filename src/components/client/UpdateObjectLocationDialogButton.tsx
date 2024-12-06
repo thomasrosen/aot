@@ -2,6 +2,7 @@
 
 import { renameObject } from "@/actions/renameObject";
 import { DialogWrapper } from "@/components/DialogWrapper";
+import { GeoInput } from "@/components/client/GeoInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -43,33 +44,6 @@ export function UpdateObjectLocationDialogButton({
     longitude: number;
   } | null>(null);
   const [addressDisplayName, setAddressDisplayName] = useState<string>("");
-
-  const getUserLocation = async () => {
-    console.log("navigator.geolocation", navigator.geolocation);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserLocation({ latitude, longitude });
-
-          // https://nominatim.openstreetmap.org/search?q=Unter%20den%20Linden%201%20Berlin&format=json&addressdetails=1&limit=1
-        },
-        (error) => {
-          toast.error(
-            `ERROR_zjQaJsfQ Error getting location: ${error.message}`
-          );
-          console.error("ERROR_ePLso6bQ Error getting location:", error);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 500, // maximum wait for the location is half a second
-          // maximumAge: 0,
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -113,10 +87,7 @@ export function UpdateObjectLocationDialogButton({
       title="Update Location"
       description="Update where the object is currently located."
     >
-      <div className="flex gap-2">
-        <Button onClick={getUserLocation}>GEO</Button>
-        <Input type="address" placeholder="Search for an address" />
-      </div>
+      <GeoInput onChange={setUserLocation} />
 
       <div className="bg-gray-500 p-4 rounded-md h-48">
         <p>

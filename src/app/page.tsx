@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import { PublicStartPage } from "@/components/pages/PublicStartPage";
-import { SignedInStartPage } from "@/components/pages/SignedInStartPage";
+import { PublicStartPage } from "@/components/client/PublicStartPage";
+import { SignedInStartPage } from "@/components/server/SignedInStartPage";
 
 export default async function App() {
   const session = await auth();

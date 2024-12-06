@@ -1,4 +1,4 @@
-import { ObjectViewer } from "@/components/ObjectViewer";
+import { ObjectViewer } from "@/components/client/ObjectViewer";
 import { getObject } from "@/lib/getObject";
 import { notFound } from "next/navigation";
 
