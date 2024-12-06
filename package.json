@@ -2,6 +2,7 @@
   "name": "aot",
   "version": "0.1.1",
   "private": true,
+  "url": "https://inventar.thomasrosen.me",
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
