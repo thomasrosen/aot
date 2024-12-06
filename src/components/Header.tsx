@@ -25,7 +25,7 @@ export function Header() {
       toast(`Failed to create object: ${error}`);
       console.error("ERROR_dpBQWmlU handleAddObj error", error);
     }
-  }, []);
+  }, [router]);
 
   return (
     <header className="flex gap-4 justify-between items-center p-2">

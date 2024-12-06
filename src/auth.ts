@@ -17,11 +17,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       normalizeIdentifier(identifier: string): string {
         // Get the first two elements only,
         // separated by `@` from user input.
-        let [local, domain] = identifier.toLowerCase().trim().split("@");
+        const [local, domain] = identifier.toLowerCase().trim().split("@");
         // The part before "@" can contain a ","
         // but we remove it on the domain part
-        domain = domain.split(",")[0];
-        return `${local}@${domain}`;
+        const first_domain_part = domain.split(",")[0];
+        return `${local}@${first_domain_part}`;
 
         // You can also throw an error, which will redirect the user
         // to the sign-in page with error=EmailSignin in the URL
