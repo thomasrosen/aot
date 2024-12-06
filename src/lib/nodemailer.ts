@@ -1,10 +1,4 @@
 import { createTransport, Transporter } from "nodemailer";
-import type Mail from "nodemailer/lib/mailer";
-
-interface Provider {
-  server: Mail.Options;
-  from: string;
-}
 
 interface Theme {
   brandColor?: string;
@@ -14,7 +8,7 @@ interface Theme {
 interface SendVerificationRequestParams {
   identifier: string;
   url: string;
-  provider: Provider;
+  provider: any;
   theme: Theme;
 }
 

@@ -18,6 +18,10 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
+  roles Role[]
+
+  objectHistory ObjectHistory[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -75,4 +79,78 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+model GlobalSetting {
+  id String @id @default(cuid())
+
+  key   String
+  value String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("global_setting")
+}
+
+model Object {
+  id   String  @id @default(cuid())
+  code String  @unique
+  name String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  history ObjectHistory[]
+
+  @@map("object")
+}
+
+model ObjectHistory {
+  id String @id @default(cuid())
+
+  objectId String
+  object   Object @relation(fields: [objectId], references: [id], onDelete: Cascade)
+
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  note String?
+
+  email String?
+  user  User?   @relation(fields: [email], references: [email], onDelete: Cascade)
+
+  verifiedHistoryEntry DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("object_history")
+}
+
+model Location {
+  id String @id @default(cuid())
+
+  latitude    Float
+  longitude   Float
+  shortName   String?
+  fullAddress String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  History ObjectHistory[]
+
+  @@map("location")
+}
+
+model Role {
+  id   String @id @default(cuid())
+  name String @unique
+
+  users       User[]
+  permissions String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

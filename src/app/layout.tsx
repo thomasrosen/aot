@@ -1,16 +1,15 @@
+import { Header } from "@/components/Header";
+import { MainFrame } from "@/components/MainFrame";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Ubuntu } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+// If loading a variable font, you don't need to specify the font weight
+const ubuntu = Ubuntu({
+  weight: ["300", "400", "500", "700"],
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" className="dark">
+      <body className={`${ubuntu.className} antialiased`}>
+        <Header />
+        <MainFrame>{children}</MainFrame>
+        <Toaster />
       </body>
     </html>
   );

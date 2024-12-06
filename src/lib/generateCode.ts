@@ -1,22 +1,48 @@
+import { prisma } from "@/prisma";
 import { customAlphabet } from "nanoid";
+import { getGlobalSetting } from "./getGlobalSetting";
+import { setGlobalSetting } from "./setGlobalSetting";
 
-export async function generateCode() {
-  const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ123456789"; // ohne 0 und O
-  let length = 5;
-  // let codeExists = true;
-  let code = "";
+export async function generateCode(): Promise<string> {
+  const original_lenght = (await getGlobalSetting({ key: "code_length" })) || 1;
 
-  // while (codeExists) {
-  const nanoid = customAlphabet(characters, length);
-  code = nanoid();
-  // code = `VO+${code}`;
-  // codeExists = await prisma.object.findUnique({ where: { code } });
-  // if (codeExists) {
-  //   length += 1;
-  // } else {
-  //   codeExists = false;
-  // }
-  // }
+  const characters = "346789BCDFGHJKLMNPQRTWXYZ"; // similar to the nolookalikesSafe alphabet from nanoid
+
+  let length = 3; // original_lenght;
+  let code = null;
+  let codeExists = true;
+  let tryCount = 1;
+  while (codeExists) {
+    if (tryCount > 10) {
+      // if we tried 10 times, we give up
+      throw new Error("ERROR_vJ28L3bk Could not generate a unique code");
+    }
+
+    const nanoid = customAlphabet(characters, length);
+    code = nanoid();
+    const codeExists = await prisma.object.findFirst({ where: { code } });
+    if (!codeExists) {
+      // early stopping if code does not exist
+      break;
+    }
+    if (codeExists) {
+      if (tryCount % 2) {
+        // increase length every second try
+        // only every second time, to be more sure that the codes in that length are used up
+        length += 1;
+      }
+    }
+    tryCount += 1;
+  }
+
+  // save new length to global setting
+  if (original_lenght !== length) {
+    await setGlobalSetting({ key: "code_length", value: length });
+  }
+
+  if (!code) {
+    throw new Error("ERROR_kTLhEPOM Could not generate a unique code");
+  }
 
   return code;
 }
