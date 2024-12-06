@@ -32,7 +32,9 @@ export function Header() {
 
   return (
     <header className="flex gap-4 justify-between items-center p-2">
-      <H1>Inventar</H1>
+      <Link href="/">
+        <H1>Inventar</H1>
+      </Link>
       <div className="flex gap-4">
         {status === "authenticated" ? (
           <Link href="/api/auth/signout">
