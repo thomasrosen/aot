@@ -37,11 +37,16 @@ export function Header() {
       </Link>
       <div className="flex gap-4">
         {status === "authenticated" ? (
-          <Link href="/api/auth/signout">
-            <Button variant="ghost">
-              <Icon name="logout" /> Sign Out
+          <>
+            <Link href="/api/auth/signout">
+              <Button variant="ghost">
+                <Icon name="logout" /> Sign Out
+              </Button>
+            </Link>
+            <Button onClick={handleAddObj}>
+              <Icon name="add" /> Add
             </Button>
-          </Link>
+          </>
         ) : (
           <Link href="/api/auth/signin">
             <Button variant="ghost">
@@ -49,10 +54,6 @@ export function Header() {
             </Button>
           </Link>
         )}
-
-        <Button onClick={handleAddObj}>
-          <Icon name="add" /> Add
-        </Button>
       </div>
     </header>
   );
