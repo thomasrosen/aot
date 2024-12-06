@@ -5,7 +5,9 @@ import { notFound } from "next/navigation";
 export default async function ViewObject({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{
+    code: string;
+  }>;
 }) {
   const { code } = await params;
 
