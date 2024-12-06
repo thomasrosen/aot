@@ -1,12 +1,12 @@
 "use client";
 
 import { addObject } from "@/actions/addObject";
+import { Icon } from "@/components/Icon";
+import { H1 } from "@/components/Typography";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { Icon } from "./Icon";
-import { H1 } from "./Typography";
 
 export function Header() {
   const router = useRouter();

@@ -1,7 +1,10 @@
 "use client";
 
 import { renameObject } from "@/actions/renameObject";
+import { DialogWrapper } from "@/components/DialogWrapper";
+import { Button } from "@/components/ui/button";
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -9,15 +12,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { DialogWrapper } from "./DialogWrapper";
-import { Button } from "./ui/button";
-import { Form } from "./ui/form";
-import { Input } from "./ui/input";
 
 const formSchema = z.object({
   name: z

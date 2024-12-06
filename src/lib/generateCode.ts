@@ -1,7 +1,7 @@
+import { getGlobalSetting } from "@/lib/getGlobalSetting";
+import { setGlobalSetting } from "@/lib/setGlobalSetting";
 import { prisma } from "@/prisma";
 import { customAlphabet } from "nanoid";
-import { getGlobalSetting } from "./getGlobalSetting";
-import { setGlobalSetting } from "./setGlobalSetting";
 
 export async function generateCode(): Promise<string> {
   const original_lenght = (await getGlobalSetting({ key: "code_length" })) || 1;

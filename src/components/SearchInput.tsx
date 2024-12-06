@@ -1,6 +1,6 @@
-import { Icon } from "./Icon";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Icon } from "@/components/Icon";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function SearchInput() {
   return (
