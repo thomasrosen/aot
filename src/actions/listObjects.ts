@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 export async function listObjects() {
   const objects = await prisma.object.findMany();
-  return {
-    objects,
-  };
+
+  return objects;
 }
