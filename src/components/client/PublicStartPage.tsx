@@ -1,6 +1,6 @@
 "use client";
 
-import { H2 } from "@/components/Typography";
+import { H2, P } from "@/components/Typography";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -82,7 +82,7 @@ export function PublicStartPage() {
               )}
             />
 
-            <p>TODO: geo input</p>
+            <P>TODO: geo input</P>
 
             <FormField
               control={form.control}
