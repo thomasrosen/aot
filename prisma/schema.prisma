@@ -115,8 +115,6 @@ model ObjectHistory {
   locationId String?
   location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
-  note String?
-
   email String?
   user  User?   @relation(fields: [email], references: [email], onDelete: Cascade)
 
@@ -133,8 +131,7 @@ model Location {
 
   latitude    Float
   longitude   Float
-  shortName   String?
-  fullAddress String?
+  address String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

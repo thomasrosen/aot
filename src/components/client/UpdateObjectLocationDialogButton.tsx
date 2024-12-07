@@ -1,5 +1,6 @@
 "use client";
 
+import { createObjectHistory } from "@/actions/createObjectHistory";
 import { DialogWrapper } from "@/components/DialogWrapper";
 import { GeoInput, locationFormSchema } from "@/components/client/GeoInput";
 import { Button } from "@/components/ui/button";
@@ -14,8 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -25,13 +28,8 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdateObjectLocationDialogButton({
-  code,
-  onChange,
-}: {
-  code: string;
-  onChange?: () => void;
-}) {
+export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,26 +45,21 @@ export function UpdateObjectLocationDialogButton({
       // ✅ This will be type-safe and validated.
       console.log("onSubmit", values);
 
-      // if (values.name === name) {
-      //   toast.success("Name is already set to this value.");
-      //   return;
-      // }
+      const updatedLocation = await createObjectHistory({
+        ...values,
+        code,
+      });
 
-      // const renamed = await renameObject({
-      //   code,
-      //   name: values.name || "",
-      // });
-
-      // if (renamed) {
-      //   toast.success("Object renamed");
-      // } else {
-      //   toast.error("ERROR_ChCT290a Failed to rename object");
-      // }
-
-      reset();
-      setOpen(false);
+      if (updatedLocation) {
+        toast.success("Location updated");
+        reset();
+        setOpen(false);
+        router.refresh();
+      } else {
+        toast.error("ERROR_mxjE0Q90 Failed to update location");
+      }
     },
-    [code, onChange, reset]
+    [code, reset, router]
   );
 
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);

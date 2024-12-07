@@ -1,18 +1,19 @@
-"use client";
-
 import { H2, H3 } from "@/components/Typography";
 import { RenameObjectDialogButton } from "@/components/client/RenameObjectDialogButton";
 import { UpdateObjectLocationDialogButton } from "@/components/client/UpdateObjectLocationDialogButton";
 import { object_code_prefix } from "@/constants";
 import type PrismaTypes from "@prisma/client";
-import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 export function ObjectViewer({
   object,
+  session,
 }: {
   object?: Partial<PrismaTypes.Object> | null;
+  session: Session | null;
 }) {
-  const router = useRouter();
+  const isSignedIn = !!session;
+  const isMember = !!session; // session?.user?.role === "member";
 
   if (!object) {
     return null;
@@ -32,17 +33,15 @@ export function ObjectViewer({
         {code}
       </H3>
       <div className="flex gap-2">
-        <UpdateObjectLocationDialogButton
-          code={code}
-          onChange={() => router.refresh()}
-        />
+        <UpdateObjectLocationDialogButton code={code} />
 
-        <RenameObjectDialogButton
-          code={code}
-          name={name || ""}
-          onChange={() => router.refresh()}
-        />
+        {isSignedIn && isMember ? (
+          <RenameObjectDialogButton code={code} name={name || ""} />
+        ) : null}
       </div>
+      {isSignedIn && isMember ? (
+        <pre>{JSON.stringify(object, null, 2)}</pre>
+      ) : null}
     </>
   );
 }

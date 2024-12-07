@@ -8,25 +8,32 @@ export async function getObject({
 }: {
   code: string;
 }): Promise<Partial<PrismaTypes.Object> | null> {
-  let include = {};
+  let select: PrismaTypes.Prisma.ObjectSelect = {
+    code: true,
+  };
 
   const session = await auth();
   if (session) {
-    include = {
-      objectHistory: {
+    select = {
+      ...select,
+      name: true,
+      updatedAt: true,
+      history: {
         orderBy: { updatedAt: "desc" },
         select: {
-          id: true,
-
-          locationId: true,
-          location: true,
-
-          note: true,
-
-          email: true,
-          verified: true,
-
-          createdAt: true,
+          location: {
+            select: {
+              address: true,
+              latitude: true,
+              longitude: true,
+            },
+          },
+          user: {
+            select: {
+              email: true,
+            },
+          },
+          verifiedHistoryEntry: true,
           updatedAt: true,
         },
       },
@@ -36,9 +43,10 @@ export async function getObject({
   return await prisma.object.findFirst({
     where: { code },
     orderBy: { updatedAt: "desc" },
-    select: {
-      code: true,
-      name: true,
-    },
+    select,
+    // select: {
+    //   code: true,
+    //   name: true,
+    // },
   });
 }

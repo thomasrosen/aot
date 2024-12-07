@@ -1,9 +1,17 @@
 "use server";
 
+import { auth } from "@/auth";
 import { generateCode } from "@/lib/generateCode";
 import { prisma } from "@/prisma";
 
 export async function addObject() {
+  const session = await auth();
+  if (!session) {
+    throw new Error("Not authenticated");
+  }
+
+  // todo also check for permissions
+
   const code = await generateCode();
   console.log("addObject-code", code);
 

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -33,12 +34,11 @@ const formSchema = z.object({
 export function RenameObjectDialogButton({
   code,
   name,
-  onChange,
 }: {
   code: string;
   name: string;
-  onChange?: () => void;
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   // 1. Define your form.
@@ -67,12 +67,12 @@ export function RenameObjectDialogButton({
 
     if (renamed) {
       toast.success("Object renamed");
+      setOpen(false);
+      router.refresh();
     } else {
       console.error("ERROR_q89eqeAZ Failed to rename object");
       toast.error("ERROR_ChCT290a Failed to rename object");
     }
-
-    setOpen(false);
   }
 
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);

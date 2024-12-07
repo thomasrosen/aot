@@ -71,7 +71,7 @@ export function PublicStartPage() {
                 <FormItem>
                   <FormLabel>Object Code</FormLabel>
                   <FormControl>
-                    <Input type="text" placeholder="123XYZ" />
+                    <Input type="text" placeholder="123XYZ" {...field} />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>
@@ -91,7 +91,11 @@ export function PublicStartPage() {
                 <FormItem>
                   <FormLabel>Deine Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="name@domain.com" />
+                    <Input
+                      type="email"
+                      placeholder="name@domain.com"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                   <FormDescription>

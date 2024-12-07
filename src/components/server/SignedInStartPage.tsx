@@ -14,6 +14,7 @@ export async function SignedInStartPage() {
       {Array.isArray(objects)
         ? objects.map((object) => (
             <Link
+              key={object.code}
               href={`/object/${object.code}`}
               className="hover:underline mb-4 block"
             >

@@ -87,7 +87,7 @@ export function GeoInput({
         longitude,
       });
     }
-  }, [address, latitude, longitude]);
+  }, [onChange, address, latitude, longitude]);
 
   useEffect(() => {
     setAddress(value?.address ? value.address : undefined);
@@ -146,7 +146,12 @@ export function GeoInput({
         "ERROR_LyJJy3qy Geolocation is not supported by this browser."
       );
     }
-  }, [setLatitude, setLongitude, setFetchingCurrentGeoCoordinates]);
+  }, [
+    searchByGeoLocation,
+    setLatitude,
+    setLongitude,
+    setFetchingCurrentGeoCoordinates,
+  ]);
 
   const searchByAddress = useCallback(
     async ({
@@ -191,7 +196,13 @@ export function GeoInput({
           toast.error("ERROR_QMHKSnBx Error fetching location");
         }
       } catch (error) {
-        toast.error("ERROR_fQMdnwcE Error fetching location: ${error.message}");
+        if (error instanceof Error) {
+          toast.error(
+            `ERROR_fQMdnwcE Error fetching location: ${error.message}`
+          );
+        } else {
+          toast.error("ERROR_fQMdnwcE Error fetching location");
+        }
       } finally {
         setIsAutocorrectingAddress(false);
         setIsAutofillingGeo(false);
@@ -207,8 +218,8 @@ export function GeoInput({
   );
   const searchByGeoLocation = useCallback(
     async (location?: { latitude: number; longitude: number }) => {
-      let latitude_tmp = location?.latitude || latitude;
-      let longitude_tmp = location?.longitude || longitude;
+      const latitude_tmp = location?.latitude || latitude;
+      const longitude_tmp = location?.longitude || longitude;
 
       console.log("searchByGeoLocation", latitude, longitude);
       if (!latitude_tmp || !longitude_tmp) {
@@ -240,19 +251,18 @@ export function GeoInput({
           toast.error("ERROR_YuHDZ4RX Error fetching location");
         }
       } catch (error) {
-        toast.error("ERROR_ESKybfq6 Error fetching location: ${error.message}");
+        if (error instanceof Error) {
+          toast.error(
+            `ERROR_ESKybfq6 Error fetching location: ${error.message}`
+          );
+        } else {
+          toast.error("ERROR_ESKybfq6 Error fetching location");
+        }
       } finally {
         setIsAutofillingAddress(false);
       }
     },
-    [
-      address,
-      latitude,
-      longitude,
-      setLatitude,
-      setLongitude,
-      setIsAutofillingAddress,
-    ]
+    [latitude, longitude, setIsAutofillingAddress]
   );
 
   return (

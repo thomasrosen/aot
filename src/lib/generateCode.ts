@@ -10,9 +10,9 @@ export async function generateCode(): Promise<string> {
 
   let length = 3; // original_lenght;
   let code = null;
-  let codeExists = true;
+  let codeExistsInDatabase: boolean = true;
   let tryCount = 1;
-  while (codeExists) {
+  while (codeExistsInDatabase) {
     if (tryCount > 10) {
       // if we tried 10 times, we give up
       throw new Error("ERROR_vJ28L3bk Could not generate a unique code");
@@ -20,12 +20,16 @@ export async function generateCode(): Promise<string> {
 
     const nanoid = customAlphabet(characters, length);
     code = nanoid();
-    const codeExists = await prisma.object.findFirst({ where: { code } });
-    if (!codeExists) {
+    codeExistsInDatabase = Boolean(
+      await prisma.object.findFirst({
+        where: { code },
+      })
+    );
+    if (!codeExistsInDatabase) {
       // early stopping if code does not exist
       break;
     }
-    if (codeExists) {
+    if (codeExistsInDatabase) {
       if (tryCount % 2) {
         // increase length every second try
         // only every second time, to be more sure that the codes in that length are used up
