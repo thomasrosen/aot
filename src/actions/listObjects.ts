@@ -11,6 +11,37 @@ export async function listObjects() {
 
   // todo also check for permissions
 
-  const objects = await prisma.object.findMany();
+  const objects = await prisma.object.findMany({
+    orderBy: {
+      updatedAt: "desc",
+    },
+    select: {
+      code: true,
+      name: true,
+      updatedAt: true,
+      history: {
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+        select: {
+          updatedAt: true,
+          location: {
+            select: {
+              address: true,
+              latitude: true,
+              longitude: true,
+            },
+          },
+          user: {
+            select: {
+              email: true,
+            },
+          },
+          verifiedHistoryEntry: true,
+        },
+      },
+    },
+  });
   return objects;
 }
