@@ -10,8 +10,8 @@ interface SendVerificationRequestParams {
   identifier: string;
   url: string;
   provider: {
-    server: SMTPTransport | SMTPTransport.Options | string;
-    from: string;
+    server?: SMTPTransport | SMTPTransport.Options | string;
+    from?: string;
   };
   theme: Theme;
 }
