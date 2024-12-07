@@ -95,6 +95,54 @@ export function GeoInput({
     setLongitude(value?.longitude ? value.longitude : undefined);
   }, [value]);
 
+  const searchByGeoLocation = useCallback(
+    async (location?: { latitude: number; longitude: number }) => {
+      const latitude_tmp = location?.latitude || latitude;
+      const longitude_tmp = location?.longitude || longitude;
+
+      console.log("searchByGeoLocation", latitude, longitude);
+      if (!latitude_tmp || !longitude_tmp) {
+        return;
+      }
+      setIsAutofillingAddress(true);
+
+      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${encodeURIComponent(
+        latitude_tmp
+      )}&lon=${encodeURIComponent(
+        longitude_tmp
+      )}&zoom=18&addressdetails=0&limit=1&accept-language=de,en`;
+
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("searchForGeoLocationByAddress", data);
+          if (data) {
+            if (data.error) {
+              toast.error(`ERROR_eF4zu7oR ${data.error}`);
+            } else if (data.display_name) {
+              setAddress(data.display_name);
+            }
+          } else {
+            toast.error("ERROR_A4YnTEc1 No data returned");
+          }
+        } else {
+          toast.error("ERROR_YuHDZ4RX Error fetching location");
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          toast.error(
+            `ERROR_ESKybfq6 Error fetching location: ${error.message}`
+          );
+        } else {
+          toast.error("ERROR_ESKybfq6 Error fetching location");
+        }
+      } finally {
+        setIsAutofillingAddress(false);
+      }
+    },
+    [latitude, longitude, setIsAutofillingAddress]
+  );
   const getUserLocation = useCallback(async () => {
     setFetchingCurrentGeoCoordinates(true);
 
@@ -215,54 +263,6 @@ export function GeoInput({
       setIsAutocorrectingAddress,
       setIsAutofillingGeo,
     ]
-  );
-  const searchByGeoLocation = useCallback(
-    async (location?: { latitude: number; longitude: number }) => {
-      const latitude_tmp = location?.latitude || latitude;
-      const longitude_tmp = location?.longitude || longitude;
-
-      console.log("searchByGeoLocation", latitude, longitude);
-      if (!latitude_tmp || !longitude_tmp) {
-        return;
-      }
-      setIsAutofillingAddress(true);
-
-      const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${encodeURIComponent(
-        latitude_tmp
-      )}&lon=${encodeURIComponent(
-        longitude_tmp
-      )}&zoom=18&addressdetails=0&limit=1&accept-language=de,en`;
-
-      try {
-        const response = await fetch(url);
-        if (response.ok) {
-          const data = await response.json();
-          console.log("searchForGeoLocationByAddress", data);
-          if (data) {
-            if (data.error) {
-              toast.error(`ERROR_eF4zu7oR ${data.error}`);
-            } else if (data.display_name) {
-              setAddress(data.display_name);
-            }
-          } else {
-            toast.error("ERROR_A4YnTEc1 No data returned");
-          }
-        } else {
-          toast.error("ERROR_YuHDZ4RX Error fetching location");
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(
-            `ERROR_ESKybfq6 Error fetching location: ${error.message}`
-          );
-        } else {
-          toast.error("ERROR_ESKybfq6 Error fetching location");
-        }
-      } finally {
-        setIsAutofillingAddress(false);
-      }
-    },
-    [latitude, longitude, setIsAutofillingAddress]
   );
 
   return (
