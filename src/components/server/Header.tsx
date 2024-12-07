@@ -15,7 +15,7 @@ export async function Header() {
   return (
     <header className="flex gap-4 justify-between items-center p-2">
       <Link href="/">
-        <H1>Inventar</H1>
+        <H1>Inventory</H1>
       </Link>
       <div className="flex gap-4">
         {isSignedIn ? (
