@@ -1,2 +1,3 @@
-# aot
-AOT: Automatic Object Tracking
+# inventory
+
+A simple inventory management system.

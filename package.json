@@ -1,8 +1,8 @@
 {
-  "name": "aot",
+  "name": "inventory",
   "version": "0.1.1",
   "private": true,
-  "url": "https://inventar.thomasrosen.me",
+  "url": "https://inventory.thomasrosen.me",
   "scripts": {
     "dev": "next dev --experimental-https",
     "build": "npx prisma generate && next build",

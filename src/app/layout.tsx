@@ -14,7 +14,7 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Inventar",
+  title: "Inventory",
   description: "Keep track of physical objects.",
 };
 
