@@ -23,21 +23,26 @@ export async function sendVerificationRequest(
   const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
 
-  // NOTE: You are not required to use `nodemailer`, use whatever you want.
-  const transport: Transporter = createTransport(provider.server);
+  try {
+    // NOTE: You are not required to use `nodemailer`, use whatever you want.
+    const transport: Transporter = createTransport(provider.server);
 
-  const result = await transport.sendMail({
-    to: identifier,
-    from: provider.from,
-    subject: `Sign in to ${host}`,
-    text: text({ url, host }),
-    html: html({ url, host, theme }),
-  });
+    const result = await transport.sendMail({
+      to: identifier,
+      from: provider.from,
+      subject: `Sign in to ${host}`,
+      text: text({ url, host }),
+      html: html({ url, host, theme }),
+    });
+    const failed = result.rejected.concat(result.pending).filter(Boolean);
 
-  const failed = result.rejected.concat(result.pending).filter(Boolean);
+    if (failed.length) {
+      throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
+    }
 
-  if (failed.length) {
-    throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
+    console.log("Email sent to " + identifier);
+  } catch (e) {
+    console.error("ERROR_PLjlgJnq email send error:", e);
   }
 }
 
