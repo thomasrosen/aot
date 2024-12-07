@@ -1,8 +1,7 @@
 "use client";
 
-import { renameObject } from "@/actions/renameObject";
 import { DialogWrapper } from "@/components/DialogWrapper";
-import { GeoInput } from "@/components/client/GeoInput";
+import { GeoInput, locationFormSchema } from "@/components/client/GeoInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,18 +16,13 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(3, {
-      message: "Name must be at least 3 characters.",
-    })
-    .max(100, {
-      message: "Name must be less than 100 characters.",
-    }),
+  location: locationFormSchema,
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
 });
 
 export function UpdateObjectLocationDialogButton({
@@ -39,43 +33,41 @@ export function UpdateObjectLocationDialogButton({
   onChange?: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [userLocation, setUserLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-  const [addressDisplayName, setAddressDisplayName] = useState<string>("");
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log("onSubmit", values);
+  const { reset, formState } = form;
+  const { errors } = formState;
 
-    // if (values.name === name) {
-    //   toast.success("Name is already set to this value.");
-    //   return;
-    // }
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof formSchema>) => {
+      // Do something with the form values.
+      // ✅ This will be type-safe and validated.
+      console.log("onSubmit", values);
 
-    const renamed = await renameObject({
-      code,
-      name: values.name || "",
-    });
+      // if (values.name === name) {
+      //   toast.success("Name is already set to this value.");
+      //   return;
+      // }
 
-    if (renamed) {
-      toast.success("Object renamed");
-    } else {
-      console.error("ERROR_q89eqeAZ Failed to rename object");
-      toast.error("ERROR_ChCT290a Failed to rename object");
-    }
+      // const renamed = await renameObject({
+      //   code,
+      //   name: values.name || "",
+      // });
 
-    setOpen(false);
-  }
+      // if (renamed) {
+      //   toast.success("Object renamed");
+      // } else {
+      //   toast.error("ERROR_ChCT290a Failed to rename object");
+      // }
+
+      reset();
+      setOpen(false);
+    },
+    [code, onChange, reset]
+  );
 
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);
 
@@ -86,34 +78,47 @@ export function UpdateObjectLocationDialogButton({
       trigger={<Button>Update Location</Button>}
       title="Update Location"
       description="Update where the object is currently located."
+      className="space-y-2"
     >
-      <GeoInput onChange={setUserLocation} />
-
-      <div className="bg-gray-500 p-4 rounded-md h-48">
-        <p>
-          Latitude: {userLocation?.latitude || "???"}
-          Longitude: {userLocation?.longitude || "???"}
-        </p>
-        <p>Address: {addressDisplayName || "???"}</p>
-      </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="The new name…" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            name="location"
+            render={({ field }) => {
+              console.log("field", field);
+              return (
+                <FormItem>
+                  <FormControl>
+                    <GeoInput {...field} errors={errors.location} />
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => {
+              console.log("field", field);
+              return (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Your Email Address"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>

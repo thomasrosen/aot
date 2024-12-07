@@ -25,7 +25,7 @@ export function Icon({
       className={cn(
         MaterialSymbols.className,
         "iconframe",
-        "inline-flex items-center justify-center leading-none",
+        "inline-flex items-center justify-center leading-none overflow-hidden",
         // size === "sm" && "w-4 h-4 text-base",
         size === "md" && "w-6 h-6 text-2xl",
         // size === "lg" && "w-8 h-8 text-3xl",

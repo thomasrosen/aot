@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
 
 export function DialogWrapper({
   open,
@@ -14,6 +15,7 @@ export function DialogWrapper({
   title,
   description,
   children,
+  className,
 }: Readonly<{
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -21,11 +23,12 @@ export function DialogWrapper({
   title?: string;
   description?: string;
   children?: React.ReactNode;
+  className?: string;
 }>) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
-      <DialogContent className="max-h-screen overflow-auto">
+      <DialogContent className={cn("max-h-screen overflow-auto", className)}>
         {title || description ? (
           <DialogHeader>
             {title ? <DialogTitle>{title}</DialogTitle> : null}
