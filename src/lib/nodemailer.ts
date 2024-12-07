@@ -1,5 +1,5 @@
 import { createTransport, Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+// import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 interface Theme {
   brandColor?: string;
@@ -9,10 +9,11 @@ interface Theme {
 interface SendVerificationRequestParams {
   identifier: string;
   url: string;
-  provider: {
-    server?: SMTPTransport | SMTPTransport.Options | string;
-    from?: string;
-  };
+  provider: any;
+  // provider: {
+  //   server?: SMTPTransport | SMTPTransport.Options | string;
+  //   from?: string;
+  // };
   theme: Theme;
 }
 
