@@ -13,7 +13,34 @@ export default async function RolesPage() {
     throw new Error("Not allowed");
   }
 
-  const roles = await prisma.role.findMany();
+  const roles = await prisma.role.findMany({
+    select: {
+      name: true,
+      updatedAt: true,
+      permissions: {
+        select: {
+          name: true,
+          roles: {
+            select: {
+              name: true,
+              userRolePairings: {
+                select: {
+                  user: {
+                    select: {
+                      email: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      name: "asc",
+    },
+  });
 
   return (
     <>

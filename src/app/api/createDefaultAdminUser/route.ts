@@ -67,7 +67,7 @@ export async function GET() {
     await prisma.user.update({
       where: { email: adminEmail },
       data: {
-        roles: {
+        userRolePairings: {
           connectOrCreate: [
             {
               where: {

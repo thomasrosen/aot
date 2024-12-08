@@ -18,7 +18,7 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  roles UserRolePairing[]
+  userRolePairings UserRolePairing[]
 
   objectHistory ObjectHistory[]
 
@@ -131,9 +131,9 @@ model ObjectHistory {
 model Location {
   id String @id @default(cuid())
 
-  latitude    Float
-  longitude   Float
-  address String @default("")
+  latitude  Float
+  longitude Float
+  address   String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -146,7 +146,7 @@ model Location {
 }
 
 model UserRolePairing {
-  userId String
+  userId   String
   roleName String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -173,8 +173,8 @@ model Role {
 
   colorHex String?
 
-  users       UserRolePairing[]
-  permissions Permission[]
+  userRolePairings UserRolePairing[]
+  permissions      Permission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

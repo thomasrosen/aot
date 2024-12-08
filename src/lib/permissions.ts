@@ -21,7 +21,7 @@ export async function userHasOneOfPermissions({
     const globalCount = await prisma.user.count({
       where: {
         id: userId,
-        roles: {
+        userRolePairings: {
           some: {
             role: {
               permissions: {
