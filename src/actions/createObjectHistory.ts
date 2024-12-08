@@ -15,7 +15,7 @@ export async function createObjectHistory({
     latitude: number;
     longitude: number;
   };
-  email: string;
+  email?: string;
 }): Promise<true> {
   // overwrite email with the signed in user's email
   const session = await auth();
@@ -30,7 +30,9 @@ export async function createObjectHistory({
     throw new Error("Missing location");
   }
   if (!email) {
-    throw new Error("Missing email");
+    throw new Error(
+      "Missing email. Email will automatically be set to the signed in user's email. If not signed in, email is required."
+    );
   }
 
   const result = await prisma.objectHistory.create({
@@ -56,8 +58,7 @@ export async function createObjectHistory({
     },
   });
 
-  revalidatePath(`/view/${code}`); // clear the page cache
-  console.log("createObjectHistory", result);
+  revalidatePath(`/objects/${code}`); // clear the page cache
 
   return true; // todo check result
 }

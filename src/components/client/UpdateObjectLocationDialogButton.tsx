@@ -24,9 +24,12 @@ import { z } from "zod";
 
 const formSchema = z.object({
   location: locationFormSchema,
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
+  email: z
+    .string()
+    .email({
+      message: "Invalid email address.",
+    })
+    .optional(),
 });
 
 export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
@@ -46,7 +49,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
     async (values: z.infer<typeof formSchema>) => {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      console.log("onSubmit", values);
 
       const updatedLocation = await createObjectHistory({
         ...values,
@@ -76,13 +78,13 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
       description="Update where the object is currently located."
       className="space-y-2"
     >
+      <pre>{JSON.stringify(errors, null, 2)}</pre>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             name="location"
             render={({ field }) => {
-              console.log("field", field);
               return (
                 <FormItem>
                   <FormControl>
@@ -99,7 +101,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
               control={form.control}
               name="email"
               render={({ field }) => {
-                console.log("field", field);
                 return (
                   <FormItem>
                     <FormLabel>Email</FormLabel>

@@ -53,7 +53,6 @@ export function RenameObjectDialogButton({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log("onSubmit", values);
 
     if (values.name === name) {
       toast.success("Name is already set to this value.");

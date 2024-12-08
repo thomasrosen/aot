@@ -100,7 +100,6 @@ export function GeoInput({
       const latitude_tmp = location?.latitude || latitude;
       const longitude_tmp = location?.longitude || longitude;
 
-      console.log("searchByGeoLocation", latitude, longitude);
       if (!latitude_tmp || !longitude_tmp) {
         return;
       }
@@ -116,7 +115,6 @@ export function GeoInput({
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
-          console.log("searchForGeoLocationByAddress", data);
           if (data) {
             if (data.error) {
               toast.error(`ERROR_eF4zu7oR ${data.error}`);
@@ -150,8 +148,6 @@ export function GeoInput({
       navigator.permissions
         .query({ name: "geolocation" })
         .then(function (permissionStatus) {
-          console.log("geolocation permission state is ", permissionStatus);
-
           if (permissionStatus.state === "denied") {
             toast.error(
               "ERROR_puxgrgGK Geolocation permission denied. Please enable it in your browser settings."
@@ -161,10 +157,6 @@ export function GeoInput({
 
           navigator.geolocation.getCurrentPosition(
             function (position) {
-              console.log("Geolocation permissions granted", position);
-              console.log("Latitude:" + position.coords.latitude);
-              console.log("Longitude:" + position.coords.longitude);
-
               setLatitude(position.coords.latitude);
               setLongitude(position.coords.longitude);
 
@@ -227,7 +219,6 @@ export function GeoInput({
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
-          console.log("searchForGeoLocationByAddress", data);
           if (data.length > 0) {
             const { lat, lon, display_name } = data[0];
             if (canSetGeo) {

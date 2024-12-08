@@ -94,15 +94,13 @@ model GlobalSetting {
 }
 
 model Object {
-  id   String  @id @default(cuid())
-  code String  @unique
+  code String  @id @unique
   name String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  history ObjectHistory[]
-
+  history          ObjectHistory[]
   userRolePairings UserRolePairing[]
 
   @@map("object")
@@ -111,8 +109,8 @@ model Object {
 model ObjectHistory {
   id String @id @default(cuid())
 
-  objectId String
-  object   Object @relation(fields: [objectId], references: [id], onDelete: Cascade)
+  objectCode String
+  object     Object @relation(fields: [objectCode], references: [code], onDelete: Cascade)
 
   locationId String?
   location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
@@ -155,11 +153,11 @@ model UserRolePairing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  object_id String?
-  object    Object? @relation(fields: [object_id], references: [id], onDelete: Cascade)
+  objectCode String?
+  object     Object? @relation(fields: [objectCode], references: [code], onDelete: Cascade)
 
-  location_id String?
-  location    Location? @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
   @@id([userId, roleName])
   @@unique([userId, roleName]) // Composite key for uniqueness

@@ -32,6 +32,9 @@ export default async function PermissionsPage() {
         },
       },
     },
+    orderBy: {
+      name: "asc",
+    },
   });
 
   return (

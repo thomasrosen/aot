@@ -1,31 +1,20 @@
 import { auth } from "@/auth";
+import { H2 } from "@/components/Typography";
 import { userHasOneOfPermissions } from "@/lib/permissions";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/prisma";
+import Link from "next/link";
 
-const prisma = new PrismaClient();
-
-export async function listObjects() {
+export default async function ObjectsPage() {
   const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) {
-    throw new Error("Not authenticated");
-  }
-  console.log("session", session);
-
   const isAllowed = await userHasOneOfPermissions({
-    userId,
-    permissionNames: ["view_objects"],
+    userId: session?.user?.id,
+    permissionNames: ["admin"],
   });
-
   if (!isAllowed) {
-    // throw new Error("Not allowed");
-    return [];
+    throw new Error("Not allowed");
   }
 
   const objects = await prisma.object.findMany({
-    orderBy: {
-      updatedAt: "desc",
-    },
     select: {
       code: true,
       name: true,
@@ -53,6 +42,25 @@ export async function listObjects() {
         },
       },
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
-  return objects;
+
+  return (
+    <>
+      <H2>Objects</H2>
+      {Array.isArray(objects)
+        ? objects.map((object) => (
+            <Link
+              key={object.code}
+              href={`/objects/${object.code}`}
+              className="hover:underline mb-4 block"
+            >
+              <pre>{JSON.stringify(object, null, 2)}</pre>
+            </Link>
+          ))
+        : null}
+    </>
+  );
 }

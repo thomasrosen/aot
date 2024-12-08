@@ -14,13 +14,8 @@ export async function renameObject({
 }): Promise<true> {
   try {
     const session = await auth();
-    const userId = session?.user?.id;
-    if (!userId) {
-      throw new Error("Not authenticated");
-    }
-
     const isAllowed = await userHasOneOfPermissions({
-      userId,
+      userId: session?.user?.id,
       permissionNames: ["renamed_objects"],
     });
     if (!isAllowed) {

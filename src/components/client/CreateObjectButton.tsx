@@ -16,7 +16,7 @@ export function CreateObjectButton() {
 
       if (code) {
         toast("Object created");
-        router.push(`/view/${code}`);
+        router.push(`/objects/${code}`);
       } else {
         throw new Error("ERROR_bVN5t7qz Unkown error.");
       }

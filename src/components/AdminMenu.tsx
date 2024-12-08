@@ -4,6 +4,9 @@ import Link from "next/link";
 export function AdminMenu() {
   return (
     <>
+      <Link href="/objects">
+        <Button variant="outline">Objects</Button>
+      </Link>
       <Link href="/users">
         <Button variant="outline">Users</Button>
       </Link>

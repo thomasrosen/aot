@@ -39,8 +39,6 @@ export async function sendVerificationRequest(
     if (failed.length) {
       throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
     }
-
-    console.log("Email sent to " + identifier);
   } catch (e) {
     console.error("ERROR_PLjlgJnq email send error:", e);
   }
