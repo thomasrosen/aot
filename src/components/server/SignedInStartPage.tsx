@@ -15,7 +15,7 @@ export async function SignedInStartPage() {
         ? objects.map((object) => (
             <Link
               key={object.code}
-              href={`/object/${object.code}`}
+              href={`/objects/${object.code}`}
               className="hover:underline mb-4 block"
             >
               <pre>{JSON.stringify(object, null, 2)}</pre>

@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
-import { AddObjectButton } from "@/components/client/AddObjectButton";
+import { AdminMenu } from "@/components/AdminMenu";
 import { Icon } from "@/components/Icon";
 import { H1 } from "@/components/Typography";
+import { CreateObjectButton } from "@/components/client/CreateObjectButton";
 import { Button } from "@/components/ui/button";
 import { userHasOneOfPermissions } from "@/lib/permissions";
 import Link from "next/link";
@@ -9,9 +10,15 @@ import { Suspense } from "react";
 
 export async function Header() {
   const session = await auth();
+  const isSignedIn = !!session?.user?.id;
   const canCreateObject = await userHasOneOfPermissions({
     userId: session?.user?.id,
     permissionNames: ["create_object"],
+  });
+
+  const isAdmin = await userHasOneOfPermissions({
+    userId: session?.user?.id,
+    permissionNames: ["admin"],
   });
 
   return (
@@ -20,8 +27,12 @@ export async function Header() {
         <H1>Inventory</H1>
       </Link>
       <div className="flex gap-4">
-        {session ? (
-          // sessions is null if the user is not signed in
+        {isAdmin ? (
+          <Suspense>
+            <AdminMenu />
+          </Suspense>
+        ) : null}
+        {isSignedIn ? (
           <Link href="/api/auth/signout">
             <Button variant="ghost">
               <Icon name="logout" /> Sign Out
@@ -36,7 +47,7 @@ export async function Header() {
         )}
         {canCreateObject ? (
           <Suspense>
-            <AddObjectButton />
+            <CreateObjectButton />
           </Suspense>
         ) : null}
       </div>

@@ -171,6 +171,8 @@ model UserRolePairing {
 model Role {
   name String @id @unique
 
+  colorHex String?
+
   users       UserRolePairing[]
   permissions Permission[]
 

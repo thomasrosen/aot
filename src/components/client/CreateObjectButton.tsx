@@ -1,18 +1,18 @@
 "use client";
 
-import { addObject } from "@/actions/addObject";
+import { createObject } from "@/actions/createObject";
 import { Icon } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
 
-export function AddObjectButton() {
+export function CreateObjectButton() {
   const router = useRouter();
 
-  const handleAddObj = useCallback(async () => {
+  const handleCreateObject = useCallback(async () => {
     try {
-      const code = await addObject();
+      const code = await createObject();
 
       if (code) {
         toast("Object created");
@@ -22,12 +22,12 @@ export function AddObjectButton() {
       }
     } catch (error) {
       toast(`Failed to create object: ${error}`);
-      console.error("ERROR_dpBQWmlU handleAddObj error", error);
+      console.error("ERROR_dpBQWmlU handleCreateObject error", error);
     }
   }, [router]);
 
   return (
-    <Button onClick={handleAddObj}>
+    <Button onClick={handleCreateObject}>
       <Icon name="add" /> Add
     </Button>
   );
