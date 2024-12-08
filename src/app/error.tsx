@@ -19,7 +19,7 @@ export default function Error({
   return (
     <div>
       <H2>Something went wrong!</H2>
-      {error.message ? <P>"{error.message}"</P> : null}
+      {error.message ? <P>&quot;{error.message}&quot;</P> : null}
       <br />
       <Button
         onClick={
