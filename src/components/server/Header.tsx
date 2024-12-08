@@ -13,7 +13,7 @@ export async function Header() {
   const isSignedIn = !!session?.user?.id;
   const canCreateObject = await userHasOneOfPermissions({
     userId: session?.user?.id,
-    permissionNames: ["create_object"],
+    permissionNames: ["create_objects"],
   });
 
   const isAdmin = await userHasOneOfPermissions({

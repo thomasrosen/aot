@@ -16,7 +16,7 @@ export async function renameObject({
     const session = await auth();
     const isAllowed = await userHasOneOfPermissions({
       userId: session?.user?.id,
-      permissionNames: ["renamed_objects"],
+      permissionNames: ["rename_objects"],
     });
     if (!isAllowed) {
       throw new Error("Not allowed");

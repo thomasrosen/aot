@@ -35,7 +35,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function PublicStartPage() {
+export function AddToObjecthistoryFormForStartPage() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
