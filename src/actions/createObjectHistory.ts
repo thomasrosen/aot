@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -15,7 +16,13 @@ export async function createObjectHistory({
     longitude: number;
   };
   email: string;
-}) {
+}): Promise<true> {
+  // overwrite email with the signed in user's email
+  const session = await auth();
+  if (session?.user?.email) {
+    email = session.user.email;
+  }
+
   if (!code) {
     throw new Error("Missing code");
   }

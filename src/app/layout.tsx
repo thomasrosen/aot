@@ -2,6 +2,7 @@ import { MainFrame } from "@/components/MainFrame";
 import { Header } from "@/components/server/Header";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { Ubuntu } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
@@ -29,7 +30,9 @@ export default function RootLayout({
         <Suspense>
           <Header />
         </Suspense>
-        <MainFrame>{children}</MainFrame>
+        <MainFrame>
+          <SessionProvider>{children}</SessionProvider>
+        </MainFrame>
         <Toaster />
       </body>
     </html>

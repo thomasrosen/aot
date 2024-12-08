@@ -1,15 +1,26 @@
 import { auth } from "@/auth";
+import { userHasOneOfPermissions } from "@/lib/permissions";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 export async function listObjects() {
   const session = await auth();
-  if (!session) {
+  const userId = session?.user?.id;
+  if (!userId) {
     throw new Error("Not authenticated");
   }
+  console.log("session", session);
 
-  // todo also check for permissions
+  const isAllowed = await userHasOneOfPermissions({
+    userId,
+    permissionNames: ["view_objects"],
+  });
+
+  if (!isAllowed) {
+    // throw new Error("Not allowed");
+    return [];
+  }
 
   const objects = await prisma.object.findMany({
     orderBy: {

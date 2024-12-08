@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
+import { userHasOneOfPermissions } from "@/lib/permissions";
 import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -10,14 +11,21 @@ export async function renameObject({
 }: {
   code: string;
   name: string;
-}) {
+}): Promise<true> {
   try {
     const session = await auth();
-    if (!session) {
+    const userId = session?.user?.id;
+    if (!userId) {
       throw new Error("Not authenticated");
     }
 
-    // todo also check for permissions
+    const isAllowed = await userHasOneOfPermissions({
+      userId,
+      permissionNames: ["renamed_objects"],
+    });
+    if (!isAllowed) {
+      throw new Error("Not allowed");
+    }
 
     const result = await prisma.object.update({
       where: {
@@ -36,5 +44,5 @@ export async function renameObject({
     console.error("ERROR_SpnCPuN6", error);
   }
 
-  return false;
+  throw new Error("Failed to rename object");
 }

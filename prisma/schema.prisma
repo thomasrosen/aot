@@ -18,7 +18,7 @@ model User {
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
-  roles Role[]
+  roles UserRolePairing[]
 
   objectHistory ObjectHistory[]
 
@@ -103,6 +103,8 @@ model Object {
 
   history ObjectHistory[]
 
+  userRolePairings UserRolePairing[]
+
   @@map("object")
 }
 
@@ -138,15 +140,48 @@ model Location {
 
   History ObjectHistory[]
 
+  UserRolePairing UserRolePairing[]
+
   @@map("location")
 }
 
-model Role {
-  id   String @id @default(cuid())
-  name String @unique
+model UserRolePairing {
+  userId String
+  roleName String
 
-  users       User[]
-  permissions String[]
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  object_id String?
+  object    Object? @relation(fields: [object_id], references: [id], onDelete: Cascade)
+
+  location_id String?
+  location    Location? @relation(fields: [location_id], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleName])
+  @@unique([userId, roleName]) // Composite key for uniqueness
+  @@index([userId, roleName])
+  @@index([userId])
+  @@index([roleName])
+}
+
+model Role {
+  name String @id @unique
+
+  users       UserRolePairing[]
+  permissions Permission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  name String @id @unique
+
+  roles Role[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

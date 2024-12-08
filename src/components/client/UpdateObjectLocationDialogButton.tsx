@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,8 @@ const formSchema = z.object({
 export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,29 +93,32 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
             }}
           />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => {
-              console.log("field", field);
-              return (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Your Email Address"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    This is your public display name.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
+          {!userEmail ? (
+            // only show the email field if user is unknown. the email will be fetched from the session on the server
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => {
+                console.log("field", field);
+                return (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Your Email Address"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      This is your public display name.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          ) : null}
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
