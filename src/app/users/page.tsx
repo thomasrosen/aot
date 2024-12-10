@@ -41,7 +41,27 @@ export default async function UsersPage() {
   return (
     <>
       <H2>Users</H2>
-      <pre>{JSON.stringify(users, null, 2)}</pre>
+      <Table>
+        <TableCaption>A list of all users.</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Last Updated At</TableHead>
+            <TableHead>Roles</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {users.map(u => (
+            <TableRow key={`USER:${u.id}`}>
+              <TableCell>{u.id}</TableCell>
+              <TableCell>{u.email}</TableCell>
+              <TableCell>{u.updatedAt.toString()}</TableCell>
+              <TableCell>{u.userRolePairings.map((r : any) => r.role.name).join(', ')}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </>
   );
 }
