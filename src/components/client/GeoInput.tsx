@@ -371,7 +371,6 @@ export function GeoInput({
         <ErrorMessage error={errors?.longitude?.message} />
         <div className="bg-gray-800 rounded-md h-48 overflow-hidden">
           <MapInput
-            zoom={3}
             latitude={latitude}
             longitude={longitude}
             onClick={({

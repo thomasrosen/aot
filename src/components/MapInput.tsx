@@ -33,8 +33,8 @@ export function MapInput({
 }) {
   const [viewState, setViewState] = useState({
     latitude: latitude || 50,
-    longitude: longitude || 7,
-    zoom: zoom || 3,
+    longitude: longitude || 10,
+    zoom: zoom || 1,
   });
 
   const handleClick = useCallback(
@@ -55,7 +55,7 @@ export function MapInput({
       {...viewState}
       onMove={(e) => setViewState(e.viewState)}
       onClick={handleClick}
-      mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=o3zELAXbKePggwdGFWww"
+      mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=o3zELAXbKePggwdGFWww" // TODO how can we hide the api key?
       className={cn("h-full w-full", className)}
       cursor="pointer"
     >
