@@ -12,19 +12,9 @@ import {
 } from "@/components/ui/table";
 import { userHasOneOfPermissions } from "@/lib/permissions";
 import { prisma } from "@/prisma";
-import { User } from "@prisma/client";
+import { UserFull } from "@/types";
 
-type UserWithRolePairings = User & {
-  userRolePairings: any[];
-};
-
-const UserRow = ({
-  key,
-  user,
-}: {
-  key: string;
-  user: UserWithRolePairings;
-}) => {
+const UserRow = ({ key, user }: { key: string; user: UserFull }) => {
   const { id, email, updatedAt, userRolePairings } = user;
 
   return (
