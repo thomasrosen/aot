@@ -17,6 +17,7 @@ export async function ObjectViewer({
     userId: session?.user?.id,
     permissionNames: ["rename_objects"],
   });
+
   const canViewObject = await userHasOneOfPermissions({
     userId: session?.user?.id,
     permissionNames: ["view_objects"],
@@ -40,7 +41,7 @@ export async function ObjectViewer({
         {code}
       </H3>
       <div className="flex gap-2">
-        <UpdateObjectLocationDialogButton code={code} />
+        <UpdateObjectLocationDialogButton object={object} />
 
         {canRenameObject ? (
           <RenameObjectDialogButton code={code} name={name || ""} />
