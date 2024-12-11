@@ -1,7 +1,10 @@
 "use client";
 
 import { createObjectHistory } from "@/actions/createObjectHistory";
+import { AutogrowingTextarea } from "@/components/AutogrowingTextarea";
 import { DialogWrapper } from "@/components/DialogWrapper";
+import { Icon } from "@/components/Icon";
+import { MapInput } from "@/components/MapInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -20,9 +24,6 @@ import { useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { MapInput } from "../MapInput";
-import { Icon } from "../Icon";
-import { Textarea } from "../ui/textarea";
 
 const validationSchema = z.object({
   location: z.object({
@@ -82,7 +83,7 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
     reset,
     setValue,
     watch,
-    formState: { errors, isDirty, isValid },
+    formState: { isDirty, isValid },
   } = form;
 
   const isFetching = isFetchingAddress || isFetchingCoordinates;
@@ -280,10 +281,23 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
             control={control}
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel>Address</FormLabel>
+                <div className="flex gap-2 items-center justify-between">
+                  <FormLabel>Address</FormLabel>
+                  {latitude && longitude ? (
+                    <Button
+                      disabled={isFetching}
+                      onClick={handleSearchByCoords}
+                      variant="link"
+                      size="sm"
+                      className="h-0 p-0"
+                    >
+                      Fill in from coordinates
+                    </Button>
+                  ) : null}
+                </div>
                 <div className="flex space-x-2">
                   <FormControl>
-                    <Textarea {...field} disabled={isFetching} />
+                    <AutogrowingTextarea {...field} disabled={isFetching} />
                   </FormControl>
                   <Button
                     disabled={isFetching}
@@ -295,82 +309,75 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
                   </Button>
                 </div>
                 <FormMessage />
-                <Button
-                  disabled={isFetching}
-                  onClick={handleSearchByCoords}
-                  variant="link"
-                  size="sm"
-                  className="h-auto text-muted-foreground"
-                >
-                  Fill in from coordinates
-                </Button>
               </FormItem>
             )}
           />
 
-          <FormItem>
-            <FormLabel>Coordinates</FormLabel>
-            <div className="flex gap-2">
-              <FormField
-                name="location.latitude"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <Input type="number" placeholder="??.???" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <div>
+            <Label>Coordinates</Label>
+            <p className="text-sm text-muted-foreground">
+              Click on the map to fill in location.
+            </p>
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                {/* <Button
+                  disabled={isFetching}
+                  onClick={handleFetchCoordinates}
+                  size="icon"
+                  className="shrink-0"
+                >
+                  {isFetchingCoordinates ? (
+                    <Icon name="hourglass" className="animate-spin" />
+                  ) : (
+                    <Icon name="my_location" />
+                  )}
+                </Button> */}
 
-              <FormField
-                disabled={isFetching}
-                name="location.longitude"
-                control={control}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <Input type="number" placeholder="??.???" {...field} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                <FormItem className="flex-1">
+                  <FormLabel className="hidden">Latitude</FormLabel>
+                  <FormField
+                    disabled={isFetching}
+                    name="location.latitude"
+                    control={control}
+                    render={({ field }) => (
+                      <Input type="number" placeholder="??.???" {...field} />
+                    )}
+                  />
+                  <FormMessage />
+                </FormItem>
 
-              <Button
-                disabled={isFetching}
-                onClick={handleFetchCoordinates}
-                size="icon"
-                className="shrink-0"
-              >
-                {isFetchingCoordinates ? (
-                  <Icon name="hourglass" className="animate-spin" />
-                ) : (
-                  <Icon name="my_location" />
-                )}
-              </Button>
+                <FormItem className="flex-1">
+                  <FormLabel className="hidden">Longitude</FormLabel>
+                  <FormField
+                    disabled={isFetching}
+                    name="location.longitude"
+                    control={control}
+                    render={({ field }) => (
+                      <Input type="number" placeholder="??.???" {...field} />
+                    )}
+                  />
+                  <FormMessage />
+                </FormItem>
+              </div>
+              <div className="bg-gray-800 rounded-md h-48 overflow-hidden">
+                <MapInput
+                  latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
+                  longitude={
+                    longitude >= -180 && longitude <= 180 ? longitude : 0
+                  }
+                  onClick={(values) => {
+                    Object.keys(values).forEach((k) =>
+                      setValue(`location.${k}`, parseFloat(values[k]), {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                        shouldTouch: true,
+                      })
+                    );
+                  }}
+                />
+              </div>
             </div>
-          </FormItem>
-
-          <FormItem>
-            <FormDescription>
-              Click on the map to fill in location
-            </FormDescription>
-            <div className="bg-gray-800 rounded-md h-48 overflow-hidden">
-              <MapInput
-                latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
-                longitude={
-                  longitude >= -180 && longitude <= 180 ? longitude : 0
-                }
-                onClick={(values) => {
-                  Object.keys(values).forEach((k) =>
-                    setValue(`location.${k}`, values[k], {
-                      shouldValidate: true,
-                      shouldDirty: true,
-                      shouldTouch: true,
-                    })
-                  );
-                }}
-              />
-            </div>
-          </FormItem>
+          </div>
 
           {!userEmail && (
             <FormField
