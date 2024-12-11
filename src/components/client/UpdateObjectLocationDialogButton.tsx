@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -59,22 +59,24 @@ const validationSchema = z.object({
     .optional(),
 });
 
-export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
+export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
-  const userEmail = session?.user?.email;
+  const userEmail = session?.user?.email || "";
 
   const [isFetchingAddress, setFetchingAddress] = useState(false);
-  const [isFetchingCoordinates, setFetchingCoordinates] = useState(false);
-
-  const code = object?.code;
 
   const form = useForm({
-    defaultValues: useMemo(() => {
-      return object?.history[0];
-    }, [object]),
-    mode: "all",
+    defaultValues: {
+      location: {
+        address: "",
+        latitude: 0,
+        longitude: 0,
+      },
+      email: "",
+    },
+    mode: "onSubmit",
     resolver: zodResolver(validationSchema),
   });
 
@@ -83,11 +85,16 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
     reset,
     setValue,
     watch,
-    formState: { isDirty, isValid },
+    formState: { errors, isDirty, isValid },
   } = form;
 
-  const isFetching = isFetchingAddress || isFetchingCoordinates;
-  const isSubmittable = !!isDirty && !!isValid && !isFetching;
+  console.log("errors", errors);
+
+  console.log("isDirty", isDirty);
+  console.log("isValid", isValid);
+  console.log("isFetchingAddress", isFetchingAddress);
+
+  const isSubmittable = true; // !!isDirty && !!isValid && !isFetchingAddress;
 
   const [address, latitude, longitude] = watch([
     "location.address",
@@ -96,9 +103,11 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
   ]);
 
   const onSubmit = useCallback(
-    async (values: any) => {
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
+    async (values: z.infer<typeof validationSchema>) => {
+      if (!code) {
+        toast.error("ERROR_2N2ZQ3a7 Invalid object code");
+        return;
+      }
 
       const updatedLocation = await createObjectHistory({
         ...values,
@@ -117,51 +126,8 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
     [code, reset, router]
   );
 
-  // Used to handle current coordinates of device
-  const handleFetchCoordinates = async (e: any) => {
-    e.preventDefault();
-    setFetchingCoordinates(true);
-
-    if (!navigator.geolocation) {
-      setFetchingCoordinates(false);
-      return toast.error(
-        "ERROR_LyJJy3qy Geolocation is not supported by this browser."
-      );
-    }
-
-    const permission = await navigator.permissions.query({
-      name: "geolocation",
-    });
-
-    if (permission.state === "denied") {
-      setFetchingCoordinates(false);
-      return toast.error(
-        "ERROR_puxgrgGK Geolocation permission denied. Please enable it in your browser settings."
-      );
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => {
-        setValue(`location.latitude`, latitude, {
-          shouldValidate: true,
-          shouldDirty: true,
-          shouldTouch: true,
-        });
-
-        setValue(`location.longitude`, longitude, {
-          shouldValidate: true,
-          shouldDirty: true,
-          shouldTouch: true,
-        });
-      }
-    );
-
-    setFetchingCoordinates(false);
-  };
-
   // Searches an address and sets coordinates accordingly
-  const handleSearchByAddress = async (e: any) => {
-    e.preventDefault();
+  const handleSearchByAddress = async () => {
     setFetchingAddress(true);
 
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
@@ -214,8 +180,7 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
   };
 
   // Searches coordinates and sets address accordingly
-  const handleSearchByCoords = async (e: any) => {
-    e.preventDefault();
+  const handleSearchByCoords = async () => {
     setFetchingAddress(true);
 
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${encodeURIComponent(
@@ -262,9 +227,6 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
   // Closes the dialogue modal
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);
 
-  // Safety if there's no object passed
-  if (!object) return null;
-
   return (
     <DialogWrapper
       open={open}
@@ -285,7 +247,8 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
                   <FormLabel>Address</FormLabel>
                   {latitude && longitude ? (
                     <Button
-                      disabled={isFetching}
+                      type="button"
+                      disabled={isFetchingAddress}
                       onClick={handleSearchByCoords}
                       variant="link"
                       size="sm"
@@ -297,10 +260,21 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
                 </div>
                 <div className="flex space-x-2">
                   <FormControl>
-                    <AutogrowingTextarea {...field} disabled={isFetching} />
+                    <AutogrowingTextarea
+                      {...field}
+                      placeholder="Housenumber, Street, City, Country"
+                      disabled={isFetchingAddress}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") {
+                          event.preventDefault();
+                          handleSearchByAddress();
+                        }
+                      }}
+                    />
                   </FormControl>
                   <Button
-                    disabled={isFetching}
+                    type="button"
+                    disabled={isFetchingAddress}
                     onClick={handleSearchByAddress}
                     size="icon"
                     className="shrink-0"
@@ -313,84 +287,93 @@ export function UpdateObjectLocationDialogButton({ object }: { object: any }) {
             )}
           />
 
-          <div>
+          <div className="flex flex-col gap-2">
             <Label>Coordinates</Label>
             <p className="text-sm text-muted-foreground">
               Click on the map to fill in location.
             </p>
-            <div className="flex flex-col gap-2">
-              <div className="flex gap-2">
-                {/* <Button
-                  disabled={isFetching}
-                  onClick={handleFetchCoordinates}
-                  size="icon"
-                  className="shrink-0"
-                >
-                  {isFetchingCoordinates ? (
-                    <Icon name="hourglass" className="animate-spin" />
-                  ) : (
-                    <Icon name="my_location" />
-                  )}
-                </Button> */}
+            <div className="flex gap-2">
+              <FormField
+                disabled={isFetchingAddress}
+                name="location.latitude"
+                control={control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="??.???"
+                        {...field}
+                        value={latitude || ""}
+                        title="Latitude"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormItem className="flex-1">
-                  <FormLabel className="hidden">Latitude</FormLabel>
-                  <FormField
-                    disabled={isFetching}
-                    name="location.latitude"
-                    control={control}
-                    render={({ field }) => (
-                      <Input type="number" placeholder="??.???" {...field} />
-                    )}
-                  />
-                  <FormMessage />
-                </FormItem>
-
-                <FormItem className="flex-1">
-                  <FormLabel className="hidden">Longitude</FormLabel>
-                  <FormField
-                    disabled={isFetching}
-                    name="location.longitude"
-                    control={control}
-                    render={({ field }) => (
-                      <Input type="number" placeholder="??.???" {...field} />
-                    )}
-                  />
-                  <FormMessage />
-                </FormItem>
-              </div>
-              <div className="bg-gray-800 rounded-md h-48 overflow-hidden">
-                <MapInput
-                  latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
-                  longitude={
-                    longitude >= -180 && longitude <= 180 ? longitude : 0
-                  }
-                  onClick={(values) => {
-                    Object.keys(values).forEach((k) =>
-                      setValue(`location.${k}`, parseFloat(values[k]), {
-                        shouldValidate: true,
-                        shouldDirty: true,
-                        shouldTouch: true,
-                      })
-                    );
-                  }}
-                />
-              </div>
+              <FormField
+                disabled={isFetchingAddress}
+                name="location.longitude"
+                control={control}
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        placeholder="??.???"
+                        {...field}
+                        value={longitude || ""}
+                        title="Longitude"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="rounded-md h-48 overflow-hidden">
+              <MapInput
+                latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
+                longitude={
+                  longitude >= -180 && longitude <= 180 ? longitude : 0
+                }
+                onClick={({ longitude, latitude }) => {
+                  setValue("location.longitude", longitude, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
+                  setValue("location.latitude", latitude, {
+                    shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
+                }}
+              />
             </div>
           </div>
 
           {!userEmail && (
+            // only show the email field if user is unknown. the email will be fetched from the session on the server
             <FormField
               name="email"
               control={control}
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Your Email</FormLabel>
                   <FormControl>
-                    <Input type="email" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="name@email.com"
+                      {...field}
+                    />
                   </FormControl>
+                  <FormMessage />
                   <FormDescription>
-                    This is your public display name.
+                    This email will be used to moderate your entry. It will not
+                    be public.
                   </FormDescription>
                 </FormItem>
               )}

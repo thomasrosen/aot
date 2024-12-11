@@ -41,7 +41,7 @@ export async function ObjectViewer({
         {code}
       </H3>
       <div className="flex gap-2">
-        <UpdateObjectLocationDialogButton object={object} />
+        <UpdateObjectLocationDialogButton code={code} />
 
         {canRenameObject ? (
           <RenameObjectDialogButton code={code} name={name || ""} />
