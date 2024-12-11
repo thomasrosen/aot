@@ -78,7 +78,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
       description="Update where the object is currently located."
       className="space-y-2"
     >
-      <pre>{JSON.stringify(errors, null, 2)}</pre>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

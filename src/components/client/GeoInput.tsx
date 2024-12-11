@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/Icon";
+import { MapInput } from "@/components/MapInput";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -368,17 +369,22 @@ export function GeoInput({
         </div>
         <ErrorMessage error={errors?.latitude?.message} />
         <ErrorMessage error={errors?.longitude?.message} />
-        <div className="bg-gray-800 p-4 rounded-md h-48">
-          <pre className="text-xs text-white whitespace-pre-wrap">
-            TODO: show and choose location on Map
-            <br />
-            <br />
-            Latitude: {latitude}
-            <br />
-            Longitude: {longitude}
-            <br />
-            Address: {address}
-          </pre>
+        <div className="bg-gray-800 rounded-md h-48 overflow-hidden">
+          <MapInput
+            zoom={3}
+            latitude={latitude}
+            longitude={longitude}
+            onClick={({
+              latitude,
+              longitude,
+            }: {
+              latitude: number;
+              longitude: number;
+            }) => {
+              setLatitude(latitude);
+              setLongitude(longitude);
+            }}
+          />
         </div>
       </FakeFormItem>
     </div>
