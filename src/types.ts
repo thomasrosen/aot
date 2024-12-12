@@ -1,5 +1,11 @@
-import { User, UserRolePairing } from "@prisma/client";
+import type PrismaTypes from "@prisma/client";
 
-export type UserFull = User & {
-  userRolePairings: UserRolePairing[];
+export type ObjectFull = Partial<
+  PrismaTypes.Object & {
+    history: Array<Partial<PrismaTypes.ObjectHistory>>;
+  }
+>;
+
+export type UserFull = PrismaTypes.User & {
+  userRolePairings: PrismaTypes.UserRolePairing[];
 };

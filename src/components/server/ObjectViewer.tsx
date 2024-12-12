@@ -17,6 +17,7 @@ export async function ObjectViewer({
     userId: session?.user?.id,
     permissionNames: ["rename_objects"],
   });
+
   const canViewObject = await userHasOneOfPermissions({
     userId: session?.user?.id,
     permissionNames: ["view_objects"],
