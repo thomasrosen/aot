@@ -1,3 +1,4 @@
+import { giveUserRole } from "@/lib/permissions";
 import { prisma } from "@/prisma";
 
 export async function GET() {
@@ -64,29 +65,9 @@ export async function GET() {
     });
 
     // connect admin user to admin role
-    await prisma.user.update({
-      where: { email: adminEmail },
-      data: {
-        userRolePairings: {
-          connectOrCreate: [
-            {
-              where: {
-                userId_roleName: {
-                  userId: adminUser.id,
-                  roleName: adminRoleName,
-                },
-              },
-              create: {
-                role: {
-                  connect: {
-                    name: adminRoleName,
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
+    await giveUserRole({
+      userId: adminUser.id,
+      roleName: adminRoleName,
     });
 
     return new Response("GET request received", { status: 200 });

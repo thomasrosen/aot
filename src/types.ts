@@ -5,3 +5,7 @@ export type ObjectFull = Partial<
     history: Array<Partial<PrismaTypes.ObjectHistory>>;
   }
 >;
+
+export type UserFull = PrismaTypes.User & {
+  userRolePairings: PrismaTypes.UserRolePairing[];
+};
