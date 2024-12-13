@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { ObjectCard } from "@/components/ObjectCard";
 import { SearchInput } from "@/components/SearchInput";
-import { H2 } from "@/components/Typography";
+import { SubHeader } from "@/components/SubHeader";
 import { CreateObjectButton } from "@/components/client/CreateObjectButton";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
@@ -70,10 +70,18 @@ export default async function ObjectsPage() {
 
   return (
     <>
-      <H2>Objects</H2>
-      {canCreateObject ? <CreateObjectButton /> : null}
+      <SubHeader
+        title="Objects"
+        breadcrumb="Objects"
+        actions={
+          <>
+            <SearchInput />
+            {canCreateObject ? <CreateObjectButton /> : null}
+          </>
+        }
+      />
+
       <div className="flex flex-col gap-4">
-        <SearchInput />
         {Array.isArray(objects)
           ? objects.map((object) => (
               <Link key={object.code} href={`/objects/${object.code}`}>

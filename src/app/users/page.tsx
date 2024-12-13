@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { H2 } from "@/components/Typography";
+import { SubHeader } from "@/components/SubHeader";
 import { DataTableUsers } from "@/components/client/DataTableUsers";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
@@ -33,7 +33,7 @@ export default async function UsersPage() {
 
   return (
     <>
-      <H2>Users</H2>
+      <SubHeader title="Users" breadcrumb="Users" />
       <DataTableUsers data={users} />
     </>
   );

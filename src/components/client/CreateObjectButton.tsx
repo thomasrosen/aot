@@ -28,7 +28,8 @@ export function CreateObjectButton() {
 
   return (
     <Button onClick={handleCreateObject}>
-      <Icon name="add" /> Add
+      <Icon name="add" />
+      Add
     </Button>
   );
 }

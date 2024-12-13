@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { H2 } from "@/components/Typography";
+import { SubHeader } from "@/components/SubHeader";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 
@@ -39,7 +39,7 @@ export default async function PermissionsPage() {
 
   return (
     <>
-      <H2>Permissions</H2>
+      <SubHeader title="Permissions" breadcrumb="Permissions" />
       <pre>{JSON.stringify(permissions, null, 2)}</pre>
     </>
   );

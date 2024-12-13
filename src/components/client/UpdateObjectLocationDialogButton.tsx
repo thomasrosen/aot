@@ -42,15 +42,35 @@ const validationSchema = z.object({
         message: "Latitude is required.",
         required_error: "Latitude is required.",
       })
-      .min(-90)
-      .max(90),
+      .min(-90, {
+        message: "Latitude must be at least -90.",
+      })
+      .max(90, {
+        message: "Latitude must be at most 90.",
+      })
+      .refine((value) => value !== null && value !== undefined, {
+        message: "Latitude cannot be null or undefined.",
+      })
+      .refine((value) => value !== 0, {
+        message: "Latitude cannot be 0.",
+      }),
     longitude: z
       .number({
         message: "Longitude is required.",
         required_error: "Longitude is required.",
       })
-      .min(-180)
-      .max(180),
+      .min(-180, {
+        message: "Longitude must be at least -180.",
+      })
+      .max(180, {
+        message: "Longitude must be at most 180.",
+      })
+      .refine((value) => value !== null && value !== undefined, {
+        message: "Longitude cannot be null or undefined.",
+      })
+      .refine((value) => value !== 0, {
+        message: "Longitude cannot be 0.",
+      }),
   }),
   email: z
     .string()
@@ -63,7 +83,13 @@ const validationSchema = z.object({
 
 type ValidationSchemaType = z.infer<typeof validationSchema>;
 
-export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
+export function UpdateObjectLocationDialogButton({
+  trigger,
+  code,
+}: {
+  trigger: React.ReactNode;
+  code: string;
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { data: session } = useSession();
@@ -89,24 +115,18 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
     formState: { errors, isDirty, isValid },
   } = form;
 
-  const isSubmittable = !!isDirty && !!isValid && !isFetchingAddress;
-  console.log("errors", errors);
-  console.log("isDirty", !!isDirty);
-  console.log("isValid", !!isValid);
-  console.log("isFetchingAddress", !isFetchingAddress);
-  console.log("isSubmittable", isSubmittable);
+  const isSubmittable = !isFetchingAddress;
 
   const setValue = useCallback(
     (updateFunction: (data: ValidationSchemaType) => ValidationSchemaType) => {
       const currentValues = form.getValues();
       const newValues = updateFunction(currentValues);
-      form.reset(
-        { ...form.getValues(), ...newValues },
-        {
-          keepDirtyValues: true,
-          keepTouched: true,
-        }
-      );
+      const combinedValues = { ...currentValues, ...newValues };
+      form.reset(combinedValues, {
+        keepDirtyValues: true,
+        keepIsValid: true,
+        keepTouched: true,
+      });
     },
     [form.reset]
   );
@@ -162,25 +182,26 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
       }
 
       const { lat, lon, display_name, boundingbox } = data[0];
+      console.log("display_name", display_name);
       console.log("boundingbox", boundingbox);
 
-      if (mapRef.current) {
-        mapRef.current.getMap().fitBounds(
-          [
-            [boundingbox[2], boundingbox[0]], // southwestern corner of the bounds
-            [boundingbox[3], boundingbox[1]], // northeastern corner of the bounds
-          ],
-          {
-            padding: { top: 10, bottom: 10, left: 10, right: 10 },
-          }
-        );
-      }
+      // if (mapRef.current) {
+      //   mapRef.current.getMap().fitBounds(
+      //     [
+      //       [boundingbox[2], boundingbox[0]], // southwestern corner of the bounds
+      //       [boundingbox[3], boundingbox[1]], // northeastern corner of the bounds
+      //     ],
+      //     {
+      //       padding: { top: 10, bottom: 10, left: 10, right: 10 },
+      //     }
+      //   );
+      // }
 
       setValue(() => ({
         location: {
           address: display_name,
-          latitude: Number(lat),
-          longitude: Number(lon),
+          latitude: parseFloat(lat),
+          longitude: parseFloat(lon),
         },
       }));
     } catch (error) {
@@ -258,7 +279,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button>Update Location</Button>}
+      trigger={trigger || <Button>Update Location</Button>}
       title="Update Location"
       description="Update where the object is currently located."
       className="space-y-2"
@@ -332,6 +353,17 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                         type="number"
                         placeholder="??.???"
                         {...field}
+                        onChange={(event) => {
+                          const value = parseFloat(event.target.value);
+                          if (value >= -90 && value <= 90) {
+                            setValue((values) => ({
+                              location: {
+                                ...values.location,
+                                latitude: value,
+                              },
+                            }));
+                          }
+                        }}
                         value={latitude || ""}
                         title="Latitude"
                       />
@@ -351,6 +383,17 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                         type="number"
                         placeholder="??.???"
                         {...field}
+                        onChange={(event) => {
+                          const value = parseFloat(event.target.value);
+                          if (value >= -180 && value <= 180) {
+                            setValue((values) => ({
+                              location: {
+                                ...values.location,
+                                longitude: value,
+                              },
+                            }));
+                          }
+                        }}
                         value={longitude || ""}
                         title="Longitude"
                       />
@@ -404,9 +447,11 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
           ) : null}
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
+              <Icon name="cancel" />
               Cancel
             </Button>
             <Button type="submit" disabled={!isSubmittable}>
+              <Icon name="save" />
               Save Location
             </Button>
           </div>

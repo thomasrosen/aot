@@ -2,6 +2,7 @@
 
 import { renameObject } from "@/actions/renameObject";
 import { DialogWrapper } from "@/components/DialogWrapper";
+import { Icon } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,9 +33,11 @@ const formSchema = z.object({
 });
 
 export function RenameObjectDialogButton({
+  trigger,
   code,
   name,
 }: {
+  trigger: React.ReactNode;
   code: string;
   name: string;
 }) {
@@ -80,7 +83,7 @@ export function RenameObjectDialogButton({
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      trigger={<Button>Change Name</Button>}
+      trigger={trigger || <Button>Change Name</Button>}
       title="Rename"
       description="Change the name of the object."
     >
@@ -102,9 +105,13 @@ export function RenameObjectDialogButton({
           />
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
+              <Icon name="cancel" />
               Cancel
             </Button>
-            <Button type="submit">Save Name</Button>
+            <Button type="submit">
+              <Icon name="save" />
+              Save Name
+            </Button>
           </div>
         </form>
       </Form>

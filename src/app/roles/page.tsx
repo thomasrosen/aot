@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { H2 } from "@/components/Typography";
+import { SubHeader } from "@/components/SubHeader";
 import { DataTableRoles } from "@/components/client/DataTableRoles";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
@@ -36,7 +36,7 @@ export default async function RolesPage() {
 
   return (
     <>
-      <H2>Roles</H2>
+      <SubHeader title="Roles" breadcrumb="Roles" />
       <DataTableRoles data={roles} />
     </>
   );
