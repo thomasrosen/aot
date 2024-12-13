@@ -1,4 +1,5 @@
 import { MainFrame } from "@/components/MainFrame";
+import { VerticalFade } from "@/components/VerticalFade";
 import { ThemeProvider } from "@/components/client/ThemeProvider";
 import { Header } from "@/components/server/Header";
 import { Toaster } from "@/components/ui/sonner";
@@ -34,8 +35,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <VerticalFade direction="top" className="top-[64px] fixed" />
             <Header />
             <MainFrame>{children}</MainFrame>
+            <VerticalFade direction="bottom" className="fixed" />
             <Toaster />
           </ThemeProvider>
         </SessionProvider>

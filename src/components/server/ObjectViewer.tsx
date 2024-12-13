@@ -9,6 +9,8 @@ import { object_code_prefix } from "@/constants";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { ObjectFull } from "@/types";
 import { Session } from "next-auth";
+import { H3 } from "../Typography";
+import { VerticalFade } from "../VerticalFade";
 import { ObjectMap } from "../client/ObjectMap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
@@ -40,7 +42,9 @@ export async function ObjectViewer({
   }
 
   const list = (
-    <div className="overflow-auto">
+    <div className="overflow-auto relative">
+      <VerticalFade direction="top" />
+      <H3 className="mt-8 mb-4">History</H3>
       <div className="flex flex-col gap-4 relative">
         <div className="absolute bg-accent w-1 h-full left-1/2 -ml-0.5" />
         {(object?.history || []).map((history) => (
@@ -51,7 +55,8 @@ export async function ObjectViewer({
           />
         ))}
       </div>
-      <div className="pb-48"></div>
+      <div className="pb-48" />
+      <VerticalFade direction="bottom" />
     </div>
   );
   const map = (
@@ -104,12 +109,12 @@ export async function ObjectViewer({
 
       {canViewObject ? (
         <>
-          <div className="block lg:hidden h-full overflow-auto">
+          <div className="block lg:hidden h-full">
             <Tabs
               defaultValue="list"
               className="grid grid-rows-[auto_minmax(0,1fr)] h-full"
             >
-              <div className="sticky top-0 z-10 bg-background pb-2">
+              <div>
                 <TabsList>
                   <TabsTrigger value="list" className="gap-2">
                     <Icon name="list" />
@@ -121,12 +126,8 @@ export async function ObjectViewer({
                   </TabsTrigger>
                 </TabsList>
               </div>
-              <TabsContent className="mt-0" value="list">
-                {list}
-              </TabsContent>
-              <TabsContent className="mt-0" value="map">
-                {map}
-              </TabsContent>
+              <TabsContent value="list">{list}</TabsContent>
+              <TabsContent value="map">{map}</TabsContent>
             </Tabs>
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-4">

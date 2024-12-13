@@ -71,10 +71,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-.iconframe:before {
-  content: attr(data-name);
-  font-family: var(--material-symbols-font);
-  color: inherit;
-  font-size: inherit;
-}
