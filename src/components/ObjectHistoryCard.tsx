@@ -9,14 +9,20 @@ import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
 import { ObjectHistoryFull } from "@/types";
 
-export function ObjectHistoryCard({ data }: { data: ObjectHistoryFull }) {
+export function ObjectHistoryCard({
+  data,
+  className,
+}: {
+  data: ObjectHistoryFull;
+  className?: string;
+}) {
   const isTrusted = userRolePairingsIncludesPermissions({
     userRolePairings: data.user?.userRolePairings,
     permissionNames: ["trusted", "admin"],
   });
   const isVerified = !!data.verifiedHistoryEntry;
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>
           {data.location?.address

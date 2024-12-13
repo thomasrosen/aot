@@ -41,11 +41,17 @@ export async function ObjectViewer({
 
   const list = (
     <div className="overflow-auto">
-      <div className="flex flex-col gap-4 pb-48">
+      <div className="flex flex-col gap-4 relative">
+        <div className="absolute bg-accent w-1 h-full left-1/2 -ml-0.5" />
         {(object?.history || []).map((history) => (
-          <ObjectHistoryCard key={JSON.stringify(history)} data={history} />
+          <ObjectHistoryCard
+            key={JSON.stringify(history)}
+            data={history}
+            className="z-10"
+          />
         ))}
       </div>
+      <div className="pb-48"></div>
     </div>
   );
   const map = (
