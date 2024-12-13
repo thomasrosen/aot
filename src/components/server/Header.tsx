@@ -16,7 +16,7 @@ export async function Header() {
   });
 
   return (
-    <header className="sticky top-0 bg-background text-foreground border-b flex h-16 justify-between items-center px-4 gap-4">
+    <header className="sticky top-0 bg-background text-foreground border-b flex h-16 justify-between items-center px-4 gap-4 z-20">
       <Link href="/" className="shrink-0">
         <H1 className="text-lg lg:text-2xl">Inventory</H1>
       </Link>

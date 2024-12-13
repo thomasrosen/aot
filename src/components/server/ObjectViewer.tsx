@@ -51,7 +51,7 @@ export async function ObjectViewer({
           <ObjectHistoryCard
             key={JSON.stringify(history)}
             data={history}
-            className="z-10"
+            className="z-1"
           />
         ))}
       </div>
@@ -66,7 +66,7 @@ export async function ObjectViewer({
   );
 
   return (
-    <div className="absolute top-[64px] bottom-0 left-0 right-0 overflow-auto grid grid-rows-[auto_minmax(0,1fr)] p-8 pt-6 pb-0">
+    <div className="lg:absolute lg:top-[64px] lg:bottom-0 lg:left-0 lg:right-0 lg:overflow-auto lg:grid lg:grid-rows-[auto_minmax(0,1fr)] lg:p-8 lg:pt-6 lg:pb-0">
       <SubHeader
         className="relative top-0"
         breadcrumb={`${object_code_prefix}${code}`}
@@ -109,10 +109,10 @@ export async function ObjectViewer({
 
       {canViewObject ? (
         <>
-          <div className="block lg:hidden h-full">
+          <div className="block lg:hidden lg:h-full">
             <Tabs
               defaultValue="list"
-              className="grid grid-rows-[auto_minmax(0,1fr)] h-full"
+              // className="grid grid-rows-[auto_minmax(0,1fr)] h-full"
             >
               <div>
                 <TabsList>

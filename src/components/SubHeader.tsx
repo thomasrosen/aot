@@ -16,7 +16,8 @@ export function SubHeader({
   return (
     <div
       className={cn(
-        "sticky top-[64px] bg-background text-foreground flex flex-col gap-4 py-6 -mt-6",
+        // "sticky top-[64px]",
+        "bg-background text-foreground flex flex-col gap-4 py-6 -mt-6",
         className
       )}
     >
