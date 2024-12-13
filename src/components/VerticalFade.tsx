@@ -30,13 +30,27 @@ export function VerticalFade({
       <div
         className={cn(
           "pointer-events-none",
-          "sticky z-20 w-full",
+          "sticky z-2 w-full",
           direction === "top" ? "top-0 -mb-8" : "bottom-0 -mt-8",
           className
         )}
       >
-        <OneFade className="[--fade:1px]" direction={direction} />
-        <OneFade className="[--fade:2px]" direction={direction} />
+        <OneFade
+          className="[--fade:1px][--fade-background:transparent]"
+          direction={direction}
+        />
+        <OneFade
+          className="[--fade:1px][--fade-background:transparent]"
+          direction={direction}
+        />
+        <OneFade
+          className="[--fade:2px][--fade-background:transparent]"
+          direction={direction}
+        />
+        <OneFade
+          className="[--fade:2px][--fade-background:transparent]"
+          direction={direction}
+        />
         <OneFade className="[--fade:3px]" direction={direction} />
       </div>
 
@@ -52,9 +66,8 @@ export function VerticalFade({
               user-select: none;
               width: 100%;
               left: 0;
-              z-index: 20;
-              -webkit-backdrop-filter: blur(var(--fade, 2px));
-              backdrop-filter: blur(var(--fade, 2px));
+              -webkit-backdrop-filter: blur(var(--fade, 1px));
+              backdrop-filter: blur(var(--fade, 1px));
               will-change: transform;
             }
             .verticalFade.top {
