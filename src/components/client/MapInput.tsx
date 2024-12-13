@@ -20,6 +20,7 @@ export function MapInput({
   zoom,
   onClick,
   className,
+  children,
 }: {
   ref?: LegacyRef<MapRef>;
   longitude?: number;
@@ -33,6 +34,7 @@ export function MapInput({
     latitude: number;
   }) => void;
   className?: string;
+  children?: React.ReactNode;
 }) {
   const [viewState, setViewState] = useState({
     latitude: latitude || 50,
@@ -61,14 +63,15 @@ export function MapInput({
       onClick={handleClick}
       mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=o3zELAXbKePggwdGFWww" // TODO how can we hide the api key?
       className={cn("h-full w-full", className)}
-      cursor="pointer"
+      // cursor="pointer"
     >
       <FullscreenControl position="top-left" />
       <NavigationControl />
       <GeolocateControl />
       {longitude && latitude ? (
-        <Marker longitude={longitude} latitude={latitude} color="red" />
+        <Marker longitude={longitude} latitude={latitude} color="black" />
       ) : null}
+      {children}
     </Map>
   );
 }
