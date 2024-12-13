@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { H2 } from "@/components/Typography";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 
 export default async function PermissionsPage() {

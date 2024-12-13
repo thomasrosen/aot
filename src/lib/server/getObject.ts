@@ -31,6 +31,20 @@ export async function getObject({
           user: {
             select: {
               email: true,
+              userRolePairings: {
+                select: {
+                  roleName: true,
+                  role: {
+                    select: {
+                      permissions: {
+                        select: {
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
           verifiedHistoryEntry: true,

@@ -1,6 +1,9 @@
 import { auth } from "@/auth";
+import { ObjectCard } from "@/components/ObjectCard";
+import { SearchInput } from "@/components/SearchInput";
 import { H2 } from "@/components/Typography";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { CreateObjectButton } from "@/components/client/CreateObjectButton";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 import Link from "next/link";
 
@@ -13,6 +16,11 @@ export default async function ObjectsPage() {
   if (!isAllowed) {
     throw new Error("Not allowed");
   }
+
+  const canCreateObject = await userHasOneOfPermissions({
+    userId: session?.user?.id,
+    permissionNames: ["create_objects"],
+  });
 
   const objects = await prisma.object.findMany({
     select: {
@@ -36,6 +44,19 @@ export default async function ObjectsPage() {
           user: {
             select: {
               email: true,
+              userRolePairings: {
+                select: {
+                  role: {
+                    select: {
+                      permissions: {
+                        select: {
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
           verifiedHistoryEntry: true,
@@ -50,17 +71,17 @@ export default async function ObjectsPage() {
   return (
     <>
       <H2>Objects</H2>
-      {Array.isArray(objects)
-        ? objects.map((object) => (
-            <Link
-              key={object.code}
-              href={`/objects/${object.code}`}
-              className="hover:underline mb-4 block"
-            >
-              <pre>{JSON.stringify(object, null, 2)}</pre>
-            </Link>
-          ))
-        : null}
+      {canCreateObject ? <CreateObjectButton /> : null}
+      <div className="flex flex-col gap-4">
+        <SearchInput />
+        {Array.isArray(objects)
+          ? objects.map((object) => (
+              <Link key={object.code} href={`/objects/${object.code}`}>
+                <ObjectCard data={object} />
+              </Link>
+            ))
+          : null}
+      </div>
     </>
   );
 }

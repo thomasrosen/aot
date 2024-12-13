@@ -1,4 +1,11 @@
-import { giveUserRole } from "@/lib/permissions";
+import {
+  adminPermissionName,
+  adminRoleName,
+  trustedPermissionName,
+  trustedRoleName,
+} from "@/constants";
+import { giveUserRole } from "@/lib/server/permissions";
+import { upsertRole } from "@/lib/server/upsertRole";
 import { prisma } from "@/prisma";
 
 export async function GET() {
@@ -15,9 +22,6 @@ export async function GET() {
       return new Response("Error occurred", { status: 500 });
     }
 
-    const adminRoleName = "admin";
-    const adminPermissionName = "admin";
-
     // create admin user if it doesn't exist
     const adminUser = await prisma.user.upsert({
       where: { email: adminEmail },
@@ -30,38 +34,13 @@ export async function GET() {
     });
 
     // create admin role and admin permission if they don't exist
-    await prisma.role.upsert({
-      where: { name: adminRoleName },
-      update: {
-        name: adminRoleName,
-        permissions: {
-          connectOrCreate: [
-            {
-              where: {
-                name: adminPermissionName,
-              },
-              create: {
-                name: adminPermissionName,
-              },
-            },
-          ],
-        },
-      },
-      create: {
-        name: adminRoleName,
-        permissions: {
-          connectOrCreate: [
-            {
-              where: {
-                name: adminPermissionName,
-              },
-              create: {
-                name: adminPermissionName,
-              },
-            },
-          ],
-        },
-      },
+    await upsertRole({
+      name: adminRoleName,
+      permissions: [adminPermissionName],
+    });
+    await upsertRole({
+      name: trustedRoleName,
+      permissions: [trustedPermissionName],
     });
 
     // connect admin user to admin role

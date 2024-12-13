@@ -1,8 +1,8 @@
 "use server";
 
 import { auth } from "@/auth";
-import { generateCode } from "@/lib/generateCode";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { generateCode } from "@/lib/server/generateCode";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 
 export async function createObject(): Promise<string> {

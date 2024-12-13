@@ -1,5 +1,5 @@
-import { getGlobalSetting } from "@/lib/getGlobalSetting";
-import { setGlobalSetting } from "@/lib/setGlobalSetting";
+import { getGlobalSetting } from "@/lib/server/getGlobalSetting";
+import { setGlobalSetting } from "@/lib/server/setGlobalSetting";
 import { prisma } from "@/prisma";
 import { customAlphabet } from "nanoid";
 

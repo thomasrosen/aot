@@ -10,7 +10,9 @@ function UpdateUserButton({ user }: { user: UserFull }) {
   const router = useRouter();
   const { id, userRolePairings } = user;
   const [isAdmin, setAdmin] = useState(
-    userRolePairings.some((r: any) => r.role.name === "admin")
+    (userRolePairings || []).some(
+      (userRolePairing: any) => userRolePairing.roleName === "admin"
+    )
   );
 
   const setAdminRights = useCallback(async () => {

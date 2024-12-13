@@ -1,16 +1,18 @@
-import { H2, H3 } from "@/components/Typography";
+import { H2 } from "@/components/Typography";
 import { RenameObjectDialogButton } from "@/components/client/RenameObjectDialogButton";
 import { UpdateObjectLocationDialogButton } from "@/components/client/UpdateObjectLocationDialogButton";
 import { object_code_prefix } from "@/constants";
-import { userHasOneOfPermissions } from "@/lib/permissions";
-import type PrismaTypes from "@prisma/client";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
+import { ObjectFull } from "@/types";
 import { Session } from "next-auth";
+import { ObjectHistoryCard } from "../ObjectHistoryCard";
+import { Badge } from "../ui/badge";
 
 export async function ObjectViewer({
   object,
   session,
 }: {
-  object?: Partial<PrismaTypes.Object> | null;
+  object?: ObjectFull | null;
   session: Session | null;
 }) {
   const canRenameObject = await userHasOneOfPermissions({
@@ -35,11 +37,15 @@ export async function ObjectViewer({
 
   return (
     <>
-      {name ? <H2>{name}</H2> : null}
-      <H3>
-        {object_code_prefix}
-        {code}
-      </H3>
+      <H2>
+        <div className="flex gap-4 items-center">
+          {name}
+          <Badge className="whitespace-nowrap">
+            {object_code_prefix}
+            {code}
+          </Badge>
+        </div>
+      </H2>
       <div className="flex gap-2">
         <UpdateObjectLocationDialogButton code={code} />
 
@@ -47,7 +53,13 @@ export async function ObjectViewer({
           <RenameObjectDialogButton code={code} name={name || ""} />
         ) : null}
       </div>
-      {canViewObject ? <pre>{JSON.stringify(object, null, 2)}</pre> : null}
+      {canViewObject ? (
+        <div className="flex flex-col gap-4">
+          {(object?.history || []).map((history) => (
+            <ObjectHistoryCard data={history} key={history.id} />
+          ))}
+        </div>
+      ) : null}
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { ObjectViewer } from "@/components/server/ObjectViewer";
-import { getObject } from "@/lib/getObject";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { getObject } from "@/lib/server/getObject";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { notFound } from "next/navigation";
 
 export default async function ViewObjectPage({

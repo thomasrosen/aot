@@ -4,7 +4,7 @@ import {
   takeUserRole,
   toggleUserRole,
   userHasOneOfPermissions,
-} from "@/lib/permissions";
+} from "@/lib/server/permissions";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 import z from "zod";

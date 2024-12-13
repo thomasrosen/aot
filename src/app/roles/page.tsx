@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { H2 } from "@/components/Typography";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { DataTableRoles } from "@/components/client/DataTableRoles";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 
 export default async function RolesPage() {
@@ -13,27 +14,13 @@ export default async function RolesPage() {
     throw new Error("Not allowed");
   }
 
-  const roles = await prisma.role.findMany({
+  let roles = await prisma.role.findMany({
     select: {
       name: true,
       updatedAt: true,
       permissions: {
         select: {
           name: true,
-          roles: {
-            select: {
-              name: true,
-              userRolePairings: {
-                select: {
-                  user: {
-                    select: {
-                      email: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
         },
       },
     },
@@ -42,10 +29,15 @@ export default async function RolesPage() {
     },
   });
 
+  roles = roles.map((role) => ({
+    ...role,
+    id: role.name,
+  }));
+
   return (
     <>
       <H2>Roles</H2>
-      <pre>{JSON.stringify(roles, null, 2)}</pre>
+      <DataTableRoles data={roles} />
     </>
   );
 }

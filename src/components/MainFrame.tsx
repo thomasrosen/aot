@@ -4,5 +4,7 @@ export function MainFrame({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"main">) {
-  return <main className={cn("p-2", className)} {...props} />;
+  return (
+    <main className={cn("flex-1 space-y-4 p-8 pt-6", className)} {...props} />
+  );
 }

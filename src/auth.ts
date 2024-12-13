@@ -1,4 +1,4 @@
-import { sendVerificationRequest } from "@/lib/nodemailer";
+import { sendVerificationRequest } from "@/lib/server/nodemailer";
 import { prisma } from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";

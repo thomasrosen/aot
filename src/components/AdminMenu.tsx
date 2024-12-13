@@ -5,16 +5,16 @@ export function AdminMenu() {
   return (
     <>
       <Link href="/objects">
-        <Button variant="outline">Objects</Button>
+        <Button variant="ghost">Objects</Button>
       </Link>
       <Link href="/users">
-        <Button variant="outline">Users</Button>
+        <Button variant="ghost">Users</Button>
       </Link>
       <Link href="/roles">
-        <Button variant="outline">Roles</Button>
+        <Button variant="ghost">Roles</Button>
       </Link>
       <Link href="/permissions">
-        <Button variant="outline">Permissions</Button>
+        <Button variant="ghost">Permissions</Button>
       </Link>
     </>
   );

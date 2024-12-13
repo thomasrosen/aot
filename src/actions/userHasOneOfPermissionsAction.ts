@@ -4,7 +4,7 @@
 // we can't trust the client to provide the correct userId, so we need to check the sessino on the server.
 
 import { auth } from "@/auth";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 
 export async function userHasOneOfPermissionsAction({
   permissionNames,

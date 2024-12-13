@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { userHasOneOfPermissions } from "@/lib/permissions";
+import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 
