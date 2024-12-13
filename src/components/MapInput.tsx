@@ -6,19 +6,22 @@ import {
   GeolocateControl,
   Map,
   MapLayerMouseEvent,
+  MapRef,
   Marker,
   NavigationControl,
 } from "@vis.gl/react-maplibre";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useCallback, useState } from "react";
+import { LegacyRef, useCallback, useState } from "react";
 
 export function MapInput({
+  ref,
   longitude,
   latitude,
   zoom,
   onClick,
   className,
 }: {
+  ref?: LegacyRef<MapRef>;
   longitude?: number;
   latitude?: number;
   zoom?: number;
@@ -52,6 +55,7 @@ export function MapInput({
 
   return (
     <Map
+      ref={ref}
       {...viewState}
       onMove={(e) => setViewState(e.viewState)}
       onClick={handleClick}
