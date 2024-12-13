@@ -1,17 +1,25 @@
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { H2 } from "@/components/Typography";
+import { cn } from "@/lib/utils";
 
 export function SubHeader({
   breadcrumb,
   title,
   actions,
+  className,
 }: {
   breadcrumb?: string;
   title: React.ReactNode;
   actions?: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className={cn(
+        "sticky top-[64px] bg-background text-foreground flex flex-col gap-4 py-6 -mt-6",
+        className
+      )}
+    >
       <Breadcrumbs>{breadcrumb}</Breadcrumbs>
 
       <div className="flex items-center justify-between">
