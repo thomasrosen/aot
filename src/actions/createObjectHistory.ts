@@ -10,7 +10,7 @@ export async function createObjectHistory({
   email,
 }: {
   code: string;
-  location: {
+  location?: {
     address: string;
     latitude: number;
     longitude: number;

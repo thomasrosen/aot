@@ -56,7 +56,7 @@ export async function ObjectViewer({
       {canViewObject ? (
         <div className="flex flex-col gap-4">
           {(object?.history || []).map((history) => (
-            <ObjectHistoryCard key={history.id} data={history} />
+            <ObjectHistoryCard key={JSON.stringify(history)} data={history} />
           ))}
         </div>
       ) : null}
