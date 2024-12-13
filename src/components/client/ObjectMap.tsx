@@ -54,7 +54,7 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
 
   return (
     <MapInput ref={mapRef} onLoad={() => setMapReady(true)}> // Trigger when the map is ready>
-      {(object?.history || []).map((history) => {
+      {(object?.history || []).map((history, index) => {
         const latitude = history.location?.latitude;
         const longitude = history.location?.longitude;
         return (
@@ -62,7 +62,7 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
             key={JSON.stringify(history)}
             longitude={longitude}
             latitude={latitude}
-            color="black"
+            color={index === 0 ? "#0f0" : "black"}
           />
         );
       })}
