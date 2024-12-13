@@ -111,10 +111,6 @@ export function UpdateObjectLocationDialogButton({
     resolver: zodResolver(validationSchema),
   });
 
-  const {
-    formState: { errors, isDirty, isValid },
-  } = form;
-
   const isSubmittable = !isFetchingAddress;
 
   const setValue = useCallback(
@@ -128,7 +124,7 @@ export function UpdateObjectLocationDialogButton({
         keepTouched: true,
       });
     },
-    [form.reset]
+    [form.reset, form.getValues]
   );
 
   const [address, latitude, longitude] = form.watch([
