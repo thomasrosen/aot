@@ -53,7 +53,13 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
   }, [pointsJson, mapReady]);
 
   return (
-    <MapInput ref={mapRef} onLoad={() => setMapReady(true)}> // Trigger when the map is ready>
+    <MapInput
+      ref={mapRef}
+      onLoad={
+        // Trigger fitBounds when the map is ready
+        () => setMapReady(true)
+      }
+    >
       {(object?.history || []).map((history, index) => {
         const latitude = history.location?.latitude;
         const longitude = history.location?.longitude;
