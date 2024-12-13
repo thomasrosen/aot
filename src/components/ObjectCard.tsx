@@ -29,22 +29,17 @@ export function ObjectCard({ data }: { data: ObjectFull }) {
       ? firstObjectHistoryUpdatedAt
       : updatedAt;
 
-  const hasName = data.name && data.name.length > 0;
-
-  const codeBadge = (
-    <Badge className="whitespace-nowrap">
-      {object_code_prefix}
-      {data.code}
-    </Badge>
-  );
-
   return (
     <Card className="transition-colors hover:bg-accent hover:text-accent-foreground">
       <CardHeader>
-        <CardTitle>{hasName ? data.name : codeBadge}</CardTitle>
+        {data.name ? <CardTitle>{data.name}</CardTitle> : null}
         <CardDescription>
           <div className="flex gap-2 items-center flex-wrap pt-1 pb-2">
-            {hasName ? codeBadge : null}
+            <Badge className="whitespace-nowrap">
+              {object_code_prefix}
+              {data.code}
+            </Badge>
+
             <Badge
               className="shrink-0"
               variant={isTrusted ? "secondary" : "destructive"}
