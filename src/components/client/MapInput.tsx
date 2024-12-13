@@ -63,9 +63,8 @@ export function MapInput({
       {...viewState}
       onMove={(e) => setViewState(e.viewState)}
       onClick={handleClick}
-      mapStyle="https://api.maptiler.com/maps/basic-v2/style.json?key=o3zELAXbKePggwdGFWww" // TODO how can we hide the api key?
+      mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=o3zELAXbKePggwdGFWww"
       className={cn("h-full w-full", className)}
-      // cursor="pointer"
       onLoad={onLoad}
     >
       <FullscreenControl position="top-left" />
