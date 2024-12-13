@@ -56,7 +56,8 @@ const validationSchema = z.object({
     .email({
       message: "Invalid email address.",
     })
-    .optional(),
+    .optional()
+    .or(z.literal("").or(z.null())),
 });
 
 export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
@@ -88,12 +89,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
     formState: { errors, isDirty, isValid },
   } = form;
 
-  console.log("errors", errors);
-
-  console.log("isDirty", isDirty);
-  console.log("isValid", isValid);
-  console.log("isFetchingAddress", isFetchingAddress);
-
   const isSubmittable = true; // !!isDirty && !!isValid && !isFetchingAddress;
 
   const [address, latitude, longitude] = watch([
@@ -111,6 +106,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
 
       const updatedLocation = await createObjectHistory({
         ...values,
+        email: values.email || "",
         code,
       });
 
@@ -261,7 +257,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                 <div className="flex space-x-2">
                   <FormControl>
                     <AutogrowingTextarea
-                      {...field}
                       placeholder="Housenumber, Street, City, Country"
                       disabled={isFetchingAddress}
                       onKeyDown={(event) => {
@@ -270,6 +265,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                           handleSearchByAddress();
                         }
                       }}
+                      {...field}
                     />
                   </FormControl>
                   <Button
@@ -286,7 +282,6 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
               </FormItem>
             )}
           />
-
           <div className="flex flex-col gap-2">
             <Label>Coordinates</Label>
             <p className="text-sm text-muted-foreground">
@@ -354,8 +349,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
               />
             </div>
           </div>
-
-          {!userEmail && (
+          {!userEmail ? (
             // only show the email field if user is unknown. the email will be fetched from the session on the server
             <FormField
               name="email"
@@ -365,7 +359,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                   <FormLabel>Your Email</FormLabel>
                   <FormControl>
                     <Input
-                      type="email"
+                      type="text"
                       placeholder="name@email.com"
                       {...field}
                     />
@@ -378,8 +372,7 @@ export function UpdateObjectLocationDialogButton({ code }: { code: string }) {
                 </FormItem>
               )}
             />
-          )}
-
+          ) : null}
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
               Cancel
