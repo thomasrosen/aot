@@ -3,6 +3,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -28,6 +29,7 @@ export function DialogWrapper({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}
+      <DialogOverlay className="backdrop-blur-[3px] bg-transparent" />
       <DialogContent className={cn("max-h-screen overflow-auto", className)}>
         {title || description ? (
           <DialogHeader>
