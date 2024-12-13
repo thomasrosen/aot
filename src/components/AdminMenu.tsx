@@ -1,21 +1,39 @@
-import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 export function AdminMenu() {
   return (
-    <>
-      <Link href="/objects">
-        <Button variant="ghost">Objects</Button>
-      </Link>
-      <Link href="/users">
-        <Button variant="ghost">Users</Button>
-      </Link>
-      <Link href="/roles">
-        <Button variant="ghost">Roles</Button>
-      </Link>
-      <Link href="/permissions">
-        <Button variant="ghost">Permissions</Button>
-      </Link>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button variant="ghost">Menu</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <Link href="/objects">
+          <DropdownMenuItem>Objects</DropdownMenuItem>
+        </Link>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuLabel>Admin Menu</DropdownMenuLabel>
+        <Link href="/users">
+          <DropdownMenuItem>Users</DropdownMenuItem>
+        </Link>
+        <Link href="/roles">
+          <DropdownMenuItem>Roles</DropdownMenuItem>
+        </Link>
+        <Link href="/permissions">
+          <DropdownMenuItem>Permissions</DropdownMenuItem>
+        </Link>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
