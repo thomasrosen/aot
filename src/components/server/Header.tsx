@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { AdminMenu } from "@/components/AdminMenu";
 import { Icon } from "@/components/Icon";
 import { H1 } from "@/components/Typography";
+import { ModeToggle } from "@/components/client/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import Link from "next/link";
@@ -36,6 +37,7 @@ export async function Header() {
             </Button>
           </Link>
         )}
+        <ModeToggle />
       </div>
     </header>
   );

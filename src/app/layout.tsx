@@ -1,4 +1,5 @@
 import { MainFrame } from "@/components/MainFrame";
+import { ThemeProvider } from "@/components/client/ThemeProvider";
 import { Header } from "@/components/server/Header";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
@@ -24,14 +25,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionProvider>
-      <html lang="en" className="dark" suppressHydrationWarning={true}>
-        <body className={`${ubuntu.className} antialiased`}>
-          <Header />
-          <MainFrame>{children}</MainFrame>
-          <Toaster />
-        </body>
-      </html>
-    </SessionProvider>
+    <html lang="en" suppressHydrationWarning={true}>
+      <body className={`${ubuntu.className} antialiased`}>
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <MainFrame>{children}</MainFrame>
+            <Toaster />
+          </ThemeProvider>
+        </SessionProvider>
+      </body>
+    </html>
   );
 }
