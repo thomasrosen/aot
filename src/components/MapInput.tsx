@@ -47,7 +47,7 @@ export function MapInput({
         });
       }
     },
-    [viewState]
+    [onClick]
   );
 
   return (

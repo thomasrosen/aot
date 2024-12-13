@@ -4,7 +4,6 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Ubuntu } from "next/font/google";
-import { Suspense } from "react";
 import "./globals.css";
 
 // If loading a variable font, you don't need to specify the font weight
@@ -25,16 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning={true}>
-      <body className={`${ubuntu.className} antialiased`}>
-        <Suspense>
+    <SessionProvider>
+      <html lang="en" className="dark" suppressHydrationWarning={true}>
+        <body className={`${ubuntu.className} antialiased`}>
           <Header />
-        </Suspense>
-        <MainFrame>
-          <SessionProvider>{children}</SessionProvider>
-        </MainFrame>
-        <Toaster />
-      </body>
-    </html>
+          <MainFrame>{children}</MainFrame>
+          <Toaster />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

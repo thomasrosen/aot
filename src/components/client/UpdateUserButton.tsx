@@ -43,7 +43,7 @@ function UpdateUserButton({ user }: { user: UserFull }) {
     } else {
       toast("Roles change failed.");
     }
-  }, [isAdmin, router]);
+  }, [id, isAdmin, router]);
 
   return (
     <Button size="sm" onClick={setAdminRights}>

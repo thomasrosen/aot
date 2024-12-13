@@ -7,7 +7,7 @@ export async function upsertRole({
   name: string;
   permissions?: string[];
 }) {
-  let commonSetQuery: Record<string, any> = {};
+  const commonSetQuery: Record<string, any> = {};
   if (permissions.length > 0) {
     commonSetQuery.permissions = {
       connectOrCreate: permissions.map((permissionName) => ({

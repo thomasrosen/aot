@@ -60,5 +60,9 @@ export async function createObjectHistory({
 
   revalidatePath(`/objects/${code}`); // clear the page cache
 
-  return true; // todo check result
+  if (!result) {
+    throw new Error("Failed to create object history");
+  }
+
+  return true;
 }
