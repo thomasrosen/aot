@@ -5,11 +5,12 @@ import { RenameObjectDialogButton } from "@/components/client/RenameObjectDialog
 import { UpdateObjectLocationDialogButton } from "@/components/client/UpdateObjectLocationDialogButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { object_code_prefix } from "@/constants";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { ObjectFull } from "@/types";
 import { Session } from "next-auth";
+import { ObjectMap } from "../client/ObjectMap";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export async function ObjectViewer({
   object,
@@ -38,9 +39,25 @@ export async function ObjectViewer({
     return null;
   }
 
+  const list = (
+    <div className="overflow-auto">
+      <div className="flex flex-col gap-4 pb-48">
+        {(object?.history || []).map((history) => (
+          <ObjectHistoryCard key={JSON.stringify(history)} data={history} />
+        ))}
+      </div>
+    </div>
+  );
+  const map = (
+    <div className="rounded-lg border overflow-hidden h-full">
+      <ObjectMap object={object} />
+    </div>
+  );
+
   return (
-    <>
+    <div className="absolute top-[64px] bottom-0 left-0 right-0 overflow-auto grid grid-rows-[auto_minmax(0,1fr)] p-8 pt-6 pb-0">
       <SubHeader
+        className="relative top-0"
         breadcrumb={`${object_code_prefix}${code}`}
         title={
           <>
@@ -79,15 +96,39 @@ export async function ObjectViewer({
         }
       />
 
-      <Separator />
-
       {canViewObject ? (
-        <div className="flex flex-col gap-4">
-          {(object?.history || []).map((history) => (
-            <ObjectHistoryCard key={JSON.stringify(history)} data={history} />
-          ))}
-        </div>
+        <>
+          <div className="block lg:hidden h-full overflow-auto">
+            <Tabs
+              defaultValue="list"
+              className="grid grid-rows-[auto_minmax(0,1fr)] h-full"
+            >
+              <div className="sticky top-0 z-10 bg-background pb-2">
+                <TabsList>
+                  <TabsTrigger value="list" className="gap-2">
+                    <Icon name="list" />
+                    List
+                  </TabsTrigger>
+                  <TabsTrigger value="map" className="gap-2">
+                    <Icon name="map" />
+                    Map
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+              <TabsContent className="mt-0" value="list">
+                {list}
+              </TabsContent>
+              <TabsContent className="mt-0" value="map">
+                {map}
+              </TabsContent>
+            </Tabs>
+          </div>
+          <div className="hidden lg:grid grid-cols-2 gap-4">
+            {list}
+            {map}
+          </div>
+        </>
       ) : null}
-    </>
+    </div>
   );
 }

@@ -22,9 +22,9 @@ export function SubHeader({
     >
       <Breadcrumbs>{breadcrumb}</Breadcrumbs>
 
-      <div className="flex items-center justify-between">
-        <H2 className="mb-0 flex gap-4 items-center">{title}</H2>
-        <div className="flex gap-2">{actions}</div>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <H2 className="mb-0 flex gap-4 items-center flex-wrap">{title}</H2>
+        <div className="flex gap-2 flex-wrap">{actions}</div>
       </div>
     </div>
   );

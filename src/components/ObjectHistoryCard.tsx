@@ -24,7 +24,7 @@ export function ObjectHistoryCard({ data }: { data: ObjectHistoryFull }) {
             : `${data.location?.latitude} / ${data.location?.longitude}`}
         </CardTitle>
         <CardDescription>
-          <div className="flex gap-2 py-1">
+          <div className="flex gap-2 py-1 flex-wrap">
             <Badge
               className="shrink-0"
               variant={isTrusted ? "secondary" : "destructive"}
