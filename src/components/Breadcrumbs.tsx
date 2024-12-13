@@ -13,6 +13,14 @@ import { usePathname } from "next/navigation";
 export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname().split("/").filter(Boolean);
   const pathnameCount = pathname.length;
+
+  const dictionary: Record<string, string> = {
+    users: "Users",
+    objects: "Objects",
+    roles: "Roles",
+    permissions: "Permissions",
+  };
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -24,7 +32,9 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
             return [
               <BreadcrumbSeparator key={`BreadcrumbSeparator-${index}`} />,
               <BreadcrumbItem key={`BreadcrumbItem-${index}`}>
-                <BreadcrumbPage>{children || path}</BreadcrumbPage>
+                <BreadcrumbPage>
+                  {children || dictionary[path] || path}
+                </BreadcrumbPage>
               </BreadcrumbItem>,
             ];
           }
@@ -33,7 +43,9 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
           return [
             <BreadcrumbSeparator key={`BreadcrumbSeparator-${index}`} />,
             <BreadcrumbItem key={`BreadcrumbItem-${index}`}>
-              <BreadcrumbLink href={fullpath}>{path}</BreadcrumbLink>
+              <BreadcrumbLink href={fullpath}>
+                {dictionary[path] || path}
+              </BreadcrumbLink>
             </BreadcrumbItem>,
           ];
         })}

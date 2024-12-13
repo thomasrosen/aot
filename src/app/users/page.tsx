@@ -33,7 +33,7 @@ export default async function UsersPage() {
 
   return (
     <>
-      <SubHeader title="Users" breadcrumb="Users" />
+      <SubHeader title="Users" />
       <DataTableUsers data={users} />
     </>
   );

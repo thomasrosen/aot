@@ -72,7 +72,6 @@ export default async function ObjectsPage() {
     <>
       <SubHeader
         title="Objects"
-        breadcrumb="Objects"
         actions={
           <>
             <SearchInput />

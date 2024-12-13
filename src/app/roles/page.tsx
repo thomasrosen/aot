@@ -36,7 +36,7 @@ export default async function RolesPage() {
 
   return (
     <>
-      <SubHeader title="Roles" breadcrumb="Roles" />
+      <SubHeader title="Roles" />
       <DataTableRoles data={roles} />
     </>
   );

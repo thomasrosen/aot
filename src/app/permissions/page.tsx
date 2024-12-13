@@ -39,7 +39,7 @@ export default async function PermissionsPage() {
 
   return (
     <>
-      <SubHeader title="Permissions" breadcrumb="Permissions" />
+      <SubHeader title="Permissions" />
       <pre>{JSON.stringify(permissions, null, 2)}</pre>
     </>
   );
