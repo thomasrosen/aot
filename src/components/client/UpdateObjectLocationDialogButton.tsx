@@ -4,7 +4,7 @@ import { createObjectHistory } from "@/actions/createObjectHistory";
 import { AutogrowingTextarea } from "@/components/AutogrowingTextarea";
 import { DialogWrapper } from "@/components/DialogWrapper";
 import { Icon } from "@/components/Icon";
-import { MapInput } from "@/components/MapInput";
+import { MapInput } from "@/components/client/MapInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
