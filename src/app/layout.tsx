@@ -27,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body className={`${ubuntu.className} antialiased`}>
+      <body
+        className={`${ubuntu.className} antialiased min-h-screen min-w-screen`}
+      >
         <SessionProvider>
           <ThemeProvider
             attribute="class"
