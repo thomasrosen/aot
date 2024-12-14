@@ -19,8 +19,10 @@ export async function createObjectHistory({
 }): Promise<true> {
   // overwrite email with the signed in user's email
   const session = await auth();
+  let isSignedIn = false;
   if (session?.user?.email) {
     email = session.user.email;
+    isSignedIn = true;
   }
 
   if (!code) {
@@ -66,6 +68,7 @@ export async function createObjectHistory({
             },
           },
         },
+        verifiedHistoryEntry: isSignedIn ? new Date() : null,
       },
     });
 
@@ -74,6 +77,8 @@ export async function createObjectHistory({
     }
 
     revalidatePath(`/objects/${code}`); // clear the page cache
+
+    // TODO if not signed in: send out email to verify the object history entry and to sign in the user
   } catch (error) {
     throw error;
   }
