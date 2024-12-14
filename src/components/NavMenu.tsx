@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-export function AdminMenu() {
+export function NavMenu({ isAdmin }: { isAdmin: boolean }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -17,9 +17,9 @@ export function AdminMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
-        <Link href="/">
+        {/* <Link href="/">
           <DropdownMenuItem>Start</DropdownMenuItem>
-        </Link>
+        </Link> */}
         <Link href="/objects">
           <DropdownMenuItem>Objects</DropdownMenuItem>
         </Link>
@@ -30,18 +30,22 @@ export function AdminMenu() {
           <DropdownMenuItem>Statistics</DropdownMenuItem>
         </Link>
 
-        <DropdownMenuSeparator />
+        {isAdmin ? (
+          <>
+            <DropdownMenuSeparator />
 
-        <DropdownMenuLabel>Admin Menu</DropdownMenuLabel>
-        <Link href="/users">
-          <DropdownMenuItem>Users</DropdownMenuItem>
-        </Link>
-        <Link href="/roles">
-          <DropdownMenuItem>Roles</DropdownMenuItem>
-        </Link>
-        <Link href="/permissions">
-          <DropdownMenuItem>Permissions</DropdownMenuItem>
-        </Link>
+            <DropdownMenuLabel>Admin Menu</DropdownMenuLabel>
+            <Link href="/users">
+              <DropdownMenuItem>Users</DropdownMenuItem>
+            </Link>
+            <Link href="/roles">
+              <DropdownMenuItem>Roles</DropdownMenuItem>
+            </Link>
+            <Link href="/permissions">
+              <DropdownMenuItem>Permissions</DropdownMenuItem>
+            </Link>
+          </>
+        ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
   );

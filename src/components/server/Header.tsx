@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import { AdminMenu } from "@/components/AdminMenu";
 import { Icon } from "@/components/Icon";
+import { NavMenu } from "@/components/NavMenu";
 import { H1 } from "@/components/Typography";
 import { ModeToggle } from "@/components/client/ModeToggle";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,9 @@ export async function Header() {
       <Link href="/" className="shrink-0">
         <H1 className="text-lg lg:text-2xl">Inventory</H1>
       </Link>
-      <nav className="w-full">{isAdmin ? <AdminMenu /> : null}</nav>
+      <nav className="w-full">
+        <NavMenu isAdmin={isAdmin} />
+      </nav>
       <div className="flex gap-2 shrink-0">
         {isSignedIn ? (
           <>
