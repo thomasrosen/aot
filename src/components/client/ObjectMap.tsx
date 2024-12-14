@@ -1,8 +1,10 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { ObjectFull } from "@/types";
-import { MapRef, Marker } from "@vis.gl/react-maplibre";
+import { MapRef } from "@vis.gl/react-maplibre";
 import { useEffect, useRef, useState } from "react";
+import { CustomMarker } from "./CustomMarker";
 import { MapInput } from "./MapInput";
 
 function getBounds(points: { latitude: number; longitude: number }[]) {
@@ -64,12 +66,36 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
         const latitude = history.location?.latitude;
         const longitude = history.location?.longitude;
         return (
-          <Marker
-            key={JSON.stringify(history)}
+          <CustomMarker
+            key={`${JSON.stringify(history)}_${index}`}
             longitude={longitude}
             latitude={latitude}
-            color={index === 0 ? "#0f0" : "black"}
-          />
+            style={
+              index === 0
+                ? {
+                    zIndex: 1,
+                  }
+                : undefined
+            }
+            className={
+              index === 0
+                ? " bg-green-700 size-6"
+                : "bg-background size-3 shadow-[0_0_0_3px_rgba(0,0,0,0.1)]"
+            }
+            onClick={() => {
+              console.log("Clicked on history", history);
+            }}
+          >
+            {index === 0 ? (
+              <div
+                className={cn(
+                  "-z-1 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 size-8"
+                )}
+              >
+                <span className="animate-ping-slow absolute h-full w-full rounded-full bg-green-400"></span>
+              </div>
+            ) : null}
+          </CustomMarker>
         );
       })}
     </MapInput>

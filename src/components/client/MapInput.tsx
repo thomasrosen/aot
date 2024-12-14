@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import {
+  AttributionControl,
   FullscreenControl,
   GeolocateControl,
   Map,
@@ -58,22 +59,44 @@ export function MapInput({
   );
 
   return (
-    <Map
-      ref={ref}
-      {...viewState}
-      onMove={(e) => setViewState(e.viewState)}
-      onClick={handleClick}
-      mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=o3zELAXbKePggwdGFWww"
-      className={cn("h-full w-full", className)}
-      onLoad={onLoad}
-    >
-      <FullscreenControl position="top-left" />
-      <NavigationControl />
-      <GeolocateControl />
-      {longitude && latitude ? (
-        <Marker longitude={longitude} latitude={latitude} color="black" />
-      ) : null}
-      {children}
-    </Map>
+    <>
+      <Map
+        ref={ref}
+        {...viewState}
+        onMove={(e) => setViewState(e.viewState)}
+        onClick={handleClick}
+        mapStyle="https://api.maptiler.com/maps/openstreetmap/style.json?key=o3zELAXbKePggwdGFWww"
+        className={cn("h-full w-full", className)}
+        onLoad={onLoad}
+        // disable the default attribution
+        attributionControl={false}
+      >
+        <AttributionControl compact position="bottom-right" />
+        <FullscreenControl position="top-right" />
+        <NavigationControl position="top-left" />
+        <GeolocateControl position="top-left" />
+        {longitude && latitude ? (
+          <Marker longitude={longitude} latitude={latitude} color="black" />
+        ) : null}
+        {children}
+      </Map>
+      <style>{`
+        .maplibregl-ctrl {
+          background-color: hsl(var(--primary));
+          border-radius: calc(var(--radius) - 4px);
+          box-shadow: 0 0.25rem 0.5rem -0.25rem rgba(0, 0, 0, 0.5) !important;
+          overflow: hidden;
+        }
+        .maplibregl-ctrl button {
+          padding: 0.5rem;
+          width: auto;
+          height: auto;
+        }
+        .maplibregl-ctrl button .maplibregl-ctrl-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      `}</style>
+    </>
   );
 }
