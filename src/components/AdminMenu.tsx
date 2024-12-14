@@ -33,6 +33,9 @@ export function AdminMenu() {
         <Link href="/permissions">
           <DropdownMenuItem>Permissions</DropdownMenuItem>
         </Link>
+        <Link href="/stats">
+          <DropdownMenuItem>Statistics</DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );

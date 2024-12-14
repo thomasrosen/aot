@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Ubuntu } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 
 // If loading a variable font, you don't need to specify the font weight
@@ -36,9 +37,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            <MainFrame>{children}</MainFrame>
-            <Toaster />
+            <NuqsAdapter>
+              <Header />
+              <MainFrame>{children}</MainFrame>
+              <Toaster />
+            </NuqsAdapter>
           </ThemeProvider>
         </SessionProvider>
       </body>

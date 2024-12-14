@@ -19,6 +19,7 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
     objects: "Objects",
     roles: "Roles",
     permissions: "Permissions",
+    stats: "Statistics",
   };
 
   return (
