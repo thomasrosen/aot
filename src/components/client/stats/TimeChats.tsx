@@ -60,7 +60,7 @@ export function TimeChart({
   const chartConfig = {
     hours: {
       label: "Hours",
-      color: "hsl(var(--chart-1))",
+      color: "hsl(var(--primary))",
     },
   } satisfies ChartConfig;
 
