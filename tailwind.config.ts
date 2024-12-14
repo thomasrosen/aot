@@ -47,13 +47,6 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--primary))",
-          "2": "hsl(var(--primary))",
-          "3": "hsl(var(--primary))",
-          "4": "hsl(var(--primary))",
-          "5": "hsl(var(--primary))",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
