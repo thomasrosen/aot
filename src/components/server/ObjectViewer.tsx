@@ -9,7 +9,7 @@ import { object_code_prefix } from "@/constants";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { ObjectFull } from "@/types";
 import { Session } from "next-auth";
-import { H3 } from "../Typography";
+import { H3, P } from "../Typography";
 import { VerticalFade } from "../VerticalFade";
 import { ObjectMap } from "../client/ObjectMap";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -41,20 +41,43 @@ export async function ObjectViewer({
     return null;
   }
 
+  const firstHistory = (object?.history || []).at(0);
+  const otherHistories = (object?.history || []).slice(1);
+
   const list = (
     <div className="overflow-auto relative">
       <VerticalFade direction="top" />
-      <H3 className="mt-8 mb-4">History</H3>
-      <div className="flex flex-col gap-4 relative">
-        <div className="absolute bg-accent w-1 h-full left-1/2 -ml-0.5" />
-        {(object?.history || []).map((history) => (
+
+      {!firstHistory && !otherHistories.length ? (
+        <P>Noch keine Orts Einträge.</P>
+      ) : null}
+
+      {firstHistory ? (
+        <>
+          <H3 className="mt-8 mb-4">Jetziger Ort</H3>
           <ObjectHistoryCard
-            key={JSON.stringify(history)}
-            data={history}
-            className="z-1"
+            key={JSON.stringify(firstHistory)}
+            data={firstHistory}
           />
-        ))}
-      </div>
+        </>
+      ) : null}
+
+      {otherHistories.length > 0 ? (
+        <>
+          <H3 className="mt-8 mb-4">Vergangene Orte</H3>
+          <div className="flex flex-col gap-4 relative">
+            <div className="absolute bg-accent w-1 h-full left-1/2 -ml-0.5" />
+            {otherHistories.map((history) => (
+              <ObjectHistoryCard
+                key={JSON.stringify(history)}
+                data={history}
+                className="z-1"
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
+
       <div className="pb-48" />
       <VerticalFade direction="bottom" />
     </div>
