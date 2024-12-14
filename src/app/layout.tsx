@@ -40,7 +40,7 @@ export default function RootLayout({
             <NuqsAdapter>
               <Header />
               <MainFrame>{children}</MainFrame>
-              <Toaster />
+              <Toaster richColors closeButton />
             </NuqsAdapter>
           </ThemeProvider>
         </SessionProvider>

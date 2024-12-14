@@ -23,6 +23,10 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
     about: "About",
   };
 
+  if (pathnameCount === 0) {
+    return null;
+  }
+
   return (
     <Breadcrumb>
       <BreadcrumbList>

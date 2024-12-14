@@ -35,33 +35,47 @@ export async function createObjectHistory({
     );
   }
 
-  const result = await prisma.objectHistory.create({
-    data: {
-      object: {
-        connect: {
-          code,
+  try {
+    const object = await prisma.object.findUnique({
+      where: {
+        code,
+      },
+    });
+
+    if (!object) {
+      throw new Error("Object not found. Maybe the object code is incorrect.");
+    }
+
+    const result = await prisma.objectHistory.create({
+      data: {
+        object: {
+          connect: {
+            code,
+          },
+        },
+        location: {
+          create: location,
+        },
+        user: {
+          connectOrCreate: {
+            create: {
+              email,
+            },
+            where: {
+              email,
+            },
+          },
         },
       },
-      location: {
-        create: location,
-      },
-      user: {
-        connectOrCreate: {
-          create: {
-            email,
-          },
-          where: {
-            email,
-          },
-        },
-      },
-    },
-  });
+    });
 
-  revalidatePath(`/objects/${code}`); // clear the page cache
+    if (!result) {
+      throw new Error("Failed to create object history");
+    }
 
-  if (!result) {
-    throw new Error("Failed to create object history");
+    revalidatePath(`/objects/${code}`); // clear the page cache
+  } catch (error) {
+    throw error;
   }
 
   return true;
