@@ -23,6 +23,12 @@ export function AdminMenu() {
         <Link href="/objects">
           <DropdownMenuItem>Objects</DropdownMenuItem>
         </Link>
+        <Link href="/about">
+          <DropdownMenuItem>About</DropdownMenuItem>
+        </Link>
+        <Link href="/about/stats">
+          <DropdownMenuItem>Statistics</DropdownMenuItem>
+        </Link>
 
         <DropdownMenuSeparator />
 
@@ -35,9 +41,6 @@ export function AdminMenu() {
         </Link>
         <Link href="/permissions">
           <DropdownMenuItem>Permissions</DropdownMenuItem>
-        </Link>
-        <Link href="/stats">
-          <DropdownMenuItem>Statistics</DropdownMenuItem>
         </Link>
       </DropdownMenuContent>
     </DropdownMenu>
