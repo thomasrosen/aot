@@ -13,7 +13,7 @@ export function AdminMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost">Menu</Button>
+        <Button variant="outline">Menu</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>

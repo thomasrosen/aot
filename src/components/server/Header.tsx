@@ -21,18 +21,18 @@ export async function Header() {
         <H1 className="text-lg lg:text-2xl">Inventory</H1>
       </Link>
       <nav className="w-full">{isAdmin ? <AdminMenu /> : null}</nav>
-      <div className="flex gap-4 shrink-0">
+      <div className="flex gap-2 shrink-0">
         {isSignedIn ? (
           <>
             <Link href="/api/auth/signout">
-              <Button variant="ghost">
+              <Button variant="outline">
                 <Icon name="logout" /> Sign Out
               </Button>
             </Link>
           </>
         ) : (
           <Link href="/api/auth/signin">
-            <Button variant="ghost">
+            <Button variant="outline">
               <Icon name="login" /> Sign In
             </Button>
           </Link>
