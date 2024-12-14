@@ -17,6 +17,9 @@ export function AdminMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <Link href="/">
+          <DropdownMenuItem>Start</DropdownMenuItem>
+        </Link>
         <Link href="/objects">
           <DropdownMenuItem>Objects</DropdownMenuItem>
         </Link>

@@ -26,7 +26,7 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href="/">Start</BreadcrumbLink>
         </BreadcrumbItem>
         {pathname.flatMap((path, index) => {
           if (pathnameCount === index + 1) {
