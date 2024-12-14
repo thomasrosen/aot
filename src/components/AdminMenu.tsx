@@ -12,7 +12,7 @@ import { Button } from "./ui/button";
 export function AdminMenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button variant="ghost">Menu</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
