@@ -80,7 +80,7 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
             className={
               index === 0
                 ? " bg-green-700 size-6"
-                : "bg-background size-3 shadow-[0_0_0_3px_rgba(0,0,0,0.1)]"
+                : "bg-background size-3 shadow-[0_0_0_3px_rgba(0,0,0,0.1)] opacity-60"
             }
             onClick={() => {
               console.log("Clicked on history", history);
