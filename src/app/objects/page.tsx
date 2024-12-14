@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { ObjectCard } from "@/components/ObjectCard";
-import { SearchInput } from "@/components/SearchInput";
 import { SubHeader } from "@/components/SubHeader";
 import { CreateObjectButton } from "@/components/client/CreateObjectButton";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
@@ -72,12 +71,7 @@ export default async function ObjectsPage() {
     <>
       <SubHeader
         title="Objects"
-        actions={
-          <>
-            <SearchInput />
-            {canCreateObject ? <CreateObjectButton /> : null}
-          </>
-        }
+        actions={<>{canCreateObject ? <CreateObjectButton /> : null}</>}
       />
 
       <div className="flex flex-col gap-4">
