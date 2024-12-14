@@ -9,6 +9,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
+import { Icon } from "./Icon";
 
 export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname().split("/").filter(Boolean);
@@ -31,7 +32,13 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Start</BreadcrumbLink>
+          <BreadcrumbLink
+            href="/"
+            title="Startpage"
+            className="inline-flex p-2 -m-2"
+          >
+            <Icon name="home" size="sm" />
+          </BreadcrumbLink>
         </BreadcrumbItem>
         {pathname.flatMap((path, index) => {
           if (pathnameCount === index + 1) {

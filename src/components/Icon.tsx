@@ -17,34 +17,34 @@ export function Icon({
 }: {
   name: string;
   className?: string;
-  size?: "md"; // "sm" | "md" | "lg";
+  size?: "sm" | "md"; // "sm" | "md" | "lg";
 }) {
   return (
-    <>
-      <span
-        data-name={name}
-        className={cn(
-          MaterialSymbols.className,
-          "iconframe",
-          "inline-flex items-center justify-center leading-none overflow-hidden",
-          // size === "sm" && "w-4 h-4 text-base",
-          size === "md" && "w-6 h-6 text-2xl",
-          // size === "lg" && "w-8 h-8 text-3xl",
-          className
-        )}
-      />
+    <span
+      data-name={name}
+      className={cn(
+        MaterialSymbols.className,
+        "iconframe",
+        "inline-flex items-center justify-center leading-none overflow-hidden",
+        size === "sm" && "w-4 h-4 text-base",
+        size === "md" && "w-6 h-6 text-2xl",
+        // size === "lg" && "w-8 h-8 text-3xl",
+        "leading-none",
+        className
+      )}
+    >
       <style
         dangerouslySetInnerHTML={{
           __html: `
-            .iconframe:before {
-              content: attr(data-name);
-              font-family: var(--material-symbols-font);
-              color: inherit;
-              font-size: inherit;
-            }
-          `,
+          .iconframe:before {
+            content: attr(data-name);
+            font-family: var(--material-symbols-font);
+            color: inherit;
+            font-size: inherit;
+          }
+        `,
         }}
       />
-    </>
+    </span>
   );
 }
