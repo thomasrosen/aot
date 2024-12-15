@@ -1,18 +1,18 @@
 import { Icon } from "@/components/Icon";
 import { ObjectHistoryCard } from "@/components/ObjectHistoryCard";
 import { SubHeader } from "@/components/SubHeader";
+import { H3, P } from "@/components/Typography";
+import { VerticalFade } from "@/components/VerticalFade";
+import { ObjectMap } from "@/components/client/ObjectMap";
 import { RenameObjectDialogButton } from "@/components/client/RenameObjectDialogButton";
 import { UpdateObjectLocationDialogButton } from "@/components/client/UpdateObjectLocationDialogButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { object_code_prefix } from "@/constants";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { ObjectFull } from "@/types";
 import { Session } from "next-auth";
-import { H3, P } from "../Typography";
-import { VerticalFade } from "../VerticalFade";
-import { ObjectMap } from "../client/ObjectMap";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 export async function ObjectViewer({
   object,

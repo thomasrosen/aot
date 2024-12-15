@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
-import { Icon } from "@/components/Icon";
 import { NavMenu } from "@/components/NavMenu";
 import { H1 } from "@/components/Typography";
 import { ModeToggle } from "@/components/client/ModeToggle";
-import { Button } from "@/components/ui/button";
+import { SignInButton } from "@/components/client/SignInButton";
+import { SignOutButton } from "@/components/client/SignOutButton";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import Link from "next/link";
 
@@ -24,21 +24,7 @@ export async function Header() {
         <NavMenu isAdmin={isAdmin} />
       </nav>
       <div className="flex gap-2 shrink-0">
-        {isSignedIn ? (
-          <>
-            <Link href="/api/auth/signout">
-              <Button variant="outline">
-                <Icon name="logout" /> Sign Out
-              </Button>
-            </Link>
-          </>
-        ) : (
-          <Link href="/api/auth/signin">
-            <Button variant="outline">
-              <Icon name="login" /> Sign In
-            </Button>
-          </Link>
-        )}
+        {isSignedIn ? <SignOutButton /> : <SignInButton />}
         <ModeToggle />
       </div>
     </header>

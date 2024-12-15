@@ -1,11 +1,10 @@
-import { Badge } from "@/components/ui/badge";
+import { VerificationBadges } from "@/components/VerificationBadges";
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { object_code_prefix } from "@/constants";
 import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
 import { ObjectFull } from "@/types";
@@ -15,7 +14,7 @@ export function ObjectCard({ data }: { data: ObjectFull }) {
 
   const isTrusted = userRolePairingsIncludesPermissions({
     userRolePairings: firstObjectHistory?.user?.userRolePairings,
-    permissionNames: ["trusted", "admin"],
+    permissionNames: ["trusted"],
   });
   const isVerified = !!firstObjectHistory?.verifiedHistoryEntry;
 
@@ -34,25 +33,12 @@ export function ObjectCard({ data }: { data: ObjectFull }) {
       <CardHeader>
         {data.name ? <CardTitle>{data.name}</CardTitle> : null}
         <CardDescription>
-          <div className="flex gap-2 items-center flex-wrap pt-1 pb-2">
-            <Badge className="whitespace-nowrap">
-              {object_code_prefix}
-              {data.code}
-            </Badge>
-
-            <Badge
-              className="shrink-0"
-              variant={isTrusted ? "secondary" : "destructive"}
-            >
-              {isTrusted ? "✅ Is from Trusted User" : "Not a Trusted User"}
-            </Badge>
-            <Badge
-              className="shrink-0"
-              variant={isVerified ? "secondary" : "destructive"}
-            >
-              {isVerified ? "✅ Verified" : "Not Verified"}
-            </Badge>
-          </div>
+          <VerificationBadges
+            isTrusted={isTrusted}
+            isVerified={isVerified}
+            email={firstObjectHistory?.user?.email || ""}
+            className="pointer-events-none"
+          />
           <div>
             {location?.address
               ? location.address

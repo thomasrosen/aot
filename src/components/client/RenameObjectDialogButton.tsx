@@ -105,7 +105,7 @@ export function RenameObjectDialogButton({
           />
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
-              <Icon name="cancel" />
+              <Icon name="close" />
               Cancel
             </Button>
             <Button type="submit">

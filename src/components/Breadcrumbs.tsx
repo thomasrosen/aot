@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "@/components/Icon";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { Icon } from "./Icon";
 
 export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname().split("/").filter(Boolean);

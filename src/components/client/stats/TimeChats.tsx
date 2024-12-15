@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePickerWithPresets } from "@/components/client/DatePickerWithPresets";
 import {
   Card,
   CardContent,
@@ -22,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import { parseAsIsoDateTime, useQueryState } from "nuqs";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { DatePickerWithPresets } from "../DatePickerWithPresets";
 
 export function TimeChart({
   data,

@@ -1,6 +1,7 @@
 "use client";
 
 import { createObjectHistory } from "@/actions/createObjectHistory";
+import { AutogrowingTextarea } from "@/components/AutogrowingTextarea";
 import { Icon } from "@/components/Icon";
 import { MapInput } from "@/components/client/MapInput";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { AutogrowingTextarea } from "../AutogrowingTextarea";
 
 const validationSchema = z.object({
   code: z
@@ -440,7 +440,7 @@ export function UpdateObjectLocationForm({
               )}
             />
           </div>
-          <div className="rounded-md h-48 overflow-hidden">
+          <div className="rounded-md h-48 overflow-hidden dark">
             <MapInput
               ref={mapRef}
               latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
@@ -480,7 +480,7 @@ export function UpdateObjectLocationForm({
         <div className="flex gap-2 justify-end">
           {typeof onCancel === "function" ? (
             <Button type="button" variant="outline" onClick={onCancel}>
-              <Icon name="cancel" />
+              <Icon name="close" />
               Cancel
             </Button>
           ) : null}

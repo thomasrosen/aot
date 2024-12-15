@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { prisma } from "@/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -78,7 +78,24 @@ export async function createObjectHistory({
 
     revalidatePath(`/objects/${code}`); // clear the page cache
 
-    // TODO if not signed in: send out email to verify the object history entry and to sign in the user
+    // send verification email
+    if (!isSignedIn) {
+      // only send when not signed in
+      // this will first sign in the user and then redirect to the verifyObjectHistory page
+      const history_id = result.id;
+      await signIn("email_signin", {
+        change: `
+        New Location: ${location.address}
+        New Geo-Coordinates: ${location.latitude}, ${location.longitude}
+        Date of Submission: ${new Date().toLocaleString("de-DE")}
+`,
+        code,
+        email,
+        is_object_history_verify_request: true,
+        redirect: false,
+        redirectTo: `/verifyObjectHistory?id=${history_id}`,
+      });
+    }
   } catch (error) {
     throw error;
   }

@@ -1,4 +1,4 @@
-import { getWorkTimeEstimate } from "../../../lib/statistics/getWorkTimeEstimate";
+import { getWorkTimeEstimate } from "@/lib/statistics/getWorkTimeEstimate";
 
 export async function GET(request: Request): Promise<Response> {
   // https://localhost:3000/api/meta/times?start=2024-01-01&end=2024-12-31

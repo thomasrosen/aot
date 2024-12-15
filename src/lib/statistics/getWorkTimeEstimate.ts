@@ -1,6 +1,9 @@
-import { calculateWorkTime } from "./calculateWorkTime";
-import { CommitData, getCommitsByDateRange } from "./getCommitsByDateRange";
-import { getWeekNumber } from "./getWeekNumber";
+import { calculateWorkTime } from "@/lib/statistics/calculateWorkTime";
+import {
+  CommitData,
+  getCommitsByDateRange,
+} from "@/lib/statistics/getCommitsByDateRange";
+import { getWeekNumber } from "@/lib/statistics/getWeekNumber";
 
 export async function getWorkTimeEstimate({
   startDate,

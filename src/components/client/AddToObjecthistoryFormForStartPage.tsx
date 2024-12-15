@@ -1,5 +1,7 @@
 "use client";
 
+import { SubHeader } from "@/components/SubHeader";
+import { UpdateObjectLocationForm } from "@/components/client/UpdateObjectLocationForm";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,8 +12,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { SubHeader } from "../SubHeader";
-import { UpdateObjectLocationForm } from "./UpdateObjectLocationForm";
 
 export function AddToObjecthistoryFormForStartPage() {
   const [successAlterIsOpen, setSuccessAlterIsOpen] = useState(false);
