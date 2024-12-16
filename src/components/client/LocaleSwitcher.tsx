@@ -18,7 +18,7 @@ export function LocaleSwitcher() {
   };
 
   return (
-    <Select onValueChange={switchLocale} defaultValue={locale}>
+    <Select onValueChange={switchLocale} value={locale}>
       <SelectTriggerIcon title={t("change-language")}>
         <Icon name="globe" />
       </SelectTriggerIcon>
