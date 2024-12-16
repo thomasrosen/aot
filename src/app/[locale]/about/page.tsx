@@ -9,7 +9,7 @@ import Link from "next/link";
 export default async function AboutPage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   const t = await loadTranslations(locale);

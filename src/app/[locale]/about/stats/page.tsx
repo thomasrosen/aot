@@ -8,14 +8,14 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: {
+  params: Promise<{
     locale: Locale;
-  };
-  searchParams: {
+  }>;
+  searchParams: Promise<{
     start?: string;
     end?: string;
     g?: string;
-  };
+  }>;
 }) {
   const { locale } = await params;
   const t = await loadTranslations(locale);

@@ -8,7 +8,7 @@ import { Locale } from "@@/i18n-config";
 export default async function PermissionsPage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
   const session = await auth();
   const isAllowed = await userHasOneOfPermissions({

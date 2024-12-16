@@ -8,8 +8,15 @@ import {
 import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
 import { ObjectFull } from "@/prisma_types";
+import { Locale } from "@@/i18n-config";
 
-export function ObjectCard({ data }: { data: ObjectFull }) {
+export function ObjectCard({
+  data,
+  locale,
+}: {
+  data: ObjectFull;
+  locale: Locale;
+}) {
   const firstObjectHistory = (data?.history || []).at(0);
 
   const isTrusted = userRolePairingsIncludesPermissions({
@@ -38,6 +45,7 @@ export function ObjectCard({ data }: { data: ObjectFull }) {
             isVerified={isVerified}
             email={firstObjectHistory?.user?.email || ""}
             className="pointer-events-none"
+            locale={locale}
           />
           <div>
             {location?.address

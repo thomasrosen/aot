@@ -8,6 +8,7 @@ import {
 import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
 import { ObjectHistoryFull } from "@/prisma_types";
+import { Locale } from "@@/i18n-config";
 
 export function ObjectHistoryCard({
   data,
@@ -16,7 +17,7 @@ export function ObjectHistoryCard({
 }: {
   data: ObjectHistoryFull;
   className?: string;
-  locale: string;
+  locale: Locale;
 }) {
   const isTrusted = userRolePairingsIncludesPermissions({
     userRolePairings: data.user?.userRolePairings,

@@ -8,8 +8,8 @@ export default async function VerifyObjectHistoryPage({
   params,
   searchParams,
 }: {
-  params: { locale: Locale };
-  searchParams: { id: string };
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{ id: string }>;
 }) {
   const { id } = await searchParams;
   const { locale } = await params;

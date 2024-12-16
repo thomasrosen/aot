@@ -11,7 +11,7 @@ import Link from "next/link";
 export default async function ObjectsPage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   const t = loadTranslations(locale);
@@ -87,7 +87,7 @@ export default async function ObjectsPage({
         {Array.isArray(objects)
           ? objects.map((object) => (
               <Link key={object.code} href={`/objects/${object.code}`}>
-                <ObjectCard data={object} />
+                <ObjectCard data={object} locale={locale} />
               </Link>
             ))
           : null}

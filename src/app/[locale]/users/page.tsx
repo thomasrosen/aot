@@ -9,7 +9,7 @@ import { Locale } from "@@/i18n-config";
 export default async function UsersPage({
   params,
 }: {
-  params: { locale: Locale };
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   const t = loadTranslations(locale);
