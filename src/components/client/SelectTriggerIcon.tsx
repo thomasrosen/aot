@@ -1,8 +1,8 @@
 "use client";
 
+import { SelectTrigger } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import React from "react";
-import { SelectTrigger } from "../ui/select";
 
 export const SelectTriggerIcon = React.forwardRef<
   React.ElementRef<typeof SelectTrigger>,

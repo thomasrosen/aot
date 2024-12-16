@@ -4,6 +4,7 @@ import { createObjectHistory } from "@/actions/createObjectHistory";
 import { AutogrowingTextarea } from "@/components/AutogrowingTextarea";
 import { Icon } from "@/components/Icon";
 import { MapInput } from "@/components/client/MapInput";
+import { useTranslations } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,7 +27,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslations } from "./Translation";
 
 export function UpdateObjectLocationForm({
   code,
@@ -146,11 +146,11 @@ export function UpdateObjectLocationForm({
 
   useEffect(() => {
     setValue(() => ({ code: code }));
-  }, [code]);
+  }, [setValue, code]);
 
   useEffect(() => {
     setValue(() => ({ email: userEmail }));
-  }, [userEmail]);
+  }, [setValue, userEmail]);
 
   const [address, latitude, longitude] = form.watch([
     "location.address",
@@ -184,7 +184,7 @@ export function UpdateObjectLocationForm({
         }
       }
     },
-    [code, form.reset, router, t]
+    [code, form.reset, router, t, onSuccess]
   );
 
   // Searches an address and sets coordinates accordingly
@@ -238,7 +238,7 @@ export function UpdateObjectLocationForm({
     } finally {
       setFetchingAddress(false);
     }
-  }, [address, setValue]);
+  }, [address, setValue, t]);
 
   // Searches coordinates and sets address accordingly
   const handleSearchByCoords = useCallback(async () => {
@@ -289,7 +289,7 @@ export function UpdateObjectLocationForm({
     } finally {
       setFetchingAddress(false);
     }
-  }, [setValue, latitude, longitude]);
+  }, [setValue, latitude, longitude, t]);
 
   return (
     <Form {...form}>

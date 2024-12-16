@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
-import { ObjectFull } from "@/types";
+import { ObjectFull } from "@/prisma_types";
 
 export function ObjectCard({ data }: { data: ObjectFull }) {
   const firstObjectHistory = (data?.history || []).at(0);

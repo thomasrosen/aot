@@ -1,6 +1,7 @@
 "use client";
 
 import { DatePickerWithPresets } from "@/components/client/DatePickerWithPresets";
+import { Translate, useTranslations } from "@/components/client/Translation";
 import {
   Card,
   CardContent,
@@ -23,20 +24,17 @@ import {
 } from "@/components/ui/select";
 import { parseAsIsoDateTime, useQueryState } from "nuqs";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { Translate, useTranslations } from "../Translation";
 
 export function TimeChart({
   data,
   startDate: defaultStartDate,
   endDate: defaultEndDate,
   granularity: defaultGranularity,
-  className,
 }: {
   data: { key: string; hours: number }[];
   startDate: string;
   endDate: string;
   granularity: string;
-  className?: string;
 }) {
   const t = useTranslations();
 

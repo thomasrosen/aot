@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { formatDate } from "@/lib/formatDate";
 import { userRolePairingsIncludesPermissions } from "@/lib/permissions";
-import { ObjectHistoryFull } from "@/types";
+import { ObjectHistoryFull } from "@/prisma_types";
 
 export function ObjectHistoryCard({
   data,

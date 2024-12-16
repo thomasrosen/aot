@@ -3,6 +3,7 @@
 import { renameObject } from "@/actions/renameObject";
 import { DialogWrapper } from "@/components/DialogWrapper";
 import { Icon } from "@/components/Icon";
+import { useTranslations } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,7 +21,6 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { useTranslations } from "./Translation";
 
 export function RenameObjectDialogButton({
   trigger,

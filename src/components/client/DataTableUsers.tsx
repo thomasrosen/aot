@@ -2,12 +2,12 @@
 
 import { DataTable } from "@/components/client/DataTable";
 import { DataTableSortingHeader } from "@/components/client/DataTableSortingHeader";
+import { useTranslations } from "@/components/client/Translation";
 import UpdateUserButton from "@/components/client/UpdateUserButton";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
-import { UserFull } from "@/types";
+import { UserFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslations } from "./Translation";
 
 export function DataTableUsers({ data }: { data: UserFull[] }) {
   const t = useTranslations();

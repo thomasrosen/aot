@@ -3,7 +3,7 @@
 import { CustomMarker } from "@/components/client/CustomMarker";
 import { MapInput } from "@/components/client/MapInput";
 import { cn } from "@/lib/utils";
-import { ObjectFull } from "@/types";
+import { ObjectFull } from "@/prisma_types";
 import { MapRef } from "@vis.gl/react-maplibre";
 import { useEffect, useRef, useState } from "react";
 

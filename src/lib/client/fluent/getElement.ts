@@ -1,6 +1,11 @@
 // most parts from here are copied from project-fluent (mozilla)
 // but some are modified to fit the project
 
+import {
+  MarkupParser,
+  createParseMarkup,
+} from "@/lib/client/fluent/createParseMarkup";
+import voidElementTags from "@/lib/client/fluent/voidElementTags";
 import { FluentBundle, FluentVariable } from "@fluent/bundle";
 import React, {
   Fragment,
@@ -10,8 +15,6 @@ import React, {
   createElement,
   isValidElement,
 } from "react";
-import { MarkupParser, createParseMarkup } from "./createParseMarkup";
-import voidElementTags from "./voidElementTags";
 
 // Match the opening angle bracket (<) in HTML tags, and HTML entities like
 // &amp;, &#0038;, &#x0026;.
@@ -105,7 +108,7 @@ export function getElement({
   let elemsLower: Map<string, ReactElement>;
   if (args.elems) {
     elemsLower = new Map();
-    for (let [name, elem] of Object.entries(args.elems)) {
+    for (const [name, elem] of Object.entries(args.elems)) {
       // Ignore elems which are not valid React elements.
       if (!isValidElement(elem)) {
         continue;
@@ -149,7 +152,7 @@ export function getElement({
     return cloneElement(sourceChild, undefined, textContent);
   }
   function mapElementsWithKey(node: Node, index: number): ReactNode {
-    return <React.Fragment key={index}>{mapElements(node)}</React.Fragment>;
+    return createElement(React.Fragment, { key: index }, mapElements(node));
   }
 
   // If the message contains markup, parse it and try to match the children

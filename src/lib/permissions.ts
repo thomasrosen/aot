@@ -1,4 +1,4 @@
-import { UserRolePairingFull } from "@/types";
+import { UserRolePairingFull } from "@/prisma_types";
 
 export function userRolePairingsIncludesPermissions({
   userRolePairings,

@@ -1,10 +1,8 @@
 import { Locale } from "@@/i18n-config";
 import { FluentBundle, FluentResource } from "@fluent/bundle";
 
-// @ts-ignore
-import en_GB from "@/locales/en-GB.ftl";
-// @ts-ignore
 import de_DE from "@/locales/de-DE.ftl";
+import en_GB from "@/locales/en-GB.ftl";
 
 const bundleCache: Map<Locale, FluentBundle> = new Map();
 

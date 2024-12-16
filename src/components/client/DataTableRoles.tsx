@@ -2,11 +2,11 @@
 
 import { DataTable } from "@/components/client/DataTable";
 import { DataTableSortingHeader } from "@/components/client/DataTableSortingHeader";
+import { useTranslations } from "@/components/client/Translation";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
-import { RoleFull } from "@/types";
+import { RoleFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useTranslations } from "./Translation";
 
 export function DataTableRoles({ data }: { data: RoleFull[] }) {
   const t = useTranslations();

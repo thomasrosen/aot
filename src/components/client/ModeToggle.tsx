@@ -2,9 +2,9 @@
 
 import { Icon } from "@/components/Icon";
 import { SelectTriggerIcon } from "@/components/client/SelectTriggerIcon";
+import { useTranslations } from "@/components/client/Translation";
 import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { useTheme } from "next-themes";
-import { useTranslations } from "./Translation";
 
 export function ModeToggle() {
   const { theme, resolvedTheme, setTheme } = useTheme();

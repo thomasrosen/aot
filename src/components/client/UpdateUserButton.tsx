@@ -1,11 +1,11 @@
 "use client";
 
+import { useTranslations } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
-import { UserFull } from "@/types";
+import { UserFull } from "@/prisma_types";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
-import { useTranslations } from "./Translation";
 
 function UpdateUserButton({ user }: { user: UserFull }) {
   const t = useTranslations();
@@ -43,7 +43,7 @@ function UpdateUserButton({ user }: { user: UserFull }) {
     } else {
       toast.error(t("error-roles-update-failes"));
     }
-  }, [id, isAdmin, router]);
+  }, [id, isAdmin, router, t]);
 
   return (
     <Button size="sm" onClick={setAdminRights}>

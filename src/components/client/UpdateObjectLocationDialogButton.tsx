@@ -1,10 +1,10 @@
 "use client";
 
 import { DialogWrapper } from "@/components/DialogWrapper";
+import { useTranslations } from "@/components/client/Translation";
 import { UpdateObjectLocationForm } from "@/components/client/UpdateObjectLocationForm";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useTranslations } from "./Translation";
 
 export function UpdateObjectLocationDialogButton({
   trigger,

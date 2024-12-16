@@ -1,7 +1,7 @@
 // import { auth } from "@/auth";
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
-import { ObjectFull } from "@/types";
+import { ObjectFull } from "@/prisma_types";
 import type PrismaTypes from "@prisma/client";
 
 export async function getObject({

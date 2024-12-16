@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@/components/client/Translation";
 import {
   Table,
   TableBody,
@@ -17,7 +18,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { useTranslations } from "./Translation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

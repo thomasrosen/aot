@@ -1,6 +1,7 @@
 "use client";
 
 import { SubHeader } from "@/components/SubHeader";
+import { useTranslations } from "@/components/client/Translation";
 import { UpdateObjectLocationForm } from "@/components/client/UpdateObjectLocationForm";
 import {
   AlertDialog,
@@ -12,7 +13,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
-import { useTranslations } from "./Translation";
 
 export function AddToObjecthistoryFormForStartPage() {
   const t = useTranslations();

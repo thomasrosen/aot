@@ -2,11 +2,11 @@
 
 import { createObject } from "@/actions/createObject";
 import { Icon } from "@/components/Icon";
+import { useTranslations } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { useTranslations } from "./Translation";
 
 export function CreateObjectButton() {
   const router = useRouter();

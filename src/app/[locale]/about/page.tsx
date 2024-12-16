@@ -3,10 +3,14 @@ import { H2, P } from "@/components/Typography";
 import { Translate } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import { loadTranslations } from "@/lib/server/fluent-server";
-import { PageParams } from "@/types";
+import { Locale } from "@@/i18n-config";
 import Link from "next/link";
 
-export default async function AboutPage({ params }: { params: PageParams }) {
+export default async function AboutPage({
+  params,
+}: {
+  params: { locale: Locale };
+}) {
   const { locale } = await params;
   const t = await loadTranslations(locale);
 

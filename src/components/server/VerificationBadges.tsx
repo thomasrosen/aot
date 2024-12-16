@@ -1,4 +1,5 @@
 import { Icon } from "@/components/Icon";
+import { Translate } from "@/components/client/Translation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +15,6 @@ import { Badge } from "@/components/ui/badge";
 import { loadTranslations } from "@/lib/server/fluent-server";
 import { cn } from "@/lib/utils";
 import { Locale } from "@@/i18n-config";
-import { Translate } from "../client/Translation";
 
 function SmallAlert({
   children,

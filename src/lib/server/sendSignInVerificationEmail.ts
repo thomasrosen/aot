@@ -1,5 +1,5 @@
+import { sendObjectHistoryVerificationEmail } from "@/lib/server/sendObjectHistoryVerificationEmail";
 import { createTransport, Transporter } from "nodemailer";
-import { sendObjectHistoryVerificationEmail } from "./sendObjectHistoryVerificationEmail";
 // import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 interface Theme {
@@ -29,8 +29,7 @@ export async function sendVerificationRequest(
     return await sendObjectHistoryVerificationEmail(params);
   }
 
-  const { identifier, url, provider, theme } = params;
-  const { host } = new URL(url);
+  const { identifier, url, provider } = params;
 
   try {
     // NOTE: You are not required to use `nodemailer`, use whatever you want.
@@ -40,8 +39,8 @@ export async function sendVerificationRequest(
       to: identifier,
       from: provider.from,
       subject: `Sign in to Inventory`,
-      text: text({ url, host }),
-      html: html({ url, host, theme }),
+      text: text({ url }),
+      html: html({ url }),
     });
     const failed = result.rejected.concat(result.pending).filter(Boolean);
 
@@ -55,7 +54,7 @@ export async function sendVerificationRequest(
   }
 }
 
-function html({ url }: { url: string; host: string; theme: Theme }): string {
+function html({ url }: { url: string }): string {
   return `<html>
   <head>
   <meta name="color-scheme" content="light dark">
@@ -168,8 +167,7 @@ function html({ url }: { url: string; host: string; theme: Theme }): string {
 }
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
-function text(params: { url: string; host: string }): string {
-  const { url, host } = params;
+function text({ url }: { url: string }): string {
   return `Hi there! Welcome back to Inventory ☺️
 
 Click the link below to securely sign in:

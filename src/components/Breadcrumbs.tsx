@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/Icon";
+import { useTranslations } from "@/components/client/Translation";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,7 +11,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { useTranslations } from "./client/Translation";
 
 export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
   const t = useTranslations();
