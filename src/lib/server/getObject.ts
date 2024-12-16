@@ -1,13 +1,14 @@
 // import { auth } from "@/auth";
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
+import { ObjectFull } from "@/types";
 import type PrismaTypes from "@prisma/client";
 
 export async function getObject({
   code,
 }: {
   code: string;
-}): Promise<Partial<PrismaTypes.Object> | null> {
+}): Promise<Partial<ObjectFull> | null> {
   let select: PrismaTypes.Prisma.ObjectSelect = {
     code: true,
   };

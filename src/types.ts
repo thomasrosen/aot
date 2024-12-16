@@ -1,4 +1,9 @@
+import { Locale } from "@@/i18n-config";
 import type PrismaTypes from "@prisma/client";
+
+export type PageParams = Promise<{
+  locale: Locale;
+}>;
 
 export type LocationFull = Partial<PrismaTypes.Location>;
 

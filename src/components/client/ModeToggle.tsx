@@ -1,39 +1,32 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { Icon } from "@/components/Icon";
+import { SelectTriggerIcon } from "@/components/client/SelectTriggerIcon";
+import { Select, SelectContent, SelectItem } from "@/components/ui/select";
 import { useTheme } from "next-themes";
-
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useTranslations } from "./Translation";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
+  const t = useTranslations();
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Select onValueChange={setTheme} defaultValue={theme || ""}>
+      <SelectTriggerIcon
+        title={t("change-theme")}
+        data-placeholder={t("change-theme")}
+      >
+        {resolvedTheme === "light" ? (
+          <Icon name="light_mode" />
+        ) : (
+          <Icon name="dark_mode" />
+        )}
+      </SelectTriggerIcon>
+      <SelectContent>
+        <SelectItem value="light">{t("light-theme")}</SelectItem>
+        <SelectItem value="dark">{t("dark-theme")}</SelectItem>
+        <SelectItem value="system">{t("system-theme")}</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }

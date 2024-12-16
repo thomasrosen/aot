@@ -10,18 +10,20 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "./client/Translation";
 
 export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
+  const t = useTranslations();
   const pathname = usePathname().split("/").filter(Boolean);
   const pathnameCount = pathname.length;
 
   const dictionary: Record<string, string> = {
-    users: "Users",
-    objects: "Objects",
-    roles: "Roles",
-    permissions: "Permissions",
-    stats: "Statistics",
-    about: "About",
+    users: t("users"),
+    objects: t("objects"),
+    roles: t("roles"),
+    permissions: t("permissions"),
+    stats: t("statistics"),
+    about: t("about"),
   };
 
   if (pathnameCount === 0) {
@@ -34,7 +36,7 @@ export function Breadcrumbs({ children }: { children?: React.ReactNode }) {
         <BreadcrumbItem>
           <BreadcrumbLink
             href="/"
-            title="Startpage"
+            title={t("startpage")}
             className="inline-flex p-2 -m-2"
           >
             <Icon name="home" size="sm" />

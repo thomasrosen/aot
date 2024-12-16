@@ -12,13 +12,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import { useTranslations } from "./Translation";
 
 export function AddToObjecthistoryFormForStartPage() {
+  const t = useTranslations();
   const [successAlterIsOpen, setSuccessAlterIsOpen] = useState(false);
   return (
     <>
       <div className="w-96 max-w-full mx-auto">
-        <SubHeader title="Update Location" />
+        <SubHeader title={t("update-location")} />
         <UpdateObjectLocationForm
           onCancel={undefined}
           onSuccess={() => setSuccessAlterIsOpen(true)}
@@ -30,13 +32,13 @@ export function AddToObjecthistoryFormForStartPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Location Updated</AlertDialogTitle>
+            <AlertDialogTitle>{t("location-updated")}</AlertDialogTitle>
             <AlertDialogDescription>
-              The location of the object was successfully updated.
+              {t("location-updated-description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction>Okay</AlertDialogAction>
+            <AlertDialogAction>{t("okay")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

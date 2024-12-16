@@ -7,14 +7,18 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
 import { UserFull } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "./Translation";
 
 export function DataTableUsers({ data }: { data: UserFull[] }) {
+  const t = useTranslations();
   const columns: ColumnDef<UserFull>[] = [
     {
       accessorKey: "id",
       header: ({ column }) => {
         return (
-          <DataTableSortingHeader column={column}>ID</DataTableSortingHeader>
+          <DataTableSortingHeader column={column}>
+            {t("id")}
+          </DataTableSortingHeader>
         );
       },
     },
@@ -22,7 +26,9 @@ export function DataTableUsers({ data }: { data: UserFull[] }) {
       accessorKey: "email",
       header: ({ column }) => {
         return (
-          <DataTableSortingHeader column={column}>Email</DataTableSortingHeader>
+          <DataTableSortingHeader column={column}>
+            {t("email")}
+          </DataTableSortingHeader>
         );
       },
     },
@@ -31,7 +37,7 @@ export function DataTableUsers({ data }: { data: UserFull[] }) {
       header: ({ column }) => {
         return (
           <DataTableSortingHeader column={column}>
-            Last Updated At
+            {t("last-updated-at")}
           </DataTableSortingHeader>
         );
       },
@@ -46,7 +52,9 @@ export function DataTableUsers({ data }: { data: UserFull[] }) {
       accessorKey: "userRolePairings",
       header: ({ column }) => {
         return (
-          <DataTableSortingHeader column={column}>Roles</DataTableSortingHeader>
+          <DataTableSortingHeader column={column}>
+            {t("roles")}
+          </DataTableSortingHeader>
         );
       },
       cell: ({ row }) => {
@@ -61,7 +69,7 @@ export function DataTableUsers({ data }: { data: UserFull[] }) {
     {
       accessorKey: "actions",
       header: () => {
-        return <div className="sr-only">Actions</div>;
+        return <div className="sr-only">{t("actions")}</div>;
       },
       cell: ({ row }) => {
         const original = row.original;

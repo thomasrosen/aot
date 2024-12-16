@@ -1,4 +1,9 @@
-export function formatDate(date: Date | string | undefined) {
+import { DEFAULT_LOCALE } from "@@/i18n-config";
+
+export function formatDate(
+  date: Date | string | undefined,
+  locale: string = DEFAULT_LOCALE
+) {
   if (!date) {
     return "";
   }
@@ -11,5 +16,19 @@ export function formatDate(date: Date | string | undefined) {
     return "";
   }
 
-  return date.toISOString().replace("T", " ").replace("Z", "").slice(0, -7);
+  // return localized date
+  return new Intl.DateTimeFormat(locale).format(date);
+}
+
+export function formatDateRange(
+  from: Date,
+  to: Date,
+  locale: string = DEFAULT_LOCALE
+) {
+  locale = "de-DE";
+  return new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).formatRange(from, to);
 }

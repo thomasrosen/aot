@@ -7,7 +7,7 @@ export function DataTableSortingHeader({
   children,
   column,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   column: Column<any, any>;
 }) {
   const isSorted = column.getIsSorted();

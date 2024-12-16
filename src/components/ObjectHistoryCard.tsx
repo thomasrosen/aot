@@ -1,4 +1,4 @@
-import { VerificationBadges } from "@/components/VerificationBadges";
+import { VerificationBadges } from "@/components/server/VerificationBadges";
 import {
   Card,
   CardDescription,
@@ -12,9 +12,11 @@ import { ObjectHistoryFull } from "@/types";
 export function ObjectHistoryCard({
   data,
   className,
+  locale,
 }: {
   data: ObjectHistoryFull;
   className?: string;
+  locale: string;
 }) {
   const isTrusted = userRolePairingsIncludesPermissions({
     userRolePairings: data.user?.userRolePairings,
@@ -34,6 +36,7 @@ export function ObjectHistoryCard({
             isTrusted={isTrusted}
             isVerified={isVerified}
             email={data.user?.email || ""}
+            locale={locale}
           />
           <div className="font-mono">
             {formatDate(data.updatedAt)} • {data.user?.email}

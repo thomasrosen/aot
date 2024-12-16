@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { parseAsIsoDateTime, useQueryState } from "nuqs";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Translate, useTranslations } from "../Translation";
 
 export function TimeChart({
   data,
@@ -37,6 +38,8 @@ export function TimeChart({
   granularity: string;
   className?: string;
 }) {
+  const t = useTranslations();
+
   const [startDate, setStartDate] = useQueryState(
     "start",
     parseAsIsoDateTime.withDefault(new Date(defaultStartDate)).withOptions({
@@ -67,11 +70,14 @@ export function TimeChart({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Programming Hours</CardTitle>
+        <CardTitle>{t("programming-hours-title")}</CardTitle>
         <CardDescription>
-          The hours spent on programming.
-          <br />
-          This is an estimate based on the commits made to the repository.
+          <Translate
+            id="programming-hours-description"
+            elems={{
+              br: <br />,
+            }}
+          />
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-2">
@@ -89,13 +95,13 @@ export function TimeChart({
           />
           <Select value={granularity} onValueChange={setGranularity}>
             <SelectTrigger>
-              <SelectValue placeholder="Granularity" />
+              <SelectValue placeholder={t("granularity")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="day">Day</SelectItem>
-              <SelectItem value="week">Week</SelectItem>
-              <SelectItem value="month">Month</SelectItem>
-              <SelectItem value="year">Year</SelectItem>
+              <SelectItem value="day">{t("day")}</SelectItem>
+              <SelectItem value="week">{t("week")}</SelectItem>
+              <SelectItem value="month">{t("month")}</SelectItem>
+              <SelectItem value="year">{t("year")}</SelectItem>
             </SelectContent>
           </Select>
         </div>

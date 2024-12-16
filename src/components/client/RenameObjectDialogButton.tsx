@@ -20,17 +20,7 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(3, {
-      message: "Name must be at least 3 characters.",
-    })
-    .max(100, {
-      message: "Name must be less than 100 characters.",
-    }),
-});
+import { useTranslations } from "./Translation";
 
 export function RenameObjectDialogButton({
   trigger,
@@ -42,7 +32,19 @@ export function RenameObjectDialogButton({
   name: string;
 }) {
   const router = useRouter();
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
+
+  const formSchema = z.object({
+    name: z
+      .string()
+      .min(3, {
+        message: t("error-name-min-length"),
+      })
+      .max(100, {
+        message: t("error-name-max-length"),
+      }),
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,11 +56,8 @@ export function RenameObjectDialogButton({
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
     if (values.name === name) {
-      toast.success("Name is already set to this value.");
+      toast.success(t("success-name-is-same"));
       return;
     }
 
@@ -68,12 +67,12 @@ export function RenameObjectDialogButton({
     });
 
     if (renamed) {
-      toast.success("Object renamed");
+      toast.success(t("success-name-updated"));
       setOpen(false);
       router.refresh();
     } else {
-      console.error("ERROR_q89eqeAZ Failed to rename object");
-      toast.error("ERROR_ChCT290a Failed to rename object");
+      console.error(t("error-failed-to-rename-object"));
+      toast.error(t("error-failed-to-rename-object"));
     }
   }
 
@@ -83,9 +82,9 @@ export function RenameObjectDialogButton({
     <DialogWrapper
       open={open}
       onOpenChange={setOpen}
-      trigger={trigger || <Button>Change Name</Button>}
-      title="Rename"
-      description="Change the name of the object."
+      trigger={trigger || <Button>{t("change-name-button")}</Button>}
+      title={t("change-name-title")}
+      description={t("change-name-description")}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -94,11 +93,11 @@ export function RenameObjectDialogButton({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{t("name-label")}</FormLabel>
                 <FormControl>
-                  <Input placeholder="The new name…" {...field} />
+                  <Input placeholder={t("name-placeholder")} {...field} />
                 </FormControl>
-                <FormDescription>The name will be public.</FormDescription>
+                <FormDescription>{t("name-description")}</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -106,11 +105,11 @@ export function RenameObjectDialogButton({
           <div className="flex gap-2 justify-end">
             <Button type="button" variant="outline" onClick={handleCancel}>
               <Icon name="close" />
-              Cancel
+              {t("cancel")}
             </Button>
             <Button type="submit">
               <Icon name="save" />
-              Save Name
+              {t("save-name")}
             </Button>
           </div>
         </form>

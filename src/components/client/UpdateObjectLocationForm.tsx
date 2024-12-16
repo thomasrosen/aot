@@ -26,68 +26,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-
-const validationSchema = z.object({
-  code: z
-    .string({
-      message: "Object Code is required.",
-      required_error: "Object Code is required.",
-      invalid_type_error: "Object Code is required.",
-    })
-    .min(1, {
-      message: "Object Code is required.",
-    }),
-  location: z.object({
-    address: z
-      .string({
-        message: "Please enter an address.",
-        required_error: "Please enter an address.",
-        invalid_type_error: "Please enter an address.",
-      })
-      .min(1, {
-        message: "Please enter an address.",
-      }),
-    latitude: z
-      .number({
-        message: "Latitude is required.",
-        required_error: "Latitude is required.",
-      })
-      .min(-90, {
-        message: "Latitude must be at least -90.",
-      })
-      .max(90, {
-        message: "Latitude must be at most 90.",
-      })
-      .refine((value) => value !== null && value !== undefined, {
-        message: "Latitude cannot be null or undefined.",
-      })
-      .refine((value) => value !== 0, {
-        message: "Latitude cannot be 0.",
-      }),
-    longitude: z
-      .number({
-        message: "Longitude is required.",
-        required_error: "Longitude is required.",
-      })
-      .min(-180, {
-        message: "Longitude must be at least -180.",
-      })
-      .max(180, {
-        message: "Longitude must be at most 180.",
-      })
-      .refine((value) => value !== null && value !== undefined, {
-        message: "Longitude cannot be null or undefined.",
-      })
-      .refine((value) => value !== 0, {
-        message: "Longitude cannot be 0.",
-      }),
-  }),
-  email: z.string().email({
-    message: "Invalid email address.",
-  }),
-});
-
-type ValidationSchemaType = z.infer<typeof validationSchema>;
+import { useTranslations } from "./Translation";
 
 export function UpdateObjectLocationForm({
   code,
@@ -100,6 +39,70 @@ export function UpdateObjectLocationForm({
   onCancel?: () => void;
   className?: string;
 }) {
+  const t = useTranslations();
+
+  const validationSchema = z.object({
+    code: z
+      .string({
+        message: t("code-required"),
+        required_error: t("code-required"),
+        invalid_type_error: t("code-required"),
+      })
+      .min(1, {
+        message: t("code-required"),
+      }),
+    location: z.object({
+      address: z
+        .string({
+          message: t("address-required"),
+          required_error: t("address-required"),
+          invalid_type_error: t("address-required"),
+        })
+        .min(1, {
+          message: t("address-required"),
+        }),
+      latitude: z
+        .number({
+          message: t("latitude-required"),
+          required_error: t("latitude-required"),
+        })
+        .min(-90, {
+          message: t("latitude-must-be-between"),
+        })
+        .max(90, {
+          message: t("latitude-must-be-between"),
+        })
+        .refine((value) => value !== null && value !== undefined, {
+          message: t("latitude-must-be-number"),
+        })
+        .refine((value) => value !== 0, {
+          message: t("latitude-can-not-zero"),
+        }),
+      longitude: z
+        .number({
+          message: t("longitude-required"),
+          required_error: t("longitude-required"),
+        })
+        .min(-180, {
+          message: t("longitude-must-be-between"),
+        })
+        .max(180, {
+          message: t("longitude-must-be-between"),
+        })
+        .refine((value) => value !== null && value !== undefined, {
+          message: t("longitude-must-be-number"),
+        })
+        .refine((value) => value !== 0, {
+          message: t("longitude-can-not-zero"),
+        }),
+    }),
+    email: z.string().email({
+      message: t("email-invalid"),
+    }),
+  });
+
+  type ValidationSchemaType = z.infer<typeof validationSchema>;
+
   const router = useRouter();
   const { data: session } = useSession();
   const userEmail = session?.user?.email || "";
@@ -164,24 +167,24 @@ export function UpdateObjectLocationForm({
         });
 
         if (updatedLocation) {
-          toast.success("Location updated");
+          toast.success(t("success-updated-location"));
           form.reset();
           if (onSuccess) {
             onSuccess();
           }
           router.refresh();
         } else {
-          toast.error("ERROR_mxjE0Q90 Failed to update location");
+          toast.error(t("error-update-location"));
         }
       } catch (error) {
         if (error instanceof Error) {
-          toast.error("ERROR_w6bFREER Failed to update location.", {
+          toast.error(t("error-update-location"), {
             description: error.message,
           });
         }
       }
     },
-    [code, form.reset, router]
+    [code, form.reset, router, t]
   );
 
   // Searches an address and sets coordinates accordingly
@@ -195,12 +198,12 @@ export function UpdateObjectLocationForm({
 
       const response = await fetch(url);
       if (!response || !response.ok) {
-        throw toast.error("ERROR_QMHKSnBx Error fetching location");
+        throw toast.error(t("error-fetching-location"));
       }
 
       const data = await response.json();
       if (data.length <= 0) {
-        throw toast.error("ERROR_yDAqZc4F No data returned");
+        throw toast.error(t("error-fetching-location"));
       }
 
       const { lat, lon, display_name, boundingbox } = data[0];
@@ -226,12 +229,12 @@ export function UpdateObjectLocationForm({
       }
     } catch (error) {
       if (error instanceof Error) {
-        return toast.error(
-          `ERROR_fQMdnwcE Error fetching location: ${error.message}`
-        );
+        return toast.error(t("error-fetching-location"), {
+          description: error.message,
+        });
       }
 
-      toast.error("ERROR_fQMdnwcE Error fetching location");
+      toast.error(t("error-fetching-location"));
     } finally {
       setFetchingAddress(false);
     }
@@ -254,18 +257,17 @@ export function UpdateObjectLocationForm({
       );
 
       if (!response || !response.ok) {
-        throw toast.error("ERROR_YuHDZ4RX Error fetching location");
+        throw toast.error(t("error-fetching-location"));
       }
 
       const data = await response.json();
-      console.log("handleSearchByCoords-data", data);
 
       if (!data) {
-        throw toast.error("ERROR_A4YnTEc1 No data returned");
+        throw toast.error(t("error-fetching-location"));
       }
 
       if (data.error) {
-        throw toast.error(`ERROR_eF4zu7oR ${data.error}`);
+        throw toast.error(data.error);
       }
 
       setValue((values) => {
@@ -278,12 +280,12 @@ export function UpdateObjectLocationForm({
       });
     } catch (error) {
       if (error instanceof Error) {
-        return toast.error(
-          `ERROR_ESKybfq6 Error fetching location: ${error.message}`
-        );
+        return toast.error(t("error-update-location"), {
+          description: error.message,
+        });
       }
 
-      toast.error("ERROR_ESKybfq6 Error fetching location");
+      throw toast.error(t("error-fetching-location"));
     } finally {
       setFetchingAddress(false);
     }
@@ -300,7 +302,7 @@ export function UpdateObjectLocationForm({
             name="code"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Object Code</FormLabel>
+                <FormLabel>{t("object-code")}</FormLabel>
                 <div className="flex gap-2 items-center font-mono">
                   <span>{object_code_prefix}</span>
                   <FormControl>
@@ -314,7 +316,7 @@ export function UpdateObjectLocationForm({
                 </div>
                 <FormMessage />
                 <FormDescription>
-                  The Object Code can be found on the object itself.
+                  {t("object-code-description")}
                 </FormDescription>
               </FormItem>
             )}
@@ -326,7 +328,7 @@ export function UpdateObjectLocationForm({
           render={({ field }) => (
             <FormItem className="space-y-2">
               <div className="flex gap-2 items-center justify-between">
-                <FormLabel>Address</FormLabel>
+                <FormLabel>{t("address")}</FormLabel>
                 <Button
                   type="button"
                   disabled={isFetchingAddress}
@@ -338,14 +340,14 @@ export function UpdateObjectLocationForm({
                     latitude && longitude ? "visible" : "hidden invisible"
                   )}
                 >
-                  Fill in from coordinates
+                  {t("fill-in-from-coordinates")}
                 </Button>
               </div>
               <div className="flex space-x-2">
                 <FormControl>
                   <AutogrowingTextarea
                     {...field}
-                    placeholder="Housenumber, Street, City, Country"
+                    placeholder={t("address-placeholder")}
                     onKeyDown={(event) => {
                       if (event.key === "Enter") {
                         event.preventDefault();
@@ -363,23 +365,20 @@ export function UpdateObjectLocationForm({
                   onClick={handleSearchByAddress}
                   size="icon"
                   className="shrink-0"
+                  title={t("search-address")}
                 >
                   <Icon name="search" />
                 </Button>
               </div>
-              <FormDescription>
-                The address where the object is currently located. Be as more or
-                less detailed as you like. This is only informative. The
-                Geo-Coordinates are used when the location is needed.
-              </FormDescription>
+              <FormDescription>{t("address-description")}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex flex-col gap-2">
-          <Label>Coordinates</Label>
+          <Label>{t("coordinates")}</Label>
           <p className="text-sm text-muted-foreground">
-            Click on the map to fill in location.
+            {t("coordinates-description")}
           </p>
           <div className="flex gap-2">
             <FormField
@@ -403,7 +402,7 @@ export function UpdateObjectLocationForm({
                         }
                       }}
                       value={latitude || ""}
-                      title="Latitude"
+                      title={t("latitude")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -432,7 +431,7 @@ export function UpdateObjectLocationForm({
                         }
                       }}
                       value={longitude || ""}
-                      title="Longitude"
+                      title={t("longitude")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -446,7 +445,6 @@ export function UpdateObjectLocationForm({
               latitude={latitude >= -90 && latitude <= 90 ? latitude : 0}
               longitude={longitude >= -180 && longitude <= 180 ? longitude : 0}
               onClick={({ latitude, longitude }) => {
-                console.log("latitude, longitude", latitude, longitude);
                 setValue((values) => ({
                   location: {
                     ...values.location,
@@ -464,15 +462,16 @@ export function UpdateObjectLocationForm({
             name="email"
             render={({ field }) => (
               <FormItem className="space-y-2">
-                <FormLabel>Your Email</FormLabel>
+                <FormLabel>{t("your-email")}</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="name@email.com" {...field} />
+                  <Input
+                    type="text"
+                    placeholder={t("your-email-placeholder")}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
-                <FormDescription>
-                  This email will be used to moderate your entry. It will not be
-                  public.
-                </FormDescription>
+                <FormDescription>{t("your-email-description")}</FormDescription>
               </FormItem>
             )}
           />
@@ -481,12 +480,12 @@ export function UpdateObjectLocationForm({
           {typeof onCancel === "function" ? (
             <Button type="button" variant="outline" onClick={onCancel}>
               <Icon name="close" />
-              Cancel
+              {t("cancel")}
             </Button>
           ) : null}
           <Button type="submit" disabled={!isSubmittable}>
             <Icon name="save" />
-            Save Location
+            {t("save-location")}
           </Button>
         </div>
       </form>

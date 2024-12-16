@@ -1,9 +1,10 @@
 "use client";
 
-import { addDays, format } from "date-fns";
+import { addDays } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import * as React from "react";
 
+import { useLocale, useTranslations } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -18,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formatDate, formatDateRange } from "@/lib/formatDate";
 import { cn } from "@/lib/utils";
 import { DateRange } from "react-day-picker";
 
@@ -32,6 +34,9 @@ export function DatePickerWithPresets({
   onDateChange?: (date?: DateRange) => void;
   className?: string;
 }) {
+  const t = useTranslations();
+  const locale = useLocale();
+
   const [date, setDate] = React.useState<DateRange | undefined>({
     from,
     to,
@@ -64,14 +69,12 @@ export function DatePickerWithPresets({
           <CalendarIcon />
           {date?.from ? (
             date?.to ? (
-              <>
-                {format(date.from, "y LLL dd")} - {format(date.to, "y LLL dd")}
-              </>
+              formatDateRange(date.from, date.to, locale)
             ) : (
-              format(date.from, "y LLL dd")
+              formatDate(date.from, locale)
             )
           ) : (
-            <span>Pick a date</span>
+            <span>{t("date-range-picker-placeholder")}</span>
           )}
         </Button>
       </PopoverTrigger>
@@ -116,14 +119,14 @@ export function DatePickerWithPresets({
           }}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select" />
+            <SelectValue placeholder={t("date-range-picker-placeholder")} />
           </SelectTrigger>
           <SelectContent position="popper">
-            <SelectItem value="today">Today</SelectItem>
-            <SelectItem value="yesterday">Yesterday</SelectItem>
-            <SelectItem value="last_week">Last Week</SelectItem>
-            <SelectItem value="last_month">Last Month</SelectItem>
-            <SelectItem value="last_year">Last Year</SelectItem>
+            <SelectItem value="today">{t("today")}</SelectItem>
+            <SelectItem value="yesterday">{t("yesterday")}</SelectItem>
+            <SelectItem value="last_week">{t("last-week")}</SelectItem>
+            <SelectItem value="last_month">{t("last-month")}</SelectItem>
+            <SelectItem value="last_year">{t("last-year")}</SelectItem>
           </SelectContent>
         </Select>
         <Calendar

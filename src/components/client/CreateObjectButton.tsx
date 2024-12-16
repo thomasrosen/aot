@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useTranslations } from "./Translation";
 
 export function CreateObjectButton() {
   const router = useRouter();
+  const t = useTranslations();
 
   const handleCreateObject = useCallback(async () => {
     try {
@@ -18,18 +20,20 @@ export function CreateObjectButton() {
         toast("Object created");
         router.push(`/objects/${code}`);
       } else {
-        throw new Error("ERROR_bVN5t7qz Unkown error.");
+        throw new Error(t("error-unkown-error"));
       }
     } catch (error) {
-      toast(`Failed to create object: ${error}`);
-      console.error("ERROR_dpBQWmlU handleCreateObject error", error);
+      const isError = error instanceof Error;
+      toast.error(t("error-failed-to-create-object"), {
+        description: isError ? error.message : String(error),
+      });
     }
-  }, [router]);
+  }, [router, t]);
 
   return (
     <Button onClick={handleCreateObject}>
       <Icon name="add" />
-      Add
+      {t("create-object")}
     </Button>
   );
 }

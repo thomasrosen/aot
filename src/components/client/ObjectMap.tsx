@@ -77,19 +77,29 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
                   }
                 : undefined
             }
-            className={
+            className={cn(
               index === 0
                 ? " bg-green-700 size-6"
-                : "bg-background size-3 shadow-[0_0_0_3px_rgba(0,0,0,0.1)] opacity-60"
-            }
+                : "bg-background size-3 shadow-[0_0_0_3px_rgba(0,0,0,0.1)] opacity-60",
+              "cursor-pointer"
+            )}
             onClick={() => {
-              console.log("Clicked on history", history);
+              // zoom to the marker
+              const map = mapRef.current?.getMap();
+              const currentZoom = map?.getZoom();
+              if (map) {
+                map.flyTo({
+                  center: [longitude, latitude],
+                  zoom: currentZoom >= 12 ? currentZoom : 12,
+                  essential: true,
+                });
+              }
             }}
           >
             {index === 0 ? (
               <div
                 className={cn(
-                  "-z-1 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 size-8"
+                  "-z-1 absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 size-8 pointer-events-none"
                 )}
               >
                 <span className="animate-ping-slow absolute h-full w-full rounded-full bg-green-400"></span>

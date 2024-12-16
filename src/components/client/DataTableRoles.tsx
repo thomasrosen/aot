@@ -6,14 +6,19 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
 import { RoleFull } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "./Translation";
 
 export function DataTableRoles({ data }: { data: RoleFull[] }) {
+  const t = useTranslations();
+
   const columns: ColumnDef<RoleFull>[] = [
     {
       accessorKey: "name",
       header: ({ column }) => {
         return (
-          <DataTableSortingHeader column={column}>Name</DataTableSortingHeader>
+          <DataTableSortingHeader column={column}>
+            {t("name")}
+          </DataTableSortingHeader>
         );
       },
       cell: ({ row }) => {
@@ -26,7 +31,7 @@ export function DataTableRoles({ data }: { data: RoleFull[] }) {
       header: ({ column }) => {
         return (
           <DataTableSortingHeader column={column}>
-            Permissions
+            {t("permissions")}
           </DataTableSortingHeader>
         );
       },
@@ -42,7 +47,7 @@ export function DataTableRoles({ data }: { data: RoleFull[] }) {
       header: ({ column }) => {
         return (
           <DataTableSortingHeader column={column}>
-            Last Updated At
+            {t("last-updated-at")}
           </DataTableSortingHeader>
         );
       },

@@ -1,4 +1,4 @@
-import { VerificationBadges } from "@/components/VerificationBadges";
+import { VerificationBadges } from "@/components/server/VerificationBadges";
 import {
   Card,
   CardDescription,

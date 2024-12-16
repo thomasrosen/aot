@@ -7,42 +7,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { loadTranslations } from "@/lib/server/fluent-server";
+import { Locale } from "@@/i18n-config";
 import Link from "next/link";
 
-export function NavMenu({ isAdmin }: { isAdmin: boolean }) {
+export function NavMenu({
+  isAdmin,
+  locale,
+}: {
+  isAdmin: boolean;
+  locale: Locale;
+}) {
+  const t = loadTranslations(locale);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Menu</Button>
+        <Button variant="outline">{t("menu")}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        <DropdownMenuLabel>Menu</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("menu")}</DropdownMenuLabel>
         {/* <Link href="/">
-          <DropdownMenuItem>Start</DropdownMenuItem>
+          <DropdownMenuItem>{t("startpage")}</DropdownMenuItem>
         </Link> */}
         <Link href="/objects">
-          <DropdownMenuItem>Objects</DropdownMenuItem>
+          <DropdownMenuItem>{t("objects")}</DropdownMenuItem>
         </Link>
         <Link href="/about">
-          <DropdownMenuItem>About</DropdownMenuItem>
+          <DropdownMenuItem>{t("about")}</DropdownMenuItem>
         </Link>
         <Link href="/about/stats">
-          <DropdownMenuItem>Statistics</DropdownMenuItem>
+          <DropdownMenuItem>{t("statistics")}</DropdownMenuItem>
         </Link>
 
         {isAdmin ? (
           <>
             <DropdownMenuSeparator />
 
-            <DropdownMenuLabel>Admin Menu</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("admin-menu")}</DropdownMenuLabel>
             <Link href="/users">
-              <DropdownMenuItem>Users</DropdownMenuItem>
+              <DropdownMenuItem>{t("users")}</DropdownMenuItem>
             </Link>
             <Link href="/roles">
-              <DropdownMenuItem>Roles</DropdownMenuItem>
+              <DropdownMenuItem>{t("roles")}</DropdownMenuItem>
             </Link>
             <Link href="/permissions">
-              <DropdownMenuItem>Permissions</DropdownMenuItem>
+              <DropdownMenuItem>{t("permissions")}</DropdownMenuItem>
             </Link>
           </>
         ) : null}

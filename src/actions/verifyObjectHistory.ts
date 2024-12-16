@@ -46,8 +46,6 @@ export async function verifyObjectHistory({
     },
   });
 
-  console.log("verifyObjectHistory-data", data);
-
   if (!data) {
     throw new Error("ERROR_4lZc2h2y Failed to update object history.");
   }
