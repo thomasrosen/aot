@@ -1,6 +1,6 @@
 app-title = Inventory
 
-startpage = Startpage
+startpage = Start Page
 statistics = Statistics
 about = About
 contact = Contact
@@ -10,7 +10,7 @@ roles = Roles
 users = Users
 verify-object-history = Verify Object History
 
-verify-object-history-successful = You successfully verified your submission.
+verify-object-history-successful = You have successfully verified your submission.
 verify-object-history-failed = The verification of your submission failed.
 
 error-with-message = Error: { $message }
@@ -18,7 +18,7 @@ try-again = Please try again.
 error-page-title = Something went wrong!
 
 about-content =
-  <p>This is going to be the about page.</p>
+  <p>This will be the about page.</p>
   <p>Another paragraph.</p>
   <h2>Heading</h2>
   <p>Another paragraph.</p>
@@ -41,11 +41,11 @@ address-required = Please enter an address.
 latitude-required = Latitude is required.
 latitude-must-be-number = Latitude must be a number.
 latitude-must-be-between = Latitude must be between -90 and 90.
-latitude-can-not-zero = Latitude can not be zero.
+latitude-can-not-zero = Latitude cannot be zero.
 longitude-required = Longitude is required.
 longitude-must-be-number = Longitude must be a number.
 longitude-must-be-between = Longitude must be between -180 and 180.
-longitude-can-not-zero = Longitude can not be zero.
+longitude-can-not-zero = Longitude cannot be zero.
 
 email-invalid = Invalid email address.
 error-update-location = Failed to update location.
@@ -56,16 +56,16 @@ object-code-description = The Object Code can be found on the object itself.
 
 address = Address
 fill-in-from-coordinates = Fill in from coordinates
-address-placeholder = Housenumber, Street, City, Country
+address-placeholder = House number, Street, City, Country
 search-address = Search address
-address-description = The address where the object is currently located. Be as more or less detailed as you like. This is only informative. The Geo-Coordinates are used when the location is needed.
+address-description = The address where the object is currently located. Be as detailed or as brief as you like. This is only informative. The geo-coordinates are used when the location is needed.
 
 coordinates = Coordinates
 coordinates-description = Click on the map to fill in location.
 latitude = Latitude
 longitude = Longitude
 
-your-email = Your E-Mail
+your-email = Your Email
 your-email-placeholder = name@email.org
 your-email-description = This email will be used to moderate your entry. It will not be public.
 
@@ -73,9 +73,9 @@ okay = Okay
 cancel = Cancel
 save-location = Save Location
 
-no-location-entries = Noch keine Orts Einträge.
-current-location = Jetziger Ort
-past-locations = Vergangene Orte
+no-location-entries = No location entries yet.
+current-location = Current Location
+past-locations = Past Locations
 
 rename-object = Change Name
 update-location = Update Location
@@ -108,7 +108,7 @@ dark-theme = Dark
 system-theme = System
 
 error-name-min-length = Name must be at least 3 characters.
-error-name-max-length = Name must be less than 100 characters.
+error-name-max-length = Name must be fewer than 100 characters.
 success-name-is-same = Name is already set to this value.
 success-name-updated = Object renamed
 error-failed-to-rename-object = Failed to rename object.
@@ -116,7 +116,7 @@ change-name-button = Change Name
 change-name-title = Rename Object
 change-name-description = Change the name of the object.
 name-label = Name
-name-placeholder = The new name…
+name-placeholder = The object’s name…
 name-description = The name will be public.
 save-name = Save Name
 
@@ -158,7 +158,7 @@ verify-badges-not-trusted-description =
     This submission is from someone not yet marked as trusted.
   </strong>
   <span>
-    If you recognize this person by their email address, you can
+    If you recognise this person by their email address, you can
     mark them as trusted. This decision will ensure their future
     entries are automatically verified. If needed, an admin can undo
     this action.
