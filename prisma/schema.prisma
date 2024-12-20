@@ -132,6 +132,8 @@ model Location {
   latitude  Float
   longitude Float
   address   String @default("")
+  tileX     Int?
+  tileY     Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
