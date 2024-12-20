@@ -116,7 +116,7 @@ change-name-button = Name ändern
 change-name-title = Objekt umbenennen
 change-name-description = Den Namen des Objekts ändern.
 name-label = Name
-name-placeholder = Der neue Name…
+name-placeholder = Pavillon, Beachflag, Messetheke, …
 name-description = Der Name wird öffentlich angezeigt.
 save-name = Namen speichern
 
@@ -191,3 +191,9 @@ email-not-verfied-description =
   </span>
 
 change-theme = Design ändern
+
+success-object-created = Dein Objekt wurde erfolgreich erstellt.
+create-object-button = Objekt erstellen
+create-object-title = Erstell ein neues Objekt
+create-object-description = Gib deinem neuen Objekt einen Namen.
+submit-create-object = Erstellen

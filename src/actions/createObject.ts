@@ -5,7 +5,11 @@ import { generateCode } from "@/lib/server/generateCode";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
 
-export async function createObject(): Promise<string> {
+export async function createObject({
+  name,
+}: {
+  name: string;
+}): Promise<string> {
   const session = await auth();
   const isAllowed = await userHasOneOfPermissions({
     userId: session?.user?.id,
@@ -19,7 +23,7 @@ export async function createObject(): Promise<string> {
 
   // create new empty object with prisma
   const data = await prisma.object.create({
-    data: { code },
+    data: { code, name },
   });
 
   if (!data) {

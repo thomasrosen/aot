@@ -115,8 +115,8 @@ error-failed-to-rename-object = Failed to rename object.
 change-name-button = Change Name
 change-name-title = Rename Object
 change-name-description = Change the name of the object.
-name-label = Name
-name-placeholder = The object’s name…
+name-name = The object’s name…
+name-placeholder = Pavilion, Beachflag, Folding Table, …
 name-description = The name will be public.
 save-name = Save Name
 
@@ -197,3 +197,9 @@ email-not-verfied-description =
   </span>
 
 change-theme = Change Theme
+
+success-object-created = The object has been created successfully.
+create-object-button = Create Object
+create-object-title = Create a New Object
+create-object-description = Provide a name for your new object.
+submit-create-object = Create

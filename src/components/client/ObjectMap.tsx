@@ -7,7 +7,13 @@ import { ObjectFull } from "@/prisma_types";
 import { MapRef } from "@vis.gl/react-maplibre";
 import { useEffect, useRef, useState } from "react";
 
-function getBounds(points: { latitude: number; longitude: number }[]) {
+function inRange(value: number, min: number, max: number) {
+  return value >= min && value <= max;
+}
+
+function getBounds(
+  points: { latitude: number; longitude: number }[]
+): [[number, number], [number, number]] | null {
   const lats = points.map((point) => point.latitude);
   const lngs = points.map((point) => point.longitude);
 
@@ -15,6 +21,13 @@ function getBounds(points: { latitude: number; longitude: number }[]) {
   const maxLat = Math.max(...lats);
   const minLng = Math.min(...lngs);
   const maxLng = Math.max(...lngs);
+
+  if (!inRange(minLat, -90, 90) || !inRange(maxLat, -90, 90)) {
+    return null;
+  }
+  if (!inRange(minLng, -180, 180) || !inRange(maxLng, -180, 180)) {
+    return null;
+  }
 
   return [
     [minLng, minLat],
@@ -44,6 +57,13 @@ export function ObjectMap({ object }: { object?: ObjectFull }) {
       const map = mapRef.current.getMap();
       if (map) {
         const points = JSON.parse(pointsJson);
+        if (!points.length) {
+          return;
+        }
+        const bounds = getBounds(points);
+        if (!bounds) {
+          return;
+        }
         map.fitBounds(getBounds(points), {
           padding: 100,
           maxZoom: 15,

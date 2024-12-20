@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { ObjectCard } from "@/components/ObjectCard";
 import { SubHeader } from "@/components/SubHeader";
-import { CreateObjectButton } from "@/components/client/CreateObjectButton";
+import { CreateObjectDialogButton } from "@/components/client/CreateObjectDialogButton";
 import { loadTranslations } from "@/lib/server/fluent-server";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { prisma } from "@/prisma";
@@ -80,7 +80,7 @@ export default async function ObjectsPage({
     <>
       <SubHeader
         title={t("objects")}
-        actions={<>{canCreateObject ? <CreateObjectButton /> : null}</>}
+        actions={<>{canCreateObject ? <CreateObjectDialogButton /> : null}</>}
       />
 
       <div className="flex flex-col gap-4">
