@@ -3,8 +3,12 @@ import { SubHeader } from "@/components/SubHeader";
 import { DataTableRoles } from "@/components/client/DataTableRoles";
 import { loadTranslations } from "@/lib/server/fluent-server";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
-import { prisma } from "@/prisma";
-import { Locale } from "@@/i18n-config";
+import { Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
+
+export function generateStaticParams() {
+  // Generate static params for all locales
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export default async function RolesPage({
   params,
@@ -23,30 +27,30 @@ export default async function RolesPage({
     throw new Error("Not allowed");
   }
 
-  let roles = await prisma.role.findMany({
-    select: {
-      name: true,
-      updatedAt: true,
-      permissions: {
-        select: {
-          name: true,
-        },
-      },
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
+  // let roles = await prisma.role.findMany({
+  //   select: {
+  //     name: true,
+  //     updatedAt: true,
+  //     permissions: {
+  //       select: {
+  //         name: true,
+  //       },
+  //     },
+  //   },
+  //   orderBy: {
+  //     name: "asc",
+  //   },
+  // });
 
-  roles = roles.map((role) => ({
-    ...role,
-    id: role.name,
-  }));
+  // roles = roles.map((role) => ({
+  //   ...role,
+  //   id: role.name,
+  // }));
 
   return (
     <>
       <SubHeader title={t("roles")} />
-      <DataTableRoles data={roles} />
+      <DataTableRoles />
     </>
   );
 }

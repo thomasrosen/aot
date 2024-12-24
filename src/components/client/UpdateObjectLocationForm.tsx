@@ -124,6 +124,8 @@ export function UpdateObjectLocationForm({
     resolver: zodResolver(validationSchema),
   });
 
+  const { reset, getValues, watch, handleSubmit } = form;
+
   const isSubmittable = !isFetchingAddress;
 
   const setValue = useCallback(
@@ -132,16 +134,16 @@ export function UpdateObjectLocationForm({
         data: ValidationSchemaType
       ) => Partial<ValidationSchemaType>
     ) => {
-      const currentValues = form.getValues();
+      const currentValues = getValues();
       const newValues = updateFunction(currentValues);
       const combinedValues = { ...currentValues, ...newValues };
-      form.reset(combinedValues, {
+      reset(combinedValues, {
         keepDirtyValues: false,
         keepIsValid: true,
         keepTouched: true,
       });
     },
-    [form.reset, form.getValues]
+    [reset, getValues]
   );
 
   useEffect(() => {
@@ -152,7 +154,7 @@ export function UpdateObjectLocationForm({
     setValue(() => ({ email: userEmail }));
   }, [setValue, userEmail]);
 
-  const [address, latitude, longitude] = form.watch([
+  const [address, latitude, longitude] = watch([
     "location.address",
     "location.latitude",
     "location.longitude",
@@ -168,7 +170,7 @@ export function UpdateObjectLocationForm({
 
         if (updatedLocation) {
           toast.success(t("success-updated-location"));
-          form.reset();
+          reset();
           if (onSuccess) {
             onSuccess();
           }
@@ -184,7 +186,7 @@ export function UpdateObjectLocationForm({
         }
       }
     },
-    [code, form.reset, router, t, onSuccess]
+    [reset, router, t, onSuccess]
   );
 
   // Searches an address and sets coordinates accordingly
@@ -294,7 +296,7 @@ export function UpdateObjectLocationForm({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className={cn("space-y-8", className)}
       >
         {code ? null : (

@@ -1,6 +1,7 @@
 import { DEFAULT_LOCALE, Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
+import { headers } from "next/headers";
 import type { NextRequest } from "next/server";
 
 // // Mock database function to fetch user settings
@@ -24,25 +25,33 @@ function matchLocale(acceptLanguage?: string): Locale {
   return match(languages, SUPPORTED_LOCALES, DEFAULT_LOCALE) as Locale;
 }
 
-export async function getLocale(req: NextRequest): Promise<Locale> {
-  // Extract cookies
-  const localeCookie = req.cookies.get("locale")?.value as Locale | undefined;
+export async function getLocale(req?: NextRequest): Promise<Locale> {
+  let locale: Locale | undefined | null;
 
-  let locale: Locale | undefined | null = localeCookie;
+  if (req) {
+    // Extract cookies if NextRequest is provided
+    const localeCookie = req.cookies.get("locale")?.value as Locale | undefined;
+    locale = localeCookie;
+  }
 
-  // // Fallback to fetching user settings from the database if no cookie is found
-  // if (!locale) {
-  //   locale = await fetchUserLocaleSetting(req);
-  // }
+  const current_headers = req?.headers || (await headers());
+
+  if (!locale) {
+    // Fallback to extracting from headers if no NextRequest is provided
+    const localeHeader = current_headers.get("x-locale");
+    if (localeHeader) {
+      locale = localeHeader as Locale;
+    }
+  }
 
   // Fallback to detecting from Accept-Language header
   if (!locale) {
-    const acceptLanguage = req.headers.get("accept-language") || "";
+    const acceptLanguage = current_headers.get("accept-language") || "";
     locale = matchLocale(acceptLanguage);
   }
 
   // Validate locale
-  if (!locale || !SUPPORTED_LOCALES.includes(locale || DEFAULT_LOCALE)) {
+  if (!locale || !SUPPORTED_LOCALES.includes(locale)) {
     locale = DEFAULT_LOCALE;
   }
 

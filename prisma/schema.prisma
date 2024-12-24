@@ -91,19 +91,23 @@ model GlobalSetting {
   updatedAt DateTime @updatedAt
 
   @@map("global_setting")
+  @@index([key])
 }
 
 model Object {
-  code String  @id @unique
+  id String @id @default(cuid())
+
+  code String @unique
   name String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   history          ObjectHistory[]
-  userRolePairings UserRolePairing[]
+  // userRolePairings UserRolePairing[]
 
   @@map("object")
+  @@index([code])
 }
 
 model ObjectHistory {
@@ -124,6 +128,7 @@ model ObjectHistory {
   updatedAt DateTime @updatedAt
 
   @@map("object_history")
+  @@index([objectCode])
 }
 
 model Location {
@@ -138,13 +143,15 @@ model Location {
 
   History ObjectHistory[]
 
-  UserRolePairing UserRolePairing[]
+  // UserRolePairing UserRolePairing[]
 
   @@map("location")
 }
 
 model UserRolePairing {
-  userId   String
+  id String @id @default(cuid())
+
+  userId String
   roleName String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -153,13 +160,12 @@ model UserRolePairing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  objectCode String?
-  object     Object? @relation(fields: [objectCode], references: [code], onDelete: Cascade)
+  // objectCode String?
+  // object     Object? @relation(fields: [objectCode], references: [code], onDelete: Cascade)
 
-  locationId String?
-  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  // locationId String?
+  // location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
-  @@id([userId, roleName])
   @@unique([userId, roleName]) // Composite key for uniqueness
   @@index([userId, roleName])
   @@index([userId])
@@ -167,6 +173,8 @@ model UserRolePairing {
 }
 
 model Role {
+  id String @unique @default(cuid())
+
   name String @id @unique
 
   colorHex String?
@@ -176,13 +184,19 @@ model Role {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([name])
 }
 
 model Permission {
+  id String @unique @default(cuid())
+
   name String @id @unique
 
   roles Role[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([name])
 }

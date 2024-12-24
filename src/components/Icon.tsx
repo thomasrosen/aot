@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import localFont from "next/font/local";
 
 // Font files can be colocated inside of `app`
-const MaterialSymbols = localFont({
+export const MaterialSymbols = localFont({
   src: "../fonts/Material_Symbols_Outlined,Material_Symbols_Rounded,Material_Symbols_Sharp/Material_Symbols_Rounded/MaterialSymbolsRounded-VariableFont_FILL,GRAD,opsz,wght.ttf",
   variable: "--material-symbols-font",
   display: "block",
@@ -17,7 +17,7 @@ export function Icon({
 }: {
   name: string;
   className?: string;
-  size?: "sm" | "md"; // "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
 }) {
   return (
     <span
@@ -28,7 +28,7 @@ export function Icon({
         "inline-flex items-center justify-center leading-none overflow-hidden",
         size === "sm" && "w-4 h-4 text-base",
         size === "md" && "w-6 h-6 text-2xl",
-        // size === "lg" && "w-8 h-8 text-3xl",
+        size === "lg" && "w-8 h-8 text-3xl",
         "leading-none",
         className
       )}

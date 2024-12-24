@@ -3,8 +3,13 @@ import { H2, P } from "@/components/Typography";
 import { Translate } from "@/components/client/Translation";
 import { Button } from "@/components/ui/button";
 import { loadTranslations } from "@/lib/server/fluent-server";
-import { Locale } from "@@/i18n-config";
+import { Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
 import Link from "next/link";
+
+export function generateStaticParams() {
+  // Generate static params for all locales
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export default async function AboutPage({
   params,

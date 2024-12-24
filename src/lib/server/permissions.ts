@@ -76,8 +76,8 @@ export async function userHasRole({
       where: {
         userId,
         roleName,
-        objectCode: null,
-        locationId: null,
+        // objectCode: null,
+        // locationId: null,
       },
     });
 
@@ -149,8 +149,8 @@ export async function takeUserRole({
       where: {
         userId,
         roleName,
-        objectCode: null,
-        locationId: null,
+        // objectCode: null,
+        // locationId: null,
       },
     });
 

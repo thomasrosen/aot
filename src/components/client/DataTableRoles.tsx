@@ -7,9 +7,31 @@ import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
 import { RoleFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { useGlobalStore } from "./GlobalStoreProvider";
 
-export function DataTableRoles({ data }: { data: RoleFull[] }) {
+export function DataTableRoles() {
   const t = useTranslations();
+
+  const { roles, withPermissions, fetchMany } = useGlobalStore((state) => ({
+    roles: state.roles,
+    withPermissions: state.withPermissions,
+    fetchMany: state.fetchMany,
+  }));
+
+  const [mappedRoles, setMappedRoles] = useState<RoleFull[]>([]);
+  useEffect(() => {
+    if (!roles.length) {
+      fetchMany({
+        tables: ["role"],
+      });
+    } else {
+      async function asyncWrapper() {
+        setMappedRoles(await withPermissions(roles));
+      }
+      asyncWrapper();
+    }
+  }, [roles, fetchMany, withPermissions]);
 
   const columns: ColumnDef<RoleFull>[] = [
     {
@@ -60,5 +82,5 @@ export function DataTableRoles({ data }: { data: RoleFull[] }) {
     },
   ];
 
-  return <DataTable columns={columns} data={data} />;
+  return <DataTable columns={columns} data={mappedRoles} />;
 }

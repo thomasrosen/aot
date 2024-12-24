@@ -1,25 +1,25 @@
 import { auth } from "@/auth";
-import { ObjectCard } from "@/components/ObjectCard";
 import { SubHeader } from "@/components/SubHeader";
 import { CreateObjectDialogButton } from "@/components/client/CreateObjectDialogButton";
+import { ObjectsList } from "@/components/client/ObjectsList";
 import { loadTranslations } from "@/lib/server/fluent-server";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
-import { prisma } from "@/prisma";
-import { Locale } from "@@/i18n-config";
-import Link from "next/link";
+import { Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
+
+export function generateStaticParams() {
+  // Generate static params for all locales
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export default async function ObjectsPage({
   params,
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
-  const { locale } = await params;
-  const t = loadTranslations(locale);
-
   const session = await auth();
   const isAllowed = await userHasOneOfPermissions({
     userId: session?.user?.id,
-    permissionNames: ["admin"],
+    permissionNames: [],
   });
   if (!isAllowed) {
     throw new Error("Not allowed");
@@ -30,51 +30,8 @@ export default async function ObjectsPage({
     permissionNames: ["create_objects"],
   });
 
-  const objects = await prisma.object.findMany({
-    select: {
-      code: true,
-      name: true,
-      updatedAt: true,
-      history: {
-        orderBy: {
-          createdAt: "desc",
-        },
-        take: 1,
-        select: {
-          updatedAt: true,
-          location: {
-            select: {
-              address: true,
-              latitude: true,
-              longitude: true,
-            },
-          },
-          user: {
-            select: {
-              email: true,
-              userRolePairings: {
-                select: {
-                  role: {
-                    select: {
-                      permissions: {
-                        select: {
-                          name: true,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          verifiedHistoryEntry: true,
-        },
-      },
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
+  const { locale } = await params;
+  const t = loadTranslations(locale);
 
   return (
     <>
@@ -83,15 +40,7 @@ export default async function ObjectsPage({
         actions={<>{canCreateObject ? <CreateObjectDialogButton /> : null}</>}
       />
 
-      <div className="flex flex-col gap-4">
-        {Array.isArray(objects)
-          ? objects.map((object) => (
-              <Link key={object.code} href={`/objects/${object.code}`}>
-                <ObjectCard data={object} locale={locale} />
-              </Link>
-            ))
-          : null}
-      </div>
+      <ObjectsList />
     </>
   );
 }

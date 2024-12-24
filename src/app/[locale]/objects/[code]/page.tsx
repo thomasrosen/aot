@@ -14,8 +14,13 @@ import { object_code_prefix } from "@/constants";
 import { loadTranslations } from "@/lib/server/fluent-server";
 import { getObject } from "@/lib/server/getObject";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
-import { Locale } from "@@/i18n-config";
+import { Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
 import { notFound } from "next/navigation";
+
+export function generateStaticParams() {
+  // Generate static params for all locales
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
 
 export default async function ViewObjectPage({
   params,

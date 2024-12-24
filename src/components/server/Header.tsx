@@ -6,11 +6,11 @@ import { ModeToggle } from "@/components/client/ModeToggle";
 import { SignInButton } from "@/components/server/SignInButton";
 import { SignOutButton } from "@/components/server/SignOutButton";
 import { loadTranslations } from "@/lib/server/fluent-server";
+import { getLocale } from "@/lib/server/getLocale";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
-import { Locale } from "@@/i18n-config";
 import Link from "next/link";
 
-export async function Header({ locale }: { locale: Locale }) {
+export async function Header() {
   const session = await auth();
   const isSignedIn = !!session?.user?.id;
   const isAdmin = await userHasOneOfPermissions({
@@ -18,6 +18,7 @@ export async function Header({ locale }: { locale: Locale }) {
     permissionNames: ["admin"],
   });
 
+  const locale = await getLocale();
   const t = await loadTranslations(locale);
 
   return (

@@ -33,27 +33,27 @@ export const providers = [
 ];
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  pages: {
-    signIn: "/signin",
-  },
+  // pages: {
+  //   signIn: "/signin",
+  // },
   trustHost: true,
   adapter: PrismaAdapter(prisma),
   providers,
-  callbacks: {
-    // async redirect({ baseUrl, url }) {
-    //   console.log("redirect", baseUrl, url);
-    //
-    //   // Allows relative callback URLs
-    //   if (url.startsWith("/")) {
-    //     return `${baseUrl}${url}`;
-    //   }
-    //
-    //   // Allows callback URLs on the same origin
-    //   if (new URL(url).origin === baseUrl) {
-    //     return url;
-    //   }
-    //
-    //   return baseUrl;
-    // },
-  },
+  // callbacks: {
+  //   async redirect({ baseUrl, url }) {
+  //     console.log("redirect", baseUrl, url);
+  //
+  //     // Allows relative callback URLs
+  //     if (url.startsWith("/")) {
+  //       return `${baseUrl}${url}`;
+  //     }
+  //
+  //     // Allows callback URLs on the same origin
+  //     if (new URL(url).origin === baseUrl) {
+  //       return url;
+  //     }
+  //
+  //     return baseUrl;
+  //   },
+  // },
 });
