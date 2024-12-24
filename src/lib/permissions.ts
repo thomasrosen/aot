@@ -8,9 +8,10 @@ export function userRolePairingsIncludesPermissions({
   permissionNames: string[];
 }) {
   return (userRolePairings || []).some((userRolePairing) =>
-    (userRolePairing.role?.permissions || []).some(
-      (permission) =>
-        permission.name && permissionNames.includes(permission.name)
+    (userRolePairing.role?.rolePermissionPairings || []).some(
+      (rolePermissionPairing) =>
+        rolePermissionPairing.permission?.name &&
+        permissionNames.includes(rolePermissionPairing.permission.name)
     )
   );
 }

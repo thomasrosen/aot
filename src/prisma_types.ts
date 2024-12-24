@@ -2,11 +2,22 @@ import type PrismaTypes from "@prisma/client";
 
 export type LocationFull = Partial<PrismaTypes.Location>;
 
-export type PermissionFull = Partial<PrismaTypes.Permission>;
+export type PermissionFull = Partial<
+  PrismaTypes.Permission & {
+    rolePermissionPairings: RolePermissionPairingFull[];
+  }
+>;
+
+export type RolePermissionPairingFull = Partial<
+  PrismaTypes.RolePermissionPairing & {
+    role: RoleFull | null;
+    permission: PermissionFull | null;
+  }
+>;
 
 export type RoleFull = Partial<
   PrismaTypes.Role & {
-    permissions: PermissionFull[];
+    rolePermissionPairings: RolePermissionPairingFull[];
   }
 >;
 
