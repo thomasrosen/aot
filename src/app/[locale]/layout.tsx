@@ -12,7 +12,7 @@ import { Ubuntu } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 // If loading a variable font, you don't need to specify the font weight
 const ubuntu = Ubuntu({
