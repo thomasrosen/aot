@@ -27,26 +27,6 @@ export default async function RolesPage({
     throw new Error("Not allowed");
   }
 
-  // let roles = await prisma.role.findMany({
-  //   select: {
-  //     name: true,
-  //     updatedAt: true,
-  //     permissions: {
-  //       select: {
-  //         name: true,
-  //       },
-  //     },
-  //   },
-  //   orderBy: {
-  //     name: "asc",
-  //   },
-  // });
-
-  // roles = roles.map((role) => ({
-  //   ...role,
-  //   id: role.name,
-  // }));
-
   return (
     <>
       <SubHeader title={t("roles")} />

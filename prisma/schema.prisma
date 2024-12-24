@@ -24,6 +24,8 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("User")
 }
 
 model Account {
@@ -45,6 +47,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+  @@map("Account")
 }
 
 model Session {
@@ -55,6 +58,8 @@ model Session {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("Session")
 }
 
 model VerificationToken {
@@ -63,6 +68,7 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+  @@map("VerificationToken")
 }
 
 // Optional for WebAuthn support
@@ -79,6 +85,7 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+  @@map("Authenticator")
 }
 
 model GlobalSetting {
@@ -90,24 +97,24 @@ model GlobalSetting {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("global_setting")
   @@index([key])
+  @@map("global_setting")
 }
 
 model Object {
   id String @id @default(cuid())
 
-  code String @unique
+  code String  @unique
   name String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  history          ObjectHistory[]
+  history ObjectHistory[]
   // userRolePairings UserRolePairing[]
 
-  @@map("object")
   @@index([code])
+  @@map("object")
 }
 
 model ObjectHistory {
@@ -127,8 +134,8 @@ model ObjectHistory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("object_history")
   @@index([objectCode])
+  @@map("object_history")
 }
 
 model Location {
@@ -143,7 +150,7 @@ model Location {
 
   History ObjectHistory[]
 
-  // UserRolePairing UserRolePairing[]
+  // userRolePairings UserRolePairing[]
 
   @@map("location")
 }
@@ -151,7 +158,7 @@ model Location {
 model UserRolePairing {
   id String @id @default(cuid())
 
-  userId String
+  userId   String
   roleName String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -170,33 +177,50 @@ model UserRolePairing {
   @@index([userId, roleName])
   @@index([userId])
   @@index([roleName])
+  @@map("UserRolePairing")
 }
 
 model Role {
   id String @unique @default(cuid())
 
-  name String @id @unique
-
-  colorHex String?
-
-  userRolePairings UserRolePairing[]
-  permissions      Permission[]
+  name                   String                  @id @unique
+  colorHex               String?
+  userRolePairings       UserRolePairing[]
+  rolePermissionPairings RolePermissionPairing[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([name])
+  @@map("Role")
+}
+
+model RolePermissionPairing {
+  id String @id @default(cuid())
+
+  roleName       String
+  permissionName String
+  role           Role       @relation(fields: [roleName], references: [name], onDelete: Cascade)
+  permission     Permission @relation(fields: [permissionName], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([roleName, permissionName]) // Composite key for uniqueness
+  @@index([roleName])
+  @@index([permissionName])
+  @@map("RolePermissionPairing")
 }
 
 model Permission {
   id String @unique @default(cuid())
 
-  name String @id @unique
-
-  roles Role[]
+  name                   String                  @id @unique
+  rolePermissionPairings RolePermissionPairing[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([name])
+  @@map("Permission")
 }

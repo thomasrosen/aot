@@ -37,9 +37,13 @@ export async function getObject({
                   roleName: true,
                   role: {
                     select: {
-                      permissions: {
+                      rolePermissionPairings: {
                         select: {
-                          name: true,
+                          permission: {
+                            select: {
+                              name: true,
+                            },
+                          },
                         },
                       },
                     },

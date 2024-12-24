@@ -24,9 +24,11 @@ export async function userHasOneOfPermissions({
         userRolePairings: {
           some: {
             role: {
-              permissions: {
+              rolePermissionPairings: {
                 some: {
-                  name: { in: permissionNames },
+                  permission: {
+                    name: { in: permissionNames },
+                  },
                 },
               },
             },
