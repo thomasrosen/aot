@@ -33,5 +33,7 @@ export async function GET() {
     })
     .toBuffer();
 
+  console.log("Image processing completed", newImageBuffer.length);
+
   return Response.json({ message: "Image processing started" });
 }

@@ -149,7 +149,7 @@ export function connectRelations<T>({
     | PermissionFull[]
     | undefined = [];
 
-  let tableName = query.tableName;
+  const tableName = query.tableName;
   if (!tableName) {
     return [];
   }
@@ -171,7 +171,7 @@ export function connectRelations<T>({
     return [];
   }
 
-  return dataTwoReturn;
+  return dataTwoReturn as T[];
 }
 
 function includeRelations({
@@ -195,7 +195,7 @@ function includeRelations({
     return [];
   }
 
-  let tableName = query.tableName;
+  const tableName = query.tableName;
   if (!tableName) {
     return dataTwoReturn;
   }
@@ -368,6 +368,7 @@ export function useRelations<T>({ query }: { query: SubQuery }) {
       },
     });
   }, [
+    query,
     objects,
     objectHistory,
     locations,

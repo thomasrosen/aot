@@ -2,7 +2,7 @@ import { PublicWhere } from "@/lib/relations";
 import { prisma } from "@/prisma";
 
 export async function loadUserRolePairings({ where }: { where?: PublicWhere }) {
-  let realFullWhere: Record<string, any> = {};
+  const realFullWhere: Record<string, any> = {};
 
   if (where && where.userRolePairings && where.userRolePairings.userId) {
     if (Array.isArray(where.userRolePairings.userId)) {

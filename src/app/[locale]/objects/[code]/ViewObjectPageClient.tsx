@@ -27,10 +27,6 @@ export function ViewObjectPageClient({
   const locale = useLocale();
   const t = useTranslations();
 
-  if (!code) {
-    return <ErrorPage title={code} error="An objects code is required" />;
-  }
-
   const objects = useRelations<ObjectFull>({
     query: {
       tableName: "objects",
@@ -62,7 +58,6 @@ export function ViewObjectPageClient({
   });
 
   const object = objects.find((object) => object.code === code);
-
   if (!object) {
     return <ErrorPage title={code} error={`Could not find Object "${code}"`} />;
   }

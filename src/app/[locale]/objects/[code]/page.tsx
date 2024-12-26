@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { ErrorPage } from "@/components/ErrorPage";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import { Locale, SUPPORTED_LOCALES } from "@@/i18n-config";
 import { ViewObjectPageClient } from "./ViewObjectPageClient";
@@ -19,7 +20,7 @@ export default async function ViewObjectPage({
   const { code } = await params;
 
   if (!code) {
-    return null;
+    return <ErrorPage title={code} error="An objects code is required" />;
   }
 
   const session = await auth();
