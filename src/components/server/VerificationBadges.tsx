@@ -61,7 +61,6 @@ export function VerificationBadges({
   email: string;
   className?: string;
 }) {
-  isTrusted = false;
   const t = loadTranslations(locale);
   return (
     <div className={cn("flex gap-2 py-1 flex-wrap items-center", className)}>

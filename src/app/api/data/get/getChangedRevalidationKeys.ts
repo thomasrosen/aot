@@ -194,8 +194,6 @@ export async function getChangedRevalidationKeys({
       // ignoring the error
     }
 
-    console.log("revalidationKeys", [...revalidationKeys]);
-
     return [...revalidationKeys].map((key) => hashRevalidationKey(key));
   } catch (error) {
     // ignoring the error

@@ -2,39 +2,25 @@
 
 import { DataTable } from "@/components/client/DataTable";
 import { DataTableSortingHeader } from "@/components/client/DataTableSortingHeader";
-import { useGlobalStore } from "@/components/client/GlobalStoreProvider";
 import { useTranslations } from "@/components/client/Translation";
 import UpdateUserButton from "@/components/client/UpdateUserButton";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
+import { useRelations } from "@/lib/relations";
 import { UserFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 
 export function DataTableUsers() {
   const t = useTranslations();
 
-  const { users, withUserRolePairings, fetchMany } = useGlobalStore(
-    (state) => ({
-      users: state.users,
-      withUserRolePairings: state.withUserRolePairings,
-      fetchMany: state.fetchMany,
-    })
-  );
-
-  const [mappedUsers, setMappedUsers] = useState<UserFull[]>([]);
-  useEffect(() => {
-    if (!users.length) {
-      fetchMany({
-        tables: ["user"],
-      });
-    } else {
-      async function asyncWrapper() {
-        setMappedUsers(await withUserRolePairings(users));
-      }
-      asyncWrapper();
-    }
-  }, [users, fetchMany, withUserRolePairings]);
+  const users = useRelations<UserFull>({
+    query: {
+      tableName: "users",
+      include: {
+        userRolePairings: true,
+      },
+    },
+  });
 
   const columns: ColumnDef<UserFull>[] = [
     {
@@ -103,5 +89,5 @@ export function DataTableUsers() {
     },
   ];
 
-  return <DataTable columns={columns} data={mappedUsers} />;
+  return <DataTable columns={columns} data={users} />;
 }

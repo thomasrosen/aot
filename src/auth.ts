@@ -41,7 +41,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
   // callbacks: {
   //   async redirect({ baseUrl, url }) {
-  //     console.log("redirect", baseUrl, url);
   //
   //     // Allows relative callback URLs
   //     if (url.startsWith("/")) {

@@ -1,14 +1,19 @@
 "use client";
 
-import { Filters } from "@/app/api/data/route";
 import { hashRevalidationKey } from "@/lib/hashRevalidationKey";
+import { AnyData, onlyIfChanged } from "@/lib/onlyIfChanged";
+import { PublicWhere } from "@/lib/relations";
 import {
   LocationFull,
   ObjectFull,
+  ObjectHistoryFull,
+  PermissionFull,
   RoleFull,
+  RolePermissionPairingsFull,
   UserFull,
   UserRolePairingFull,
 } from "@/prisma_types";
+import isEqual from "lodash.isequal";
 import {
   createContext,
   useContext,
@@ -24,22 +29,34 @@ import { createStore } from "zustand/vanilla";
 type GlobalState = {
   _hasHydrated: boolean;
   objects: ObjectFull[];
+  objectHistory: ObjectHistoryFull[];
   locations: LocationFull[];
   users: UserFull[];
   userRolePairings: UserRolePairingFull[];
   roles: RoleFull[];
+  rolePermissionPairings: RolePermissionPairingsFull[];
+  permissions: PermissionFull[];
   lastRevalidatedAt?: string;
   revalidationKeys: string[];
 };
 
 type GlobalActions = {
   setHydrated: (value: boolean) => void;
-  fetchMany: ({
+  fetchData: ({
     tables,
-    filters,
+    where,
   }: {
-    tables?: ("object" | "location" | "user" | "userRolePairing" | "role")[];
-    filters?: Filters;
+    tables?: (
+      | "object"
+      | "objectHistory"
+      | "location"
+      | "user"
+      | "userRolePairing"
+      | "role"
+      | "rolePermissionPairing"
+      | "permission"
+    )[];
+    where?: PublicWhere;
   }) => Promise<void>;
   fetchRolesForUsers: (userIds: string[]) => Promise<void>;
 
@@ -52,10 +69,13 @@ type GlobalStore = GlobalState & GlobalActions;
 const defaultInitState: GlobalState = {
   _hasHydrated: false,
   objects: [],
+  objectHistory: [],
   locations: [],
   users: [],
   userRolePairings: [],
   roles: [],
+  rolePermissionPairings: [],
+  permissions: [],
   lastRevalidatedAt: undefined,
   revalidationKeys: [],
 };
@@ -109,22 +129,23 @@ const createGlobalStore = (initState?: GlobalState) => {
 
           // fetch roles for users
           if (neededUserIds.length) {
-            await get().fetchMany({
+            await get().fetchData({
               tables: ["userRolePairing"],
-              filters: { userIds: neededUserIds },
+              where: { userRolePairings: { userId: neededUserIds } },
             });
           }
         },
-        fetchMany: async ({ tables = [], filters }) => {
-          const url = new URL("/api/data", window.location.origin);
+        fetchData: async ({ tables = [], where }) => {
+          // START build the url for fetching
+          const url = new URL("/api/data/get", window.location.origin);
           const query: Record<string, string> = {};
 
           // tell which tables to query
           if (tables.length) {
             query.tables = tables.join(",");
           }
-          if (filters) {
-            query.filters = JSON.stringify(filters);
+          if (where) {
+            query.where = JSON.stringify(where);
           }
 
           // tell which revalidation history should be included
@@ -134,86 +155,99 @@ const createGlobalStore = (initState?: GlobalState) => {
           }
 
           url.search = new URLSearchParams(query).toString();
+          // END build the url for fetching
 
+          // fetch the new data
           const {
             objects = [],
+            objectHistory = [],
             locations = [],
             users = [],
             userRolePairings = [],
             roles = [],
+            rolePermissionPairings = [],
+            permissions = [],
             revalidationKeys = [],
           }: {
             objects: ObjectFull[];
+            objectHistory: ObjectHistoryFull[];
             locations: LocationFull[];
             users: UserFull[];
             userRolePairings: UserRolePairingFull[];
             roles: RoleFull[];
+            rolePermissionPairings: RolePermissionPairingsFull[];
+            permissions: PermissionFull[];
             revalidationKeys: string[];
           } = await fetch(url)
             .then((res) => res.json())
-            .catch(() => ({}));
+            .catch(() => ({})); // ignore errors
 
-          const loadedKeys = [
-            ...objects.map((a) => hashRevalidationKey(`object:${a.id}`)),
-            ...locations.map((a) => hashRevalidationKey(`location:${a.id}`)),
-            ...users.map((a) => hashRevalidationKey(`user:${a.id}`)),
-            ...roles.map((a) => hashRevalidationKey(`role:${a.id}`)),
-            ...userRolePairings.map((a) =>
-              hashRevalidationKey(`userRolePairing:${a.id}`)
-            ),
-          ];
-
-          const newRevalidationKeys = [
-            ...new Set([...get().revalidationKeys, ...revalidationKeys]),
-          ].filter((key) => !loadedKeys.includes(key));
-
-          const newData: Partial<GlobalState> = {
+          // create the initial newData object
+          let newData: Partial<GlobalState> = {
             _hasHydrated: true,
             lastRevalidatedAt: new Date().toISOString(),
-            revalidationKeys: newRevalidationKeys,
           };
 
-          if (objects.length) {
-            newData.objects = [
-              ...get().objects.filter(
-                (a) => !objects.find((b) => b.id === a.id)
-              ),
-              ...objects,
-            ];
+          // add the revalidation keys that are not revalidated yet
+          function getRevalidationKeys(prefix: string = "", data?: AnyData[]) {
+            if (!data || !data.length) {
+              return [hashRevalidationKey(`${prefix}:`)];
+            }
+            return data.map((a) => hashRevalidationKey(`${prefix}:${a.id}`));
+          }
+          const nealyRevalidatedKeys = [
+            ...getRevalidationKeys("object", objects),
+            ...getRevalidationKeys("objectHistory", objectHistory),
+            ...getRevalidationKeys("location", locations),
+            ...getRevalidationKeys("user", users),
+            ...getRevalidationKeys("role", roles),
+            ...getRevalidationKeys("userRolePairing", userRolePairings),
+            ...getRevalidationKeys(
+              "rolePermissionPairing",
+              rolePermissionPairings
+            ),
+            ...getRevalidationKeys("permission", permissions),
+          ];
+          const oldRevalidationKeys = get().revalidationKeys;
+          const newRevalidationKeys = [
+            ...new Set([...oldRevalidationKeys, ...revalidationKeys]),
+          ]
+            .filter((key) => !nealyRevalidatedKeys.includes(key))
+            .sort();
+          if (!isEqual(revalidationKeys, newRevalidationKeys)) {
+            newData.revalidationKeys = newRevalidationKeys;
           }
 
-          if (locations.length) {
-            newData.locations = [
-              ...get().locations.filter(
-                (a) => !locations.find((b) => b.id === a.id)
-              ),
-              ...locations,
-            ];
-          }
+          // add the new data if it has changed
+          newData = {
+            ...newData,
+            ...onlyIfChanged("objects", objects, () => get().objects),
+            ...onlyIfChanged(
+              "objectHistory",
+              objectHistory,
+              () => get().objectHistory
+            ),
+            ...onlyIfChanged("locations", locations, () => get().locations),
+            ...onlyIfChanged("users", users, () => get().users),
+            ...onlyIfChanged(
+              "userRolePairings",
+              userRolePairings,
+              () => get().userRolePairings
+            ),
+            ...onlyIfChanged("roles", roles, () => get().roles),
+            ...onlyIfChanged(
+              "rolePermissionPairings",
+              rolePermissionPairings,
+              () => get().rolePermissionPairings
+            ),
+            ...onlyIfChanged(
+              "permissions",
+              permissions,
+              () => get().permissions
+            ),
+          };
 
-          if (users.length) {
-            newData.users = [
-              ...get().users.filter((a) => !users.find((b) => b.id === a.id)),
-              ...users,
-            ];
-          }
-
-          if (userRolePairings.length) {
-            newData.userRolePairings = [
-              ...get().userRolePairings.filter(
-                (a) => !userRolePairings.find((b) => b.id === a.id)
-              ),
-              ...userRolePairings,
-            ];
-          }
-
-          if (roles.length) {
-            newData.roles = [
-              ...get().roles.filter((a) => !roles.find((b) => b.id === a.id)),
-              ...roles,
-            ];
-          }
-
+          // push new data to the store
           set(newData);
         },
       }),
@@ -224,9 +258,18 @@ const createGlobalStore = (initState?: GlobalState) => {
           return async (state) => {
             if (state && !state._hasHydrated) {
               state.setHydrated(true);
-              // await state.fetchMany({
-              //   tables: ["object", "location", "user"],
-              // });
+              state.fetchData({
+                tables: [
+                  "object",
+                  "objectHistory",
+                  "location",
+                  "user",
+                  "userRolePairing",
+                  "role",
+                  "rolePermissionPairing",
+                  "permission",
+                ],
+              });
             }
           };
         },

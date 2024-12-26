@@ -1,39 +1,43 @@
 import { auth } from "@/auth";
+import { PublicWhere, publicWhereSchema } from "@/lib/relations";
 import { userHasOneOfPermissions } from "@/lib/server/permissions";
 import {
   LocationFull,
   ObjectFull,
+  ObjectHistoryFull,
+  PermissionFull,
   RoleFull,
+  RolePermissionPairingFull,
   UserFull,
   UserRolePairingFull,
 } from "@/prisma_types";
-import { z } from "zod";
 import { getChangedRevalidationKeys } from "./getChangedRevalidationKeys";
 import { loadLocations } from "./loadLocations";
+import { loadObjectHistory } from "./loadObjectHistory";
 import { loadObjects } from "./loadObjects";
+import { loadPermissions } from "./loadPermissions";
+import { loadRolePermissionPairing } from "./loadRolePermissionPairings";
 import { loadRoles } from "./loadRoles";
 import { loadUserRolePairings } from "./loadUserRolePairings";
 import { loadUsers } from "./loadUsers";
-
-const filtersSchema = z.object({
-  userIds: z.array(z.string()),
-});
-
-export type Filters = z.infer<typeof filtersSchema>;
 
 export async function GET(request: Request): Promise<Response> {
   // get lastRevalidatedAt from query params
   const url = new URL(request.url);
   const lastRevalidatedAt = url.searchParams.get("lastRevalidatedAt");
+
+  // get tables from query params
   const tables = (url.searchParams.get("tables") || "").split(",");
-  const filters = url.searchParams.get("filters") || undefined;
-  let parsedFilters: Filters | undefined = undefined;
-  if (filters) {
+
+  // get and parse the where-options
+  const publicWhere = url.searchParams.get("where") || undefined;
+  let parsedPublicWhere: PublicWhere | undefined = undefined;
+  if (publicWhere) {
     try {
-      parsedFilters = JSON.parse(filters);
+      parsedPublicWhere = JSON.parse(publicWhere);
     } catch (error) {}
   }
-  parsedFilters = filtersSchema.safeParse(parsedFilters).data;
+  parsedPublicWhere = publicWhereSchema.safeParse(parsedPublicWhere).data;
 
   // check if signed in
   const session = await auth();
@@ -48,15 +52,21 @@ export async function GET(request: Request): Promise<Response> {
   // get data
   const data: {
     objects?: ObjectFull[];
+    objectHistory?: ObjectHistoryFull[];
     locations?: LocationFull[];
     users?: UserFull[];
     userRolePairings?: UserRolePairingFull[];
     roles?: RoleFull[];
+    rolePermissionPairings?: RolePermissionPairingFull[];
+    permissions?: PermissionFull[];
   } = {};
 
   try {
     if (tables.includes("object")) {
       data.objects = await loadObjects();
+    }
+    if (tables.includes("objectHistory")) {
+      data.objectHistory = await loadObjectHistory();
     }
     if (tables.includes("location")) {
       data.locations = await loadLocations();
@@ -66,11 +76,17 @@ export async function GET(request: Request): Promise<Response> {
     }
     if (tables.includes("userRolePairing")) {
       data.userRolePairings = await loadUserRolePairings({
-        filters: parsedFilters,
+        where: parsedPublicWhere,
       });
     }
     if (tables.includes("role")) {
       data.roles = await loadRoles();
+    }
+    if (tables.includes("rolePermissionPairing")) {
+      data.rolePermissionPairings = await loadRolePermissionPairing();
+    }
+    if (tables.includes("permission")) {
+      data.permissions = await loadPermissions();
     }
   } catch (error) {
     console.error(

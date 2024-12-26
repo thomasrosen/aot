@@ -10,7 +10,6 @@ function loadImage(imagePath: string): Buffer {
 }
 
 export async function GET() {
-  console.log("GET /api/image");
   const inputImage = loadImage("./test-2.png");
 
   const newImageBuffer = await sharp(inputImage)
@@ -33,9 +32,6 @@ export async function GET() {
       mozjpeg: true, // Use mozjpeg for better compression
     })
     .toBuffer();
-
-  console.log("Image processed successfully");
-  console.log("Image size after:", newImageBuffer.length);
 
   return Response.json({ message: "Image processing started" });
 }

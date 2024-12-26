@@ -33,6 +33,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "htmlparser2": "^9.1.0",
+    "lodash.isequal": "^4.5.0",
     "lucide-react": "^0.462.0",
     "maplibre-gl": "^4.7.1",
     "nanoid": "^5.0.9",
@@ -56,6 +57,7 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@types/lodash.isequal": "^4.5.8",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.17",

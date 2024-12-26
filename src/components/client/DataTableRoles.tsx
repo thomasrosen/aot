@@ -5,33 +5,25 @@ import { DataTableSortingHeader } from "@/components/client/DataTableSortingHead
 import { useTranslations } from "@/components/client/Translation";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
+import { useRelations } from "@/lib/relations";
 import { RoleFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import { useGlobalStore } from "./GlobalStoreProvider";
 
 export function DataTableRoles() {
   const t = useTranslations();
 
-  const { roles, withPermissions, fetchMany } = useGlobalStore((state) => ({
-    roles: state.roles,
-    withPermissions: state.withPermissions,
-    fetchMany: state.fetchMany,
-  }));
-
-  const [mappedRoles, setMappedRoles] = useState<RoleFull[]>([]);
-  useEffect(() => {
-    if (!roles.length) {
-      fetchMany({
-        tables: ["role"],
-      });
-    } else {
-      async function asyncWrapper() {
-        setMappedRoles(await withPermissions(roles));
-      }
-      asyncWrapper();
-    }
-  }, [roles, fetchMany, withPermissions]);
+  const roles = useRelations<RoleFull>({
+    query: {
+      tableName: "roles",
+      include: {
+        rolePermissionPairings: {
+          include: {
+            permission: true,
+          },
+        },
+      },
+    },
+  });
 
   const columns: ColumnDef<RoleFull>[] = [
     {
@@ -59,9 +51,20 @@ export function DataTableRoles() {
       },
       cell: ({ row }) => {
         const original = row.original;
-        return (original?.permissions || []).map((permissions) => (
-          <Badge key={permissions.name}>{permissions.name}</Badge>
-        ));
+
+        return (original?.rolePermissionPairings || [])
+          .filter((rolePermissionPairing) => rolePermissionPairing.permission)
+          .map((rolePermissionPairing) => {
+            if (!rolePermissionPairing.permission) {
+              // Only here for typescript. This should never happen cause of the filter above.
+              return null;
+            }
+            return (
+              <Badge key={rolePermissionPairing.permission.name}>
+                {rolePermissionPairing.permission.name}
+              </Badge>
+            );
+          });
       },
     },
     {
@@ -82,5 +85,5 @@ export function DataTableRoles() {
     },
   ];
 
-  return <DataTable columns={columns} data={mappedRoles} />;
+  return <DataTable columns={columns} data={roles} />;
 }
