@@ -1,9 +1,9 @@
 "use client";
 
 import { renameObject } from "@/actions/renameObject";
-import { DialogWrapper } from "@/components/DialogWrapper";
 import { Icon } from "@/components/Icon";
 import { useTranslations } from "@/components/client/Translation";
+import { VaulDrawer } from "@/components/client/VaulDrawer";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -79,7 +79,7 @@ export function RenameObjectDialogButton({
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <DialogWrapper
+    <VaulDrawer
       open={open}
       onOpenChange={setOpen}
       trigger={trigger || <Button>{t("change-name-button")}</Button>}
@@ -102,7 +102,7 @@ export function RenameObjectDialogButton({
               </FormItem>
             )}
           />
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-end flex-wrap">
             <Button type="button" variant="outline" onClick={handleCancel}>
               <Icon name="close" />
               {t("cancel")}
@@ -114,6 +114,6 @@ export function RenameObjectDialogButton({
           </div>
         </form>
       </Form>
-    </DialogWrapper>
+    </VaulDrawer>
   );
 }

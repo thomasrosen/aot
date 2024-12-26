@@ -382,7 +382,7 @@ export function UpdateObjectLocationForm({
           <p className="text-sm text-muted-foreground">
             {t("coordinates-description")}
           </p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-col xs:flex-row">
             <FormField
               name="location.latitude"
               render={({ field }) => (
@@ -390,7 +390,7 @@ export function UpdateObjectLocationForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="??.???"
+                      placeholder={t("latitude")}
                       {...field}
                       onChange={(event) => {
                         const value = parseFloat(event.target.value);
@@ -419,7 +419,7 @@ export function UpdateObjectLocationForm({
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="??.???"
+                      placeholder={t("longitude")}
                       {...field}
                       onChange={(event) => {
                         const value = parseFloat(event.target.value);
@@ -478,7 +478,7 @@ export function UpdateObjectLocationForm({
             )}
           />
         ) : null}
-        <div className="flex gap-2 justify-end">
+        <div className="flex gap-2 justify-end flex-wrap">
           {typeof onCancel === "function" ? (
             <Button type="button" variant="outline" onClick={onCancel}>
               <Icon name="close" />

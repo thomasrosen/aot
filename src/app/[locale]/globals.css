@@ -62,3 +62,7 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.light .maplibregl-ctrl-icon {
+  filter: invert(1);
+}

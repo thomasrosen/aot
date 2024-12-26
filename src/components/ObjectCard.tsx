@@ -52,7 +52,7 @@ export function ObjectCard({
               ? location.address
               : `${location?.latitude} / ${location?.longitude}`}
           </div>
-          <div>{formatDate(newestUpdatedAt)}</div>
+          <div>{formatDate(newestUpdatedAt, locale)}</div>
         </CardDescription>
       </CardHeader>
     </Card>

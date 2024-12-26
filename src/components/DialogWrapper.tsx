@@ -17,7 +17,7 @@ export function DialogWrapper({
   description,
   children,
   className,
-}: Readonly<{
+}: {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   trigger?: React.ReactNode;
@@ -25,7 +25,7 @@ export function DialogWrapper({
   description?: string;
   children?: React.ReactNode;
   className?: string;
-}>) {
+}) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger ? <DialogTrigger asChild>{trigger}</DialogTrigger> : null}

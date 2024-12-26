@@ -25,7 +25,6 @@ export function formatDateRange(
   to: Date,
   locale: string = DEFAULT_LOCALE
 ) {
-  locale = "de-DE";
   return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     month: "short",

@@ -8,6 +8,14 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       zIndex: {
         "1": "1",
@@ -55,6 +63,10 @@ export default {
       },
       animation: {
         "ping-slow": "ping 2s cubic-bezier(0, 0, 0.2, 1) infinite",
+      },
+      animationTimingFunction: {
+        "in-expo": "cubic-bezier(0.95, 0.05, 0.795, 0.035)",
+        "out-expo": "cubic-bezier(0.19, 1, 0.22, 1)",
       },
     },
   },

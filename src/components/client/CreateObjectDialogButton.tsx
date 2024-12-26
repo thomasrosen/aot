@@ -1,9 +1,9 @@
 "use client";
 
 import { createObject } from "@/actions/createObject";
-import { DialogWrapper } from "@/components/DialogWrapper";
 import { Icon } from "@/components/Icon";
 import { useTranslations } from "@/components/client/Translation";
+import { VaulDrawer } from "@/components/client/VaulDrawer";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -71,7 +71,7 @@ export function CreateObjectDialogButton() {
   const handleCancel = useCallback(() => setOpen(false), [setOpen]);
 
   return (
-    <DialogWrapper
+    <VaulDrawer
       open={open}
       onOpenChange={setOpen}
       trigger={
@@ -111,6 +111,6 @@ export function CreateObjectDialogButton() {
           </div>
         </form>
       </Form>
-    </DialogWrapper>
+    </VaulDrawer>
   );
 }

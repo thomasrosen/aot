@@ -1,8 +1,8 @@
 "use client";
 
-import { DialogWrapper } from "@/components/DialogWrapper";
 import { useTranslations } from "@/components/client/Translation";
 import { UpdateObjectLocationForm } from "@/components/client/UpdateObjectLocationForm";
+import { VaulDrawer } from "@/components/client/VaulDrawer";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
@@ -17,19 +17,19 @@ export function UpdateObjectLocationDialogButton({
   const [open, setOpen] = useState(false);
 
   return (
-    <DialogWrapper
+    <VaulDrawer
       open={open}
       onOpenChange={setOpen}
       trigger={trigger || <Button>{t("update-location-button")}</Button>}
       title={t("update-location-title")}
       description={t("update-location-description")}
-      className="space-y-2"
+      modal={true}
     >
       <UpdateObjectLocationForm
         code={code}
         onCancel={() => setOpen(false)}
         onSuccess={() => setOpen(false)}
       />
-    </DialogWrapper>
+    </VaulDrawer>
   );
 }

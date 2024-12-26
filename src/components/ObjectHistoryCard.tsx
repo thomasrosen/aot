@@ -40,7 +40,7 @@ export function ObjectHistoryCard({
             locale={locale}
           />
           <div className="font-mono">
-            {formatDate(data.updatedAt)} • {data.user?.email}
+            {formatDate(data.updatedAt, locale)} • {data.user?.email}
           </div>
         </CardDescription>
       </CardHeader>

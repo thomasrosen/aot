@@ -2,7 +2,7 @@
 
 import { DataTable } from "@/components/client/DataTable";
 import { DataTableSortingHeader } from "@/components/client/DataTableSortingHeader";
-import { useTranslations } from "@/components/client/Translation";
+import { useLocale, useTranslations } from "@/components/client/Translation";
 import UpdateUserButton from "@/components/client/UpdateUserButton";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
@@ -11,6 +11,7 @@ import { UserFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
 
 export function DataTableUsers() {
+  const locale = useLocale();
   const t = useTranslations();
 
   const users = useRelations<UserFull>({
@@ -55,7 +56,9 @@ export function DataTableUsers() {
       cell: ({ row }) => {
         const original = row.original;
         return (
-          <span className="font-mono">{formatDate(original?.updatedAt)}</span>
+          <span className="font-mono">
+            {formatDate(original?.updatedAt, locale)}
+          </span>
         );
       },
     },
