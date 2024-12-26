@@ -5,6 +5,7 @@ import { H2 } from "@/components/Typography";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Drawer } from "vaul";
+import { VerticalFade } from "../VerticalFade";
 
 export function VaulDrawer({
   trigger,
@@ -36,40 +37,46 @@ export function VaulDrawer({
         >
           <div
             className={cn(
-              "w-full max-h-screen max-w-[100vw] rounded-2xl sm:w-[600px] sm:max-h-[calc(100vh-2rem)] sm:max-w-[calc(100vw-2rem)] overflow-auto p-8 bg-background text-foreground dark:border relative pointer-events-auto"
+              "w-full max-h-screen max-w-[100vw] rounded-2xl sm:w-[600px] sm:max-h-[calc(80vh-2rem)] sm:max-w-[calc(100vw-2rem)] bg-background text-foreground dark:border relative pointer-events-auto overflow-auto"
             )}
           >
-            <div className="relative sm:hidden -top-3 z-10">
+            {/* <div className="relative sm:hidden -top-3 z-10">
               <Drawer.Handle />
-            </div>
-            <div className="sticky -top-8 -m-8 h-0 left-0 right-0 z-10">
+            </div> */}
+            <div className="sticky top-0 h-0 left-0 right-0 z-20">
               {/* 
-              <Drawer.Close asChild>
-                <div className="sm:hidden z-10 absolute left-1/2 mx-auto mt-4 -ml-[30px] w-12 h-1.5 rounded-full bg-muted cursor-pointer hover:bg-destructive transition-colors" />
-              </Drawer.Close> */}
+                <Drawer.Close asChild>
+                  <div className="sm:hidden z-10 absolute left-1/2 mx-auto mt-4 -ml-[30px] w-12 h-1.5 rounded-full bg-muted cursor-pointer hover:bg-destructive transition-colors" />
+                </Drawer.Close>
+              */}
 
               <Drawer.Close asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="hidden sm:flex z-10 absolute top-1 right-1 h-8 w-8 rounded-sm text-muted-foreground"
+                  className="z-10 absolute top-1 right-1 h-8 w-8 rounded-sm text-muted-foreground"
                 >
                   <Icon name="close" size="sm" />
                 </Button>
               </Drawer.Close>
             </div>
 
-            <div className="sticky -top-8 bg-background p-8 -m-8 mb-0">
-              <Drawer.Title asChild>
-                <H2 className="m-0">{title}</H2>
-              </Drawer.Title>
-              {description ? (
-                <Drawer.Description className="text-muted-foreground text-sm">
-                  {description}
-                </Drawer.Description>
-              ) : null}
+            <div className="sticky top-0 -mb-8">
+              <VerticalFade direction="top" classNameFade="h-32 -mb-32" />
+              <div className="p-8 z-10 relative bg-gradient-to-b from-background via-background">
+                <Drawer.Title asChild>
+                  <H2 className="m-0">{title}</H2>
+                </Drawer.Title>
+                {description ? (
+                  <Drawer.Description className="text-muted-foreground text-sm">
+                    {description}
+                  </Drawer.Description>
+                ) : null}
+              </div>
             </div>
-            {children}
+
+            <div className="p-8">{children}</div>
+            <VerticalFade direction="bottom" />
           </div>
         </Drawer.Content>
       </Drawer.Portal>

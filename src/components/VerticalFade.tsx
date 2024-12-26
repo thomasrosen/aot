@@ -21,9 +21,11 @@ function OneFade({
 export function VerticalFade({
   direction,
   className,
+  classNameFade,
 }: {
   direction?: "top" | "bottom";
   className?: string;
+  classNameFade?: string;
 }) {
   return (
     <>
@@ -36,22 +38,37 @@ export function VerticalFade({
         )}
       >
         <OneFade
-          className="[--fade:1px][--fade-background:transparent]"
+          className={cn(
+            "[--fade:1px][--fade-background:transparent]",
+            classNameFade
+          )}
           direction={direction}
         />
         <OneFade
-          className="[--fade:1px][--fade-background:transparent]"
+          className={cn(
+            "[--fade:1px][--fade-background:transparent]",
+            classNameFade
+          )}
           direction={direction}
         />
         <OneFade
-          className="[--fade:2px][--fade-background:transparent]"
+          className={cn(
+            "[--fade:2px][--fade-background:transparent]",
+            classNameFade
+          )}
           direction={direction}
         />
         <OneFade
-          className="[--fade:2px][--fade-background:transparent]"
+          className={cn(
+            "[--fade:2px][--fade-background:transparent]",
+            classNameFade
+          )}
           direction={direction}
         />
-        <OneFade className="[--fade:3px]" direction={direction} />
+        <OneFade
+          className={cn("[--fade:3px]", classNameFade)}
+          direction={direction}
+        />
       </div>
 
       <style
