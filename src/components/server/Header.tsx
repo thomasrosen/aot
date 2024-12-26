@@ -22,21 +22,23 @@ export async function Header() {
   const t = await loadTranslations(locale);
 
   return (
-    <header className="sticky top-0 bg-background text-foreground border-b flex h-16 justify-between items-center px-4 gap-4 z-20">
-      <Link href="/" className="shrink-0">
-        <H1 className="text-lg lg:text-2xl">{t("app-title")}</H1>
-      </Link>
-      <nav className="w-full">
-        <NavMenu isAdmin={isAdmin} locale={locale} />
-      </nav>
-      <div className="flex gap-2 shrink-0">
-        {isSignedIn ? (
-          <SignOutButton locale={locale} />
-        ) : (
-          <SignInButton locale={locale} />
-        )}
-        <LocaleSwitcher />
-        <ModeToggle />
+    <header className="sticky top-0 bg-background text-foreground border-b z-20">
+      <div className="w-content max-w-full mx-auto px-8 flex gap-4 items-center justify-between h-16">
+        <Link href="/" className="shrink-0">
+          <H1 className="text-lg lg:text-2xl">{t("app-title")}</H1>
+        </Link>
+        <nav className="w-full">
+          <NavMenu isAdmin={isAdmin} locale={locale} />
+        </nav>
+        <div className="flex gap-2 shrink-0">
+          {isSignedIn ? (
+            <SignOutButton locale={locale} />
+          ) : (
+            <SignInButton locale={locale} />
+          )}
+          <LocaleSwitcher />
+          <ModeToggle />
+        </div>
       </div>
     </header>
   );

@@ -12,7 +12,13 @@ export function MainFrame({
   const { _hasHydrated } = useGlobalStore();
 
   return (
-    <main className={cn("flex-1 space-y-4 p-8 pt-6", className)} {...props}>
+    <main
+      className={cn(
+        "flex-1 space-y-4 p-8 pt-6 w-content max-w-full mx-auto",
+        className
+      )}
+      {...props}
+    >
       {_hasHydrated ? (
         children
       ) : (

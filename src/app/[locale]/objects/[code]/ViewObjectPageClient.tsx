@@ -68,7 +68,7 @@ export function ViewObjectPageClient({
   const otherHistories = (history || []).slice(1);
 
   const list = (
-    <div className="overflow-auto relative">
+    <div className="lg:overflow-auto lg:relative">
       <VerticalFade direction="top" />
 
       {!firstHistory && !otherHistories.length ? (
@@ -90,7 +90,7 @@ export function ViewObjectPageClient({
         <>
           <H3 className="mt-8 mb-4">{t("past-locations")}</H3>
           <div className="flex flex-col gap-4 relative">
-            <div className="absolute bg-accent w-1 h-full left-1/2 -ml-0.5" />
+            <div className="absolute bg-accent w-0.5 h-full left-1/2 -ml-0.5" />
             {otherHistories.map((history) => (
               <ObjectHistoryCard
                 key={JSON.stringify(history)}
@@ -108,52 +108,54 @@ export function ViewObjectPageClient({
     </div>
   );
   const map = (
-    <div className="rounded-lg border overflow-hidden h-full">
+    <div className="rounded-lg border overflow-hidden h-[600px] lg:h-full">
       <ObjectMap object={object} />
     </div>
   );
 
   return (
-    <div className="lg:absolute lg:top-[64px] lg:bottom-0 lg:left-0 lg:right-0 lg:overflow-auto lg:grid lg:grid-rows-[auto_minmax(0,1fr)] lg:p-8 lg:pt-6 lg:pb-0">
-      <SubHeader
-        className="relative top-0"
-        breadcrumb={`${object_code_prefix}${code}`}
-        title={
-          <>
-            {name}
-            <Badge className="whitespace-nowrap">
-              {object_code_prefix}
-              {code}
-            </Badge>
-          </>
-        }
-        actions={
-          <>
-            {canRenameObject ? (
-              <RenameObjectDialogButton
+    <div className="lg:absolute lg:top-[64px] lg:bottom-0 lg:left-1/2 lg:right-0 lg:overflow-auto lg:grid lg:grid-rows-[auto_minmax(0,1fr)] lg:p-8 lg:pt-6 lg:pb-0 lg:w-content lg:max-w-full lg:-translate-x-1/2">
+      <div className="top-16 lg:relative lg:top-0 sticky z-10 mb-8 lg:mb-0">
+        <SubHeader
+          breadcrumb={`${object_code_prefix}${code}`}
+          title={
+            <>
+              {name}
+              <Badge className="whitespace-nowrap">
+                {object_code_prefix}
+                {code}
+              </Badge>
+            </>
+          }
+          actions={
+            <>
+              {canRenameObject ? (
+                <RenameObjectDialogButton
+                  code={code}
+                  name={name || ""}
+                  trigger={
+                    <Button variant="outline">
+                      <Icon name="edit" />
+                      {t("rename-object")}
+                    </Button>
+                  }
+                />
+              ) : null}
+
+              <UpdateObjectLocationDialogButton
                 code={code}
-                name={name || ""}
                 trigger={
-                  <Button variant="outline">
-                    <Icon name="edit" />
-                    {t("rename-object")}
+                  <Button variant="default">
+                    <Icon name="pin_drop" />
+                    {t("update-location")}
                   </Button>
                 }
               />
-            ) : null}
-
-            <UpdateObjectLocationDialogButton
-              code={code}
-              trigger={
-                <Button variant="default">
-                  <Icon name="pin_drop" />
-                  {t("update-location")}
-                </Button>
-              }
-            />
-          </>
-        }
-      />
+            </>
+          }
+        />
+        <VerticalFade direction="top" className="block lg:hidden" />
+      </div>
 
       <div className="block lg:hidden lg:h-full">
         <Tabs

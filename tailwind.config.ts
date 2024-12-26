@@ -17,6 +17,9 @@ export default {
       "2xl": "1536px",
     },
     extend: {
+      width: {
+        content: "1920px",
+      },
       zIndex: {
         "1": "1",
         "2": "2",
