@@ -4,11 +4,11 @@ import { DataTable } from "@/components/client/DataTable";
 import { DataTableSortingHeader } from "@/components/client/DataTableSortingHeader";
 import { useLocale, useTranslations } from "@/components/client/Translation";
 import UpdateUserButton from "@/components/client/UpdateUserButton";
-import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/formatDate";
 import { useRelations } from "@/lib/relations";
 import { UserFull } from "@/prisma_types";
 import { ColumnDef } from "@tanstack/react-table";
+import { RoleBadge } from "../RoleBadge";
 
 export function DataTableUsers() {
   const locale = useLocale();
@@ -73,11 +73,14 @@ export function DataTableUsers() {
       },
       cell: ({ row }) => {
         const original = row.original;
-        return (original?.userRolePairings || []).map((userRolePairing) => (
-          <Badge key={userRolePairing.roleName}>
-            {userRolePairing.roleName}
-          </Badge>
-        ));
+        return (original?.userRolePairings || []).map((userRolePairing) => {
+          return (
+            <RoleBadge
+              key={userRolePairing.roleName}
+              roleName={userRolePairing.roleName}
+            />
+          );
+        });
       },
     },
     {
