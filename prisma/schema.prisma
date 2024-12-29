@@ -104,6 +104,7 @@ model GlobalSetting {
 model Object {
   id String @id @default(cuid())
 
+  type String?
   code String  @unique
   name String?
 
@@ -111,7 +112,6 @@ model Object {
   updatedAt DateTime @updatedAt
 
   history ObjectHistory[]
-  // userRolePairings UserRolePairing[]
 
   @@index([code])
   @@map("object")
@@ -141,16 +141,18 @@ model ObjectHistory {
 model Location {
   id String @id @default(cuid())
 
+  type String?
   latitude  Float
   longitude Float
-  address   String @default("")
+  address   String?
+  name      String?
+  city      String?
+  country   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   History ObjectHistory[]
-
-  // userRolePairings UserRolePairing[]
 
   @@map("location")
 }
@@ -167,11 +169,8 @@ model UserRolePairing {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // objectCode String?
-  // object     Object? @relation(fields: [objectCode], references: [code], onDelete: Cascade)
-
-  // locationId String?
-  // location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  // resourceType String?
+  // resourceId   String?
 
   @@unique([userId, roleName]) // Composite key for uniqueness
   @@index([userId, roleName])

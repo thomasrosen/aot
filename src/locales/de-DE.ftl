@@ -197,3 +197,14 @@ create-object-button = Objekt erstellen
 create-object-title = Erstell ein neues Objekt
 create-object-description = Gib deinem neuen Objekt einen Namen.
 submit-create-object = Erstellen
+
+object-type = Objekttyp
+object-type-description = Welche Art von Objekt ist dies?
+pavilion = Pavillon
+counter = Messetheke
+foldingtable = Klapptisch
+flag = Fahne
+beachflag = Beachflag
+banner = Banner
+poster = Plakat
+pallet = Palette

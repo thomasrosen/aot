@@ -203,3 +203,14 @@ create-object-button = Create Object
 create-object-title = Create a New Object
 create-object-description = Provide a name for your new object.
 submit-create-object = Create
+
+object-type = Object Type
+object-type-description = What kind of object is this?
+pavilion = Pavilion
+counter = Counter
+foldingtable = Folding Table
+flag = Flag
+beachflag = Beachflag
+banner = Banner
+poster = Poster
+pallet = Pallet
